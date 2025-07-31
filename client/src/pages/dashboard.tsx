@@ -5,7 +5,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
-import MobileHeader from "@/components/layout/mobile-header";
+import DesktopHeader from "@/components/layout/desktop-header";
+import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
 import AIChat from "@/components/layout/ai-chat";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -190,9 +191,9 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-      <MobileHeader />
+      <DesktopHeader />
       
-      <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6">
+      <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6 pb-20 lg:pb-6">
         {/* Welcome Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div>
@@ -655,6 +656,7 @@ export default function Dashboard() {
           </Card>
       </main>
       
+      <MobileBottomTabs />
       <AIChat />
     </div>
   );
