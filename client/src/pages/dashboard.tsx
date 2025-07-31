@@ -114,7 +114,7 @@ export default function Dashboard() {
           </Card>
 
           {/* Key Metrics */}
-          <MetricsGrid metrics={metrics} isLoading={metricsLoading} />
+          <MetricsGrid metrics={metrics as any} isLoading={metricsLoading} />
 
           {/* Charts and Activity */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -122,7 +122,7 @@ export default function Dashboard() {
               <LeadFunnel />
             </div>
             <div>
-              <ActivityFeed activities={metrics?.recentActivities || []} />
+              <ActivityFeed activities={(metrics as any)?.recentActivities || []} />
             </div>
           </div>
 
@@ -135,8 +135,8 @@ export default function Dashboard() {
                   <CardDescription>AI-powered business intelligence</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {insights.insights?.length > 0 ? (
-                    insights.insights.map((insight: string, index: number) => (
+                  {(insights as any)?.insights?.length > 0 ? (
+                    (insights as any).insights.map((insight: string, index: number) => (
                       <div key={index} className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
                         <p className="text-sm text-gray-700 dark:text-gray-300">{insight}</p>
@@ -154,8 +154,8 @@ export default function Dashboard() {
                   <CardDescription>Suggested improvements</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {insights.recommendations?.length > 0 ? (
-                    insights.recommendations.map((rec: string, index: number) => (
+                  {(insights as any)?.recommendations?.length > 0 ? (
+                    (insights as any).recommendations.map((rec: string, index: number) => (
                       <div key={index} className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
                         <p className="text-sm text-gray-700 dark:text-gray-300">{rec}</p>
@@ -173,8 +173,8 @@ export default function Dashboard() {
                   <CardDescription>Focus on these today</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {insights.priority_actions?.length > 0 ? (
-                    insights.priority_actions.map((action: string, index: number) => (
+                  {(insights as any)?.priority_actions?.length > 0 ? (
+                    (insights as any).priority_actions.map((action: string, index: number) => (
                       <div key={index} className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
                         <p className="text-sm text-gray-700 dark:text-gray-300">{action}</p>
