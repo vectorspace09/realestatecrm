@@ -34,7 +34,7 @@ export default function Header() {
     <>
       <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
         <div className="flex items-center justify-between h-16 px-4 lg:px-6">
-          
+
           {/* Mobile menu button & Search */}
           <div className="flex items-center space-x-4">
             <Button
@@ -45,7 +45,7 @@ export default function Header() {
             >
               <Menu className="w-4 h-4" />
             </Button>
-            
+
             {/* AI Search Bar */}
             <div className="relative flex-1 max-w-md">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

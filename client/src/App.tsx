@@ -12,7 +12,7 @@ import Leads from "@/pages/leads";
 import Properties from "@/pages/properties";
 import Deals from "@/pages/deals";
 import Tasks from "@/pages/tasks";
-import AIAssistant from "@/pages/ai";
+import AI from "@/pages/ai";
 import WorkflowBuilder from "@/pages/workflows";
 import Analytics from "@/pages/analytics";
 import Communications from "@/pages/communications";
@@ -33,7 +33,7 @@ function Router() {
           <Route path="/properties" component={Properties} />
           <Route path="/deals" component={Deals} />
           <Route path="/tasks" component={Tasks} />
-          <Route path="/ai" component={AIAssistant} />
+          <Route path="/ai" component={AI} />
           <Route path="/workflows" component={WorkflowBuilder} />
           <Route path="/analytics" component={Analytics} />
           <Route path="/communications" component={Communications} />
