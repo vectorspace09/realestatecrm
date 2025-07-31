@@ -2,7 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
-import MobileHeader from "@/components/layout/mobile-header";
+import DesktopHeader from "@/components/layout/desktop-header";
+import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
+import AIChat from "@/components/layout/ai-chat";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -44,7 +46,7 @@ export default function Analytics() {
   if (analyticsLoading || !analytics) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-        <MobileHeader />
+        <DesktopHeader />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
@@ -57,9 +59,9 @@ export default function Analytics() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-      <MobileHeader />
+      <DesktopHeader />
       
-      <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6">
+      <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6 space-y-6">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -330,6 +332,9 @@ export default function Analytics() {
             </CardContent>
           </Card>
       </main>
+
+      <MobileBottomTabs />
+      <AIChat />
     </div>
   );
 }

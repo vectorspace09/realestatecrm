@@ -5,8 +5,8 @@ import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useEffect } from "react";
 import { apiRequest } from "@/lib/queryClient";
-import Sidebar from "@/components/layout/sidebar";
-import Header from "@/components/layout/header";
+import DesktopHeader from "@/components/layout/desktop-header";
+import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
 import AIChat from "@/components/layout/ai-chat";
 import KanbanBoard from "@/components/kanban/kanban-board";
 import PropertyForm from "@/components/forms/property-form";
@@ -117,13 +117,10 @@ export default function Properties() {
   }, {} as Record<string, Property[]>);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
-      <Sidebar />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <DesktopHeader />
       
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header />
-        
-        <main className="flex-1 overflow-hidden p-4 lg:p-6">
+      <main className="flex-1 overflow-hidden p-4 lg:p-6 pb-20 lg:pb-6">
           <div className="mb-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
               <div>
@@ -184,8 +181,8 @@ export default function Properties() {
             />
           </div>
         </main>
-      </div>
       
+      <MobileBottomTabs />
       <AIChat />
     </div>
   );

@@ -1,8 +1,9 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
-import Sidebar from "@/components/layout/sidebar";
-import Header from "@/components/layout/header";
+import DesktopHeader from "@/components/layout/desktop-header";
+import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
+import AIChat from "@/components/layout/ai-chat";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -57,13 +58,10 @@ export default function Settings() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
-      <Sidebar />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <DesktopHeader />
       
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header />
-        
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+      <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
@@ -450,7 +448,9 @@ export default function Settings() {
             </div>
           </div>
         </main>
-      </div>
+
+      <MobileBottomTabs />
+      <AIChat />
     </div>
   );
 }
