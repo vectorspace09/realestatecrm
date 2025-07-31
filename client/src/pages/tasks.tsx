@@ -37,8 +37,8 @@ export default function Tasks() {
   const { isAuthenticated, isLoading } = useAuth();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
   const { data: tasks = [], isLoading: tasksLoading, error } = useQuery({
@@ -454,7 +454,7 @@ export default function Tasks() {
                 <SelectValue placeholder="All Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Status</SelectItem>
+                <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
                 <SelectItem value="in_progress">In Progress</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
@@ -465,7 +465,7 @@ export default function Tasks() {
                 <SelectValue placeholder="All Types" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="call">Phone Call</SelectItem>
                 <SelectItem value="visit">Site Visit</SelectItem>
                 <SelectItem value="email">Email</SelectItem>

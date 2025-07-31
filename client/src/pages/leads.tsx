@@ -32,7 +32,7 @@ export default function Leads() {
   const { isAuthenticated, isLoading } = useAuth();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
-  const [sourceFilter, setSourceFilter] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("all");
   const [isAddLeadOpen, setIsAddLeadOpen] = useState(false);
 
   const { data: leads = [], isLoading: leadsLoading, error } = useQuery({
@@ -115,7 +115,7 @@ export default function Leads() {
   };
 
   const groupedLeads = LEAD_STATUSES.reduce((acc, status) => {
-    acc[status.id] = leads.filter((lead: Lead) => lead.status === status.id);
+    acc[status.id] = (leads as Lead[]).filter((lead: Lead) => lead.status === status.id);
     return acc;
   }, {} as Record<string, Lead[]>);
 
@@ -165,7 +165,7 @@ export default function Leads() {
                   <SelectValue placeholder="All Sources" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Sources</SelectItem>
+                  <SelectItem value="all">All Sources</SelectItem>
                   <SelectItem value="website">Website</SelectItem>
                   <SelectItem value="facebook">Facebook Ads</SelectItem>
                   <SelectItem value="google">Google Ads</SelectItem>

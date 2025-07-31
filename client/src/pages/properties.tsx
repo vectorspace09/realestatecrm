@@ -29,7 +29,7 @@ export default function Properties() {
   const { isAuthenticated, isLoading } = useAuth();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
   const [isAddPropertyOpen, setIsAddPropertyOpen] = useState(false);
 
   const { data: properties = [], isLoading: propertiesLoading, error } = useQuery({
@@ -112,7 +112,7 @@ export default function Properties() {
   };
 
   const groupedProperties = PROPERTY_STATUSES.reduce((acc, status) => {
-    acc[status.id] = properties.filter((property: Property) => property.status === status.id);
+    acc[status.id] = (properties as Property[]).filter((property: Property) => property.status === status.id);
     return acc;
   }, {} as Record<string, Property[]>);
 
@@ -162,7 +162,7 @@ export default function Properties() {
                   <SelectValue placeholder="All Types" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Types</SelectItem>
+                  <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="apartment">Apartment</SelectItem>
                   <SelectItem value="house">House</SelectItem>
                   <SelectItem value="condo">Condo</SelectItem>

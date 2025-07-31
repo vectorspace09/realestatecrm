@@ -159,7 +159,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="Enter email address" {...field} />
+                  <Input type="email" placeholder="Enter email address" {...field} value={field.value || ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -173,7 +173,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
               <FormItem>
                 <FormLabel>Phone</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter phone number" {...field} />
+                  <Input placeholder="Enter phone number" {...field} value={field.value || ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -188,7 +188,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Lead Source</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} defaultValue={field.value || ""}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select lead source" />
@@ -216,7 +216,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Timeline</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} defaultValue={field.value || ""}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select timeline" />
@@ -353,6 +353,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
                   placeholder="Additional notes about the lead"
                   className="min-h-[100px]"
                   {...field}
+                  value={field.value || ""}
                 />
               </FormControl>
               <FormMessage />
