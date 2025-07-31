@@ -8,15 +8,15 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900">
       <div className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <div className="flex items-center justify-center mb-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center mb-8">
             <img 
               src="/attached_assets/image_1753994146328.png" 
               alt="PRA Developers" 
-              className="w-16 h-16 object-contain mr-4"
+              className="w-20 h-20 object-contain mb-4 sm:mb-0 sm:mr-6 filter brightness-110"
             />
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white">
               PRA Developers
@@ -25,11 +25,11 @@ export default function Landing() {
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
             AI-Powered Real Estate CRM that transforms how you manage leads, properties, and deals
           </p>
-          <div className="space-x-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button 
               onClick={handleLogin}
               size="lg"
-              className="px-8 py-4 text-lg bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700"
+              className="w-full sm:w-auto px-8 py-4 text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200 dark:bg-blue-600 dark:hover:bg-blue-700"
             >
               Get Started Today
             </Button>
@@ -37,7 +37,7 @@ export default function Landing() {
               onClick={handleLogin}
               variant="outline"
               size="lg"
-              className="px-8 py-4 text-lg border-primary-600 text-primary-600 hover:bg-primary-50 dark:border-primary-400 dark:text-primary-400"
+              className="w-full sm:w-auto px-8 py-4 text-lg font-semibold border-2 border-blue-600 text-blue-600 bg-white hover:bg-blue-50 hover:border-blue-700 transition-all duration-200 dark:border-blue-400 dark:text-blue-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:border-blue-300"
             >
               View Demo
             </Button>
@@ -142,7 +142,7 @@ export default function Landing() {
           <Button 
             onClick={handleLogin}
             size="lg"
-            className="px-8 py-4 text-lg bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700"
+            className="px-8 py-4 text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200 dark:bg-blue-600 dark:hover:bg-blue-700"
           >
             Start Your Free Trial
           </Button>
