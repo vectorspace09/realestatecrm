@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertLeadSchema, insertPropertySchema, insertDealSchema, insertTaskSchema } from "@shared/schema";
-import { scoreLeadWithAI, matchPropertyToLead, generateFollowUpMessage, getAIInsights } from "./openai";
+import { scoreLeadWithAI, matchPropertyToLead, generateFollowUpMessage, getAIInsights, generateLeadMessage, generateLeadRecommendations } from "./openai";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -343,12 +343,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/ai/generate-message', isAuthenticated, async (req: any, res) => {
     try {
-      const { leadData, channel, context } = req.body;
-      const message = await generateFollowUpMessage(leadData, channel, context);
-      res.json(message);
+      const { lead, messageType, recentActivities } = req.body;
+      const message = await generateLeadMessage(lead, messageType, recentActivities);
+      res.json({ message });
     } catch (error) {
       console.error("Error generating message:", error);
       res.status(500).json({ message: "Failed to generate message" });
+    }
+  });
+
+  app.post('/api/ai/lead-recommendations', isAuthenticated, async (req: any, res) => {
+    try {
+      const { lead, recentActivities, pendingTasks } = req.body;
+      const recommendations = await generateLeadRecommendations(lead, recentActivities, pendingTasks);
+      res.json({ recommendations });
+    } catch (error) {
+      console.error("Error generating lead recommendations:", error);
+      res.status(500).json({ message: "Failed to generate recommendations" });
     }
   });
 

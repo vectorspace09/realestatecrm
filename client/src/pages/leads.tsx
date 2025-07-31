@@ -342,7 +342,11 @@ export default function Leads() {
                     </TableHeader>
                     <TableBody>
                       {filteredLeads.map((lead) => (
-                        <TableRow key={lead.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <TableRow 
+                          key={lead.id} 
+                          className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
+                          onClick={() => navigate(`/leads/${lead.id}`)}
+                        >
                           <TableCell>
                             <div className="flex items-center space-x-3">
                               <Avatar className="w-10 h-10">
@@ -409,17 +413,26 @@ export default function Leads() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => handleEdit(lead)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleEdit(lead);
+                                }}
                                 className="h-8 w-8 p-0"
+                                title="Edit Lead"
                               >
                                 <Edit className="w-4 h-4" />
                               </Button>
                               <Button
                                 variant="ghost"
                                 size="sm"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/leads/${lead.id}`);
+                                }}
                                 className="h-8 w-8 p-0"
+                                title="View Details"
                               >
-                                <MessageSquare className="w-4 h-4" />
+                                <Eye className="w-4 h-4" />
                               </Button>
                             </div>
                           </TableCell>

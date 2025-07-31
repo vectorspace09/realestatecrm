@@ -310,3 +310,132 @@ export async function getAIInsights(data: {
     };
   }
 }
+
+export async function generateLeadMessage(
+  lead: any,
+  messageType: 'email' | 'sms' | 'call',
+  recentActivities: any[]
+): Promise<string> {
+  const activityContext = recentActivities.length > 0 
+    ? `Recent activities: ${recentActivities.map(a => `${a.type}: ${a.title}`).join(', ')}`
+    : 'No recent activities recorded.';
+
+  const prompt = `
+Create a personalized ${messageType} for this real estate lead:
+
+Lead Information:
+- Name: ${lead.firstName} ${lead.lastName}
+- Status: ${lead.status}
+- Budget: $${lead.budget?.toLocaleString()}
+- Property Types: ${lead.propertyTypes?.join(', ') || 'Not specified'}
+- Timeline: ${lead.timeline || 'Not specified'}
+- Location: ${lead.location || 'Not specified'}
+- Lead Score: ${lead.score}/100
+- Source: ${lead.source}
+
+${activityContext}
+
+Generate a ${messageType} that:
+1. Is personalized based on their information
+2. References their current status in the pipeline
+3. Provides value or helpful information
+4. Includes a clear next step or call-to-action
+5. Maintains a professional but warm tone
+
+${messageType === 'email' ? 'Format as: Subject: [subject]\n\n[message body]' : ''}
+${messageType === 'sms' ? 'Keep concise (under 160 characters)' : ''}
+${messageType === 'call' ? 'Provide talking points and conversation structure' : ''}
+`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+      messages: [
+        {
+          role: "system",
+          content: "You are an expert real estate agent who creates personalized, effective communications with leads."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      temperature: 0.7,
+    });
+
+    return response.choices[0].message.content || "Unable to generate message at this time.";
+  } catch (error) {
+    console.error("Error generating lead message:", error);
+    throw new Error("Failed to generate message");
+  }
+}
+
+export async function generateLeadRecommendations(
+  lead: any,
+  recentActivities: any[],
+  pendingTasks: any[]
+): Promise<string[]> {
+  const activityContext = recentActivities.length > 0 
+    ? `Recent activities: ${recentActivities.map(a => `${a.type}: ${a.title} (${new Date(a.createdAt).toLocaleDateString()})`).join(', ')}`
+    : 'No recent activities recorded.';
+
+  const taskContext = pendingTasks.length > 0
+    ? `Pending tasks: ${pendingTasks.map(t => `${t.title} (${t.priority} priority)`).join(', ')}`
+    : 'No pending tasks.';
+
+  const prompt = `
+Analyze this real estate lead and provide 3-5 specific, actionable recommendations:
+
+Lead Information:
+- Name: ${lead.firstName} ${lead.lastName}
+- Status: ${lead.status}
+- Budget: $${lead.budget?.toLocaleString()}
+- Property Types: ${lead.propertyTypes?.join(', ') || 'Not specified'}
+- Timeline: ${lead.timeline || 'Not specified'}
+- Location: ${lead.location || 'Not specified'}
+- Lead Score: ${lead.score}/100
+- Source: ${lead.source}
+- Notes: ${lead.notes || 'No notes available'}
+
+${activityContext}
+${taskContext}
+
+Based on their current status (${lead.status}) and information, provide specific next steps that would help:
+1. Move this lead through the sales pipeline
+2. Build stronger relationships
+3. Address their specific needs
+4. Increase conversion probability
+
+Each recommendation should be:
+- Specific and actionable
+- Based on their current status and information
+- Professional and strategic
+- Focused on results
+
+Return as a JSON array of strings: ["recommendation 1", "recommendation 2", ...]
+`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+      messages: [
+        {
+          role: "system",
+          content: "You are an expert real estate sales manager who provides strategic recommendations for lead management. Always respond with valid JSON."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      response_format: { type: "json_object" },
+      temperature: 0.7,
+    });
+
+    const result = JSON.parse(response.choices[0].message.content || '{"recommendations": []}');
+    return result.recommendations || [];
+  } catch (error) {
+    console.error("Error generating lead recommendations:", error);
+    throw new Error("Failed to generate recommendations");
+  }
+}
