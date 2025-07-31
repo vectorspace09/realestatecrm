@@ -495,3 +495,119 @@ Return as a JSON array of strings: ["recommendation 1", "recommendation 2", ...]
     throw new Error("Failed to generate recommendations");
   }
 }
+
+export async function generateContextualAIResponse(
+  message: string,
+  context: {
+    page?: string;
+    leadId?: string;
+    dealId?: string;
+    propertyId?: string;
+    data?: any;
+  },
+  businessData: {
+    leads: any[];
+    properties: any[];
+    deals: any[];
+    analytics: any;
+    user: any;
+  }
+): Promise<string> {
+  // Return intelligent default response if OpenAI API key is not available
+  if (!isOpenAIAvailable) {
+    const lowerMessage = message.toLowerCase();
+    
+    // Context-aware responses based on current page and message content
+    if (context.page === 'dashboard') {
+      if (lowerMessage.includes('lead') || lowerMessage.includes('new')) {
+        return `You have ${businessData.leads?.length || 0} total leads. Your highest priority leads are those with scores above 80. Would you like me to show you specific lead details?`;
+      }
+      if (lowerMessage.includes('deal') || lowerMessage.includes('revenue')) {
+        return `You have ${businessData.deals?.filter(d => d.status !== 'closed').length || 0} active deals in your pipeline. Total revenue from closed deals is $${businessData.analytics?.totalRevenue?.toLocaleString() || '0'}.`;
+      }
+      if (lowerMessage.includes('task') || lowerMessage.includes('today')) {
+        return `You have ${businessData.analytics?.pendingTasks || 0} pending tasks. Focus on high-priority items and follow-ups with qualified leads today.`;
+      }
+    }
+    
+    if (context.page === 'leads') {
+      if (lowerMessage.includes('score') || lowerMessage.includes('priority')) {
+        const highScoreLeads = businessData.leads?.filter(l => l.score > 80) || [];
+        return `You have ${highScoreLeads.length} high-scoring leads (80+). Focus on: ${highScoreLeads.slice(0, 3).map(l => `${l.firstName} ${l.lastName} (${l.score})`).join(', ')}.`;
+      }
+      if (lowerMessage.includes('follow up') || lowerMessage.includes('contact')) {
+        return `For effective follow-ups, prioritize leads in "qualified" status first, then "contacted" leads. Use personalized messages mentioning their property preferences.`;
+      }
+    }
+    
+    if (context.page === 'properties') {
+      if (lowerMessage.includes('match') || lowerMessage.includes('suitable')) {
+        return `I can help match properties to leads based on budget, location, and property type preferences. Which specific lead or criteria would you like me to analyze?`;
+      }
+      if (lowerMessage.includes('price') || lowerMessage.includes('value')) {
+        const avgPrice = businessData.properties?.reduce((sum, p) => sum + (p.price || 0), 0) / (businessData.properties?.length || 1);
+        return `Your property portfolio has an average value of $${avgPrice?.toLocaleString() || '0'}. Properties are distributed across different price ranges and locations.`;
+      }
+    }
+    
+    if (context.leadId) {
+      const lead = businessData.leads?.find(l => l.id === context.leadId);
+      if (lead) {
+        return `For ${lead.firstName} ${lead.lastName}: Their score is ${lead.score}/100, budget is $${lead.budget?.toLocaleString()}, and they're interested in ${lead.propertyTypes?.join(', ')}. Next step: ${lead.status === 'new' ? 'Initial contact' : lead.status === 'contacted' ? 'Qualification call' : 'Property presentation'}.`;
+      }
+    }
+    
+    // General responses
+    if (lowerMessage.includes('help') || lowerMessage.includes('what can you do')) {
+      return `I can help you with:\n• Lead analysis and scoring\n• Property matching recommendations\n• Pipeline management insights\n• Task prioritization\n• Market trend analysis\n• Automated follow-up suggestions\n\nWhat specific area would you like assistance with?`;
+    }
+    
+    if (lowerMessage.includes('screen') || lowerMessage.includes('page') || lowerMessage.includes('see')) {
+      const pageContext = context.page || 'dashboard';
+      return `You're currently on the ${pageContext} page. I can see your ${pageContext === 'dashboard' ? 'overview metrics and recent activities' : pageContext === 'leads' ? 'lead pipeline and contact information' : pageContext === 'properties' ? 'property listings and values' : 'current data'}. What specific information would you like me to analyze?`;
+    }
+    
+    return `I understand you're asking about "${message}". I can analyze your current ${context.page || 'data'} and provide specific insights. What particular aspect would you like me to focus on?`;
+  }
+
+  // Full OpenAI response when API is available
+  const pageContext = context.page ? `Current page: ${context.page}` : '';
+  const dataContext = context.data ? `Page data: ${JSON.stringify(context.data).substring(0, 500)}...` : '';
+  
+  const prompt = `
+You are an intelligent real estate CRM assistant. The user is asking: "${message}"
+
+Context:
+${pageContext}
+${dataContext}
+- User has ${businessData.leads?.length || 0} leads, ${businessData.properties?.length || 0} properties, ${businessData.deals?.length || 0} deals
+- Analytics: ${JSON.stringify(businessData.analytics)}
+
+Respond conversationally and helpfully. If they ask about what's on screen, analyze the current page context and data. Provide specific, actionable insights based on their real data.
+
+Keep response under 200 words and make it practical and useful.
+`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful real estate CRM assistant. Provide specific, actionable insights based on user data and context."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      max_tokens: 200,
+      temperature: 0.7,
+    });
+
+    return response.choices[0].message.content || "I'm here to help with your real estate business. What would you like to know?";
+  } catch (error) {
+    console.error("Error generating contextual AI response:", error);
+    return "I'm experiencing some technical difficulties but I'm still here to help. What specific information about your leads, properties, or deals can I assist you with?";
+  }
+}

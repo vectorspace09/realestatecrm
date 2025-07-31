@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertLeadSchema, insertPropertySchema, insertDealSchema, insertTaskSchema } from "@shared/schema";
-import { scoreLeadWithAI, matchPropertyToLead, generateFollowUpMessage, getAIInsights, generateLeadMessage, generateLeadRecommendations } from "./openai";
+import { scoreLeadWithAI, matchPropertyToLead, generateFollowUpMessage, getAIInsights, generateLeadMessage, generateLeadRecommendations, generateContextualAIResponse } from "./openai";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -398,16 +398,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // AI Chat routes
+  app.post("/api/ai/chat", isAuthenticated, async (req: any, res) => {
+    try {
+      const { message, context } = req.body;
+      const userId = req.user.claims.sub;
+      
+      // Get current user data for context
+      const [leads, properties, deals, analytics] = await Promise.all([
+        storage.getLeads({}),
+        storage.getProperties({}),
+        storage.getDeals({}),
+        storage.getDetailedAnalytics(userId)
+      ]);
+
+      // Generate intelligent response based on context and message
+      const response = await generateContextualAIResponse(message, context, {
+        leads,
+        properties, 
+        deals,
+        analytics,
+        user: await storage.getUser(userId)
+      });
+      
+      res.json({ response });
+    } catch (error) {
+      console.error("Error in AI chat:", error);
+      res.status(500).json({ message: "Failed to process AI chat" });
+    }
+  });
+
   // Get AI insights
   app.get("/api/ai/insights", isAuthenticated, async (req, res) => {
     try {
-      // Simulate AI insights generation
+      const userId = req.user.claims.sub;
+      const analytics = await storage.getDetailedAnalytics(userId);
+      
       const insights = [
-        "With 21 total leads and no high-priority active deals, focus on nurturing qualified leads in your pipeline.",
-        "Your highest-scoring lead (Emily Davis - 92) should be prioritized for immediate follow-up.",
-        "Property inventory at $15.5M total value shows strong market positioning - highlight premium listings.",
-        "Average lead score of 76 indicates quality lead generation - maintain current acquisition strategies.",
-        "3 active deals worth $180k+ revenue show healthy conversion - replicate successful closing tactics."
+        `You have ${analytics.totalLeads} total leads with ${analytics.qualifiedLeads} qualified leads (${analytics.conversionRate}% conversion rate).`,
+        `${analytics.activePipeline} deals are currently in your pipeline with average value of $${analytics.averageDealValue.toLocaleString()}.`,
+        `Your task completion rate is ${analytics.taskCompletionRate}% with ${analytics.pendingTasks} tasks pending.`,
+        `Top lead sources: ${analytics.leadsBySource.slice(0, 2).map(s => `${s.source} (${s.count})`).join(', ')}.`,
+        `Total revenue from closed deals: $${analytics.totalRevenue.toLocaleString()}.`
       ];
       
       res.json({ insights });
