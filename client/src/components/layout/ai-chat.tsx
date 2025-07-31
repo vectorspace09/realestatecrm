@@ -1,204 +1,145 @@
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Bot, Send, X, MessageCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-interface Message {
-  id: string;
-  role: "user" | "assistant";
-  content: string;
-  timestamp: Date;
-}
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { X, Send, Bot, User, Minimize2, Maximize2 } from "lucide-react";
 
 export default function AIChat() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([
     {
-      id: "1",
-      role: "assistant",
-      content: "Hi! I noticed you have 3 hot leads ready for follow-up. Would you like me to draft personalized messages for each of them?",
-      timestamp: new Date(),
-    },
+      id: 1,
+      type: "ai",
+      content: "Hi! I'm your AI assistant. I can help you with lead scoring, property matching, and market insights. What can I help you with today?",
+      timestamp: new Date()
+    }
   ]);
-  const [inputMessage, setInputMessage] = useState("");
-
-  const sendMessageMutation = useMutation({
-    mutationFn: async (content: string) => {
-      // For now, we'll simulate AI responses since we don't have a chat endpoint
-      // In a real implementation, this would call an AI chat endpoint
-      return new Promise<string>((resolve) => {
-        setTimeout(() => {
-          const responses = [
-            "I can help you with that! Let me analyze your current leads and suggest the best follow-up approach.",
-            "Based on your recent activity, I recommend focusing on these high-priority tasks today.",
-            "I've identified 5 new property matches for your active leads. Would you like me to send them notifications?",
-            "Great question! Let me pull up the relevant data and provide you with detailed insights.",
-          ];
-          const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-          resolve(randomResponse);
-        }, 1000);
-      });
-    },
-    onSuccess: (response) => {
-      const assistantMessage: Message = {
-        id: Date.now().toString() + "_assistant",
-        role: "assistant",
-        content: response,
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, assistantMessage]);
-    },
-  });
 
   const handleSendMessage = () => {
-    if (!inputMessage.trim()) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: "user",
-      content: inputMessage,
-      timestamp: new Date(),
+    if (!message.trim()) return;
+    
+    const newMessage = {
+      id: messages.length + 1,
+      type: "user",
+      content: message,
+      timestamp: new Date()
     };
-
-    setMessages(prev => [...prev, userMessage]);
-    sendMessageMutation.mutate(inputMessage);
-    setInputMessage("");
+    
+    setMessages([...messages, newMessage]);
+    setMessage("");
+    
+    // Simulate AI response
+    setTimeout(() => {
+      const aiResponse = {
+        id: messages.length + 2,
+        type: "ai",
+        content: "I understand you're asking about " + message + ". Let me analyze your data and provide some insights...",
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, aiResponse]);
+    }, 1000);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
+  if (!isOpen) {
+    return (
+      <Button
+        onClick={() => setIsOpen(true)}
+        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 text-white shadow-lg z-50"
+      >
+        <Bot className="w-6 h-6" />
+      </Button>
+    );
+  }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      {/* Chat Bubble */}
-      {!isOpen && (
-        <Button
-          onClick={() => setIsOpen(true)}
-          className="w-14 h-14 bg-gradient-to-br from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 rounded-full shadow-lg animate-bounce"
-        >
-          <MessageCircle className="w-6 h-6 text-white" />
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full flex items-center justify-center">
-            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-          </div>
-        </Button>
-      )}
-
-      {/* Chat Panel */}
-      {isOpen && (
-        <Card className="w-80 h-96 bg-white dark:bg-gray-800 shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col">
-          <CardHeader className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Avatar className="w-8 h-8">
-                  <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-white">
-                    <Bot className="w-4 h-4" />
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white">AI Assistant</h3>
-                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200 text-xs">
-                    Online
-                  </Badge>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-              >
-                <X className="w-4 h-4" />
-              </Button>
+    <div className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${
+      isMinimized ? 'w-80 h-16' : 'w-80 h-96'
+    }`}>
+      <Card className="w-full h-full bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-xl">
+        <CardHeader className="flex-row items-center justify-between space-y-0 pb-2 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-purple-600 rounded-full flex items-center justify-center">
+              <Bot className="w-4 h-4 text-white" />
             </div>
-          </CardHeader>
-
-          <CardContent className="flex-1 p-0 overflow-hidden flex flex-col">
-            {/* Messages */}
-            <div className="flex-1 p-4 space-y-4 overflow-y-auto">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={cn(
-                    "flex",
-                    message.role === "user" ? "justify-end" : "justify-start"
-                  )}
-                >
-                  <div className="flex items-start space-x-2 max-w-64">
-                    {message.role === "assistant" && (
-                      <Avatar className="w-6 h-6 flex-shrink-0">
-                        <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-white">
-                          <Bot className="w-3 h-3" />
-                        </AvatarFallback>
-                      </Avatar>
-                    )}
-                    <div
-                      className={cn(
-                        "rounded-lg p-3 text-sm",
-                        message.role === "user"
-                          ? "bg-primary-600 text-white"
-                          : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
-                      )}
-                    >
-                      <p>{message.content}</p>
+            <div>
+              <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">AI Assistant</CardTitle>
+              <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 text-xs">
+                Online
+              </Badge>
+            </div>
+          </div>
+          <div className="flex items-center space-x-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMinimized(!isMinimized)}
+              className="w-6 h-6 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+              {isMinimized ? <Maximize2 className="w-3 h-3" /> : <Minimize2 className="w-3 h-3" />}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsOpen(false)}
+              className="w-6 h-6 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+              <X className="w-3 h-3" />
+            </Button>
+          </div>
+        </CardHeader>
+        
+        {!isMinimized && (
+          <>
+            <CardContent className="flex-1 overflow-y-auto p-4 space-y-3 max-h-64">
+              {messages.map((msg) => (
+                <div key={msg.id} className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`flex items-start space-x-2 max-w-[80%] ${msg.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                    <Avatar className="w-6 h-6 flex-shrink-0">
+                      <AvatarFallback className={`text-xs ${
+                        msg.type === 'user' 
+                          ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400' 
+                          : 'bg-gradient-to-r from-primary-500 to-purple-600 text-white'
+                      }`}>
+                        {msg.type === 'user' ? <User className="w-3 h-3" /> : <Bot className="w-3 h-3" />}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className={`px-3 py-2 rounded-lg text-sm ${
+                      msg.type === 'user'
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                    }`}>
+                      {msg.content}
                     </div>
                   </div>
                 </div>
               ))}
-              
-              {sendMessageMutation.isPending && (
-                <div className="flex justify-start">
-                  <div className="flex items-start space-x-2 max-w-64">
-                    <Avatar className="w-6 h-6 flex-shrink-0">
-                      <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-white">
-                        <Bot className="w-3 h-3" />
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 text-sm">
-                      <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Input */}
+            </CardContent>
+            
             <div className="p-4 border-t border-gray-200 dark:border-gray-700">
               <div className="flex space-x-2">
                 <Input
-                  placeholder="Ask me anything..."
-                  value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  className="flex-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  disabled={sendMessageMutation.isPending}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Ask about leads, properties, or insights..."
+                  className="flex-1 text-sm"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 />
-                <Button
+                <Button 
                   onClick={handleSendMessage}
-                  disabled={!inputMessage.trim() || sendMessageMutation.isPending}
                   size="sm"
-                  className="bg-primary-600 hover:bg-primary-700 text-white"
+                  className="bg-primary-600 hover:bg-primary-700 text-white px-3"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      )}
+          </>
+        )}
+      </Card>
     </div>
   );
 }
