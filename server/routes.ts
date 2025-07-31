@@ -306,6 +306,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/tasks/:id/complete", isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const { completed, completedAt } = req.body;
+      
+      const task = await storage.getTask(id);
+      if (!task) {
+        return res.status(404).json({ message: "Task not found" });
+      }
+
+      const updatedTask = await storage.updateTask(id, {
+        ...task,
+        status: completed ? 'completed' : 'pending',
+        completedAt: completed ? completedAt : null
+      });
+
+      res.json(updatedTask);
+    } catch (error) {
+      console.error("Error completing task:", error);
+      res.status(500).json({ message: "Failed to complete task" });
+    }
+  });
+
   // Activity routes
   app.get('/api/activities', isAuthenticated, async (req: any, res) => {
     try {

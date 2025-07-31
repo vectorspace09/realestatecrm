@@ -1,7 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { isUnauthorizedError } from "@/lib/authUtils";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
 import Sidebar from "@/components/layout/sidebar";
 import Header from "@/components/layout/header";
 import AIChat from "@/components/layout/ai-chat";
@@ -35,6 +38,9 @@ import {
 export default function Dashboard() {
   const { toast } = useToast();
   const { isAuthenticated, isLoading, user } = useAuth();
+  const queryClient = useQueryClient();
+  const [location, navigate] = useLocation();
+  const [completingTask, setCompletingTask] = useState<string | null>(null);
 
   const { data: metrics } = useQuery({
     queryKey: ["/api/dashboard/metrics"],
@@ -78,6 +84,96 @@ export default function Dashboard() {
 
   const getInitials = (firstName?: string, lastName?: string) => {
     return `${firstName?.charAt(0) || ""}${lastName?.charAt(0) || ""}`.toUpperCase() || "U";
+  };
+
+  // Task completion mutation
+  const completeTaskMutation = useMutation({
+    mutationFn: async ({ taskId, leadId }: { taskId: string; leadId?: string }) => {
+      await apiRequest(`/api/tasks/${taskId}/complete`, {
+        method: 'POST',
+        body: JSON.stringify({ 
+          completed: true,
+          completedAt: new Date().toISOString()
+        })
+      });
+      
+      // If task is related to a lead, add activity to lead timeline
+      if (leadId) {
+        await apiRequest(`/api/leads/${leadId}/activities`, {
+          method: 'POST',
+          body: JSON.stringify({
+            type: 'task_completed',
+            description: `Task completed: ${recentTasks?.find(t => t.id === taskId)?.title}`,
+            timestamp: new Date().toISOString()
+          })
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
+      setCompletingTask(null);
+      toast({
+        title: "Task Completed",
+        description: "Task has been marked as complete and recorded in timeline.",
+      });
+    },
+    onError: (error) => {
+      setCompletingTask(null);
+      if (isUnauthorizedError(error)) {
+        toast({
+          title: "Unauthorized",
+          description: "You are logged out. Logging in again...",
+          variant: "destructive",
+        });
+        setTimeout(() => {
+          window.location.href = "/api/login";
+        }, 500);
+        return;
+      }
+      toast({
+        title: "Error",
+        description: "Failed to complete task. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleCompleteTask = (task: any) => {
+    setCompletingTask(task.id);
+    completeTaskMutation.mutate({ taskId: task.id, leadId: task.leadId });
+  };
+
+  // Priority action handlers
+  const handlePriorityAction = async (actionType: string, leadId?: string) => {
+    try {
+      switch (actionType) {
+        case 'call_high_score_lead':
+          // Find the highest scoring lead and navigate to it
+          const highScoreLead = recentLeads?.reduce((prev, current) => 
+            (prev.score > current.score) ? prev : current
+          );
+          if (highScoreLead) {
+            navigate(`/leads/${highScoreLead.id}?action=call`);
+          }
+          break;
+        case 'review_stale_leads':
+          navigate('/leads?filter=stale');
+          break;
+        case 'adjust_pricing':
+          navigate('/properties?action=adjust_pricing');
+          break;
+        case 'schedule_showings':
+          navigate('/leads?filter=tour');
+          break;
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to perform action. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   if (isLoading || !isAuthenticated) {
@@ -295,7 +391,11 @@ export default function Dashboard() {
                       <p className="text-sm text-gray-600 dark:text-gray-400">Highest scoring lead - call within 24 hours</p>
                     </div>
                   </div>
-                  <Button size="sm" className="bg-red-600 hover:bg-red-700">
+                  <Button 
+                    size="sm" 
+                    className="bg-red-600 hover:bg-red-700"
+                    onClick={() => handlePriorityAction('call_high_score_lead')}
+                  >
                     Call Now
                   </Button>
                 </div>
@@ -308,7 +408,12 @@ export default function Dashboard() {
                       <p className="text-sm text-gray-600 dark:text-gray-400">Michael Brown, Sarah Johnson, David Lee need attention</p>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="border-orange-500 text-orange-600">
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="border-orange-500 text-orange-600"
+                    onClick={() => handlePriorityAction('review_stale_leads')}
+                  >
                     Review
                   </Button>
                 </div>
@@ -321,7 +426,12 @@ export default function Dashboard() {
                       <p className="text-sm text-gray-600 dark:text-gray-400">Market analysis suggests 10% price reduction</p>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="border-yellow-500 text-yellow-600">
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="border-yellow-500 text-yellow-600"
+                    onClick={() => handlePriorityAction('adjust_pricing')}
+                  >
                     Adjust
                   </Button>
                 </div>
@@ -334,7 +444,12 @@ export default function Dashboard() {
                       <p className="text-sm text-gray-600 dark:text-gray-400">Lisa Wilson & James Miller awaiting appointments</p>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="border-blue-500 text-blue-600">
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="border-blue-500 text-blue-600"
+                    onClick={() => handlePriorityAction('schedule_showings')}
+                  >
                     Schedule
                   </Button>
                 </div>
@@ -401,7 +516,7 @@ export default function Dashboard() {
               <CardContent>
                 <div className="space-y-4">
                   {recentTasks?.filter(task => task.priority === 'high').slice(0, 3).map((task) => (
-                    <div key={task.id} className="flex items-start space-x-3">
+                    <div key={task.id} className="flex items-start space-x-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                         task.type === 'call' ? 'bg-blue-100 dark:bg-blue-900' :
                         task.type === 'meeting' ? 'bg-purple-100 dark:bg-purple-900' :
@@ -421,16 +536,27 @@ export default function Dashboard() {
                           Due {new Date(task.dueDate).toLocaleDateString()}
                         </p>
                       </div>
-                      <Badge 
-                        variant="secondary" 
-                        className={
-                          new Date(task.dueDate) < new Date() 
-                            ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100"
-                            : "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100"
-                        }
-                      >
-                        {new Date(task.dueDate) < new Date() ? 'Overdue' : 'High'}
-                      </Badge>
+                      <div className="flex items-center space-x-2">
+                        {task.leadId && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => navigate(`/leads/${task.leadId}`)}
+                            className="h-8 text-xs"
+                          >
+                            View Lead
+                          </Button>
+                        )}
+                        <Button
+                          variant={task.status === 'completed' ? "secondary" : "default"}
+                          size="sm"
+                          onClick={() => handleCompleteTask(task)}
+                          disabled={completingTask === task.id}
+                          className="h-8 text-xs"
+                        >
+                          {completingTask === task.id ? "..." : task.status === 'completed' ? "Completed" : "Complete"}
+                        </Button>
+                      </div>
                     </div>
                   )) || (
                     <p className="text-gray-500 dark:text-gray-400 text-center py-4">
