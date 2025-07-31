@@ -2,8 +2,9 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
-import Sidebar from "@/components/layout/sidebar";
-import Header from "@/components/layout/header";
+import DesktopHeader from "@/components/layout/desktop-header";
+import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
+import AIChat from "@/components/ui/ai-chat";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -208,13 +209,11 @@ export default function AIAssistant() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
-      <Sidebar />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <DesktopHeader />
       
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header />
-        
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+      <div className="hidden lg:block">
+        <main className="p-6 pb-20">
           {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
             <div>
@@ -431,6 +430,157 @@ export default function AIAssistant() {
           </div>
         </main>
       </div>
+
+      {/* Mobile Layout */}
+      <div className="lg:hidden">
+        <main className="p-4 pb-20">
+          {/* Header */}
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+              <Bot className="w-7 h-7 mr-3 text-primary-600" />
+              AI Assistant
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400">Ask questions about your leads and properties</p>
+          </div>
+
+          {/* Mobile Chat Interface */}
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 mb-6">
+            <CardHeader>
+              <CardTitle className="text-lg text-gray-900 dark:text-white">Chat with AI</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4 max-h-64 overflow-y-auto mb-4">
+                {messages.map((msg) => (
+                  <div key={msg.id} className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`flex items-start space-x-2 max-w-[85%] ${msg.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                      <Avatar className="w-6 h-6 flex-shrink-0">
+                        <AvatarFallback className={`text-xs ${
+                          msg.type === 'user' 
+                            ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400' 
+                            : 'bg-gradient-to-r from-primary-500 to-purple-600 text-white'
+                        }`}>
+                          {msg.type === 'user' ? <User className="w-3 h-3" /> : <Bot className="w-3 h-3" />}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className={`rounded-lg px-3 py-2 ${
+                        msg.type === 'user'
+                          ? 'bg-primary-600 text-white'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                      }`}>
+                        <p className="text-sm">{msg.content}</p>
+                        {msg.data && renderAIData(msg.data)}
+                        {msg.suggestions && msg.suggestions.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {msg.suggestions.slice(0, 2).map((suggestion, index) => (
+                              <Button
+                                key={index}
+                                variant="outline"
+                                size="sm"
+                                className="text-xs bg-white/10 border-white/20 text-gray-700 dark:text-gray-300"
+                                onClick={() => handleSuggestionClick(suggestion)}
+                              >
+                                {suggestion.slice(0, 25)}...
+                              </Button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                
+                {aiQueryMutation.isPending && (
+                  <div className="flex justify-start">
+                    <div className="flex items-start space-x-2">
+                      <Avatar className="w-6 h-6">
+                        <AvatarFallback className="bg-gradient-to-r from-primary-500 to-purple-600 text-white">
+                          <Bot className="w-3 h-3" />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-2">
+                        <div className="flex items-center space-x-1">
+                          <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
+                          <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                          <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Mobile Input */}
+              <div className="flex space-x-2">
+                <Input
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Ask about your business..."
+                  className="flex-1 text-sm"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                  disabled={aiQueryMutation.isPending}
+                />
+                <Button 
+                  onClick={handleSendMessage}
+                  disabled={!message.trim() || aiQueryMutation.isPending}
+                  size="sm"
+                  className="bg-primary-600 hover:bg-primary-700"
+                >
+                  <Send className="w-4 h-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Quick Stats - Mobile */}
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-lg text-gray-900 dark:text-white">Quick Stats</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <div className="flex items-center justify-center mb-1">
+                    <Users className="w-4 h-4 text-blue-500" />
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{leads?.length || 0}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Total Leads</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="flex items-center justify-center mb-1">
+                    <Building className="w-4 h-4 text-purple-500" />
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{properties?.length || 0}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Properties</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="flex items-center justify-center mb-1">
+                    <Star className="w-4 h-4 text-amber-500" />
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {leads?.filter(lead => lead.score >= 90).length || 0}
+                  </p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Hot Leads</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="flex items-center justify-center mb-1">
+                    <DollarSign className="w-4 h-4 text-emerald-500" />
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    ${leads?.length ? Math.round(leads.reduce((sum, lead) => sum + (lead.budget || 0), 0) / leads.length).toLocaleString() : '0'}
+                  </p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Avg. Budget</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </main>
+      </div>
+
+      <MobileBottomTabs />
+      <AIChat />
     </div>
   );
 }
