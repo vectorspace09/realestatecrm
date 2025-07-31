@@ -32,6 +32,13 @@ export default function Header({ onMenuClick }: HeaderProps) {
     window.location.href = "/api/logout";
   };
 
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      // Navigate to AI page with search query
+      window.location.href = `/ai?query=${encodeURIComponent(searchQuery)}`;
+    }
+  };
+
   return (
     <>
       <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
@@ -58,10 +65,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 placeholder="Ask AI or search leads, properties..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                 className="block w-full pl-10 pr-12 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm placeholder-gray-500 bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
               />
               <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                <Badge className="bg-gradient-to-r from-primary-500 to-purple-600 text-white text-xs font-medium">
+                <Badge className="bg-gradient-to-r from-primary-500 to-purple-600 text-white text-xs font-medium cursor-pointer"
+                       onClick={handleSearch}>
                   AI
                 </Badge>
               </div>
@@ -99,6 +108,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               <Button 
                 size="sm"
                 className="bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 text-white"
+                onClick={() => window.location.href = '/leads?action=add'}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Lead

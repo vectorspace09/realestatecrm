@@ -1,82 +1,34 @@
-import { useState, useCallback } from "react";
+import { useState } from 'react';
 
-export interface DragDropItem {
-  id: string;
-  [key: string]: any;
+interface DragDropOptions {
+  onDrop: (item: any, targetStatus: string) => void;
 }
 
-interface UseDragDropProps {
-  onItemMove: (itemId: string, targetColumnId: string) => void;
-}
+export function useDragDrop({ onDrop }: DragDropOptions) {
+  const [draggedItem, setDraggedItem] = useState<any>(null);
 
-export function useDragDrop({ onItemMove }: UseDragDropProps) {
-  const [draggedItem, setDraggedItem] = useState<DragDropItem | null>(null);
-  const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
-
-  const handleDragStart = useCallback((e: React.DragEvent, item: DragDropItem) => {
+  const handleDragStart = (e: React.DragEvent, item: any) => {
     setDraggedItem(item);
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/html", item.id);
-    
-    // Add drag visual feedback
-    if (e.currentTarget instanceof HTMLElement) {
-      e.currentTarget.style.opacity = "0.5";
-    }
-  }, []);
+    e.dataTransfer.effectAllowed = 'move';
+  };
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-  }, []);
+    e.dataTransfer.dropEffect = 'move';
+  };
 
-  const handleDragEnter = useCallback((e: React.DragEvent) => {
+  const handleDrop = (e: React.DragEvent, targetStatus: string) => {
     e.preventDefault();
-    const columnElement = e.currentTarget as HTMLElement;
-    const columnId = columnElement.getAttribute("data-column-id");
-    if (columnId) {
-      setDragOverColumn(columnId);
+    if (draggedItem) {
+      onDrop(draggedItem, targetStatus);
+      setDraggedItem(null);
     }
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    // Only clear drag over state if we're leaving the column container
-    const relatedTarget = e.relatedTarget as HTMLElement;
-    const currentTarget = e.currentTarget as HTMLElement;
-    
-    if (!currentTarget.contains(relatedTarget)) {
-      setDragOverColumn(null);
-    }
-  }, []);
-
-  const handleDrop = useCallback((e: React.DragEvent, targetColumnId: string) => {
-    e.preventDefault();
-    
-    if (draggedItem && draggedItem.id) {
-      onItemMove(draggedItem.id, targetColumnId);
-    }
-    
-    setDraggedItem(null);
-    setDragOverColumn(null);
-  }, [draggedItem, onItemMove]);
-
-  const handleDragEnd = useCallback((e: React.DragEvent) => {
-    // Reset visual feedback
-    if (e.currentTarget instanceof HTMLElement) {
-      e.currentTarget.style.opacity = "1";
-    }
-    
-    setDraggedItem(null);
-    setDragOverColumn(null);
-  }, []);
+  };
 
   return {
     draggedItem,
-    dragOverColumn,
     handleDragStart,
     handleDragOver,
-    handleDragEnter,
-    handleDragLeave,
     handleDrop,
-    handleDragEnd,
   };
 }

@@ -37,7 +37,7 @@ export default function AIChat() {
       const aiResponse = {
         id: messages.length + 2,
         type: "ai",
-        content: "I understand you're asking about " + message + ". Let me analyze your data and provide some insights...",
+        content: "I understand you're asking about " + message + ". For detailed analysis, please visit the AI Assistant page where I can provide comprehensive insights with data visualization.",
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiResponse]);
@@ -129,7 +129,13 @@ export default function AIChat() {
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 />
                 <Button 
-                  onClick={handleSendMessage}
+                  onClick={() => {
+                    if (message.trim()) {
+                      window.location.href = `/ai?query=${encodeURIComponent(message)}`;
+                    } else {
+                      window.location.href = '/ai';
+                    }
+                  }}
                   size="sm"
                   className="bg-primary-600 hover:bg-primary-700 text-white px-3"
                 >

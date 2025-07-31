@@ -68,17 +68,20 @@ export default function Analytics() {
             </div>
           </div>
 
-          {/* Key Performance Metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {/* Advanced Analytics Overview */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Revenue</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">$180,250</p>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Pipeline Value</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                      ${parseInt(metrics?.totalRevenue || '0').toLocaleString()}
+                    </p>
                     <div className="flex items-center mt-2">
                       <TrendingUp className="w-4 h-4 text-emerald-500 mr-1" />
                       <span className="text-sm text-emerald-600 dark:text-emerald-400">+23.5%</span>
+                      <span className="text-xs text-gray-500 ml-1">vs last quarter</span>
                     </div>
                   </div>
                   <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center">
@@ -92,11 +95,12 @@ export default function Analytics() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Leads</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">8</p>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Lead Quality Score</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">8.7</p>
                     <div className="flex items-center mt-2">
                       <TrendingUp className="w-4 h-4 text-blue-500 mr-1" />
-                      <span className="text-sm text-blue-600 dark:text-blue-400">+12.3%</span>
+                      <span className="text-sm text-blue-600 dark:text-blue-400">+0.8</span>
+                      <span className="text-xs text-gray-500 ml-1">AI optimized</span>
                     </div>
                   </div>
                   <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
@@ -110,11 +114,11 @@ export default function Analytics() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Properties Listed</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">6</p>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Market Performance</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">145%</p>
                     <div className="flex items-center mt-2">
-                      <TrendingDown className="w-4 h-4 text-red-500 mr-1" />
-                      <span className="text-sm text-red-600 dark:text-red-400">-5.2%</span>
+                      <TrendingUp className="w-4 h-4 text-purple-500 mr-1" />
+                      <span className="text-sm text-purple-600 dark:text-purple-400">vs market avg</span>
                     </div>
                   </div>
                   <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
@@ -128,11 +132,12 @@ export default function Analytics() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Conversion Rate</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">24.5%</p>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Time to Close</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">28</p>
                     <div className="flex items-center mt-2">
-                      <TrendingUp className="w-4 h-4 text-emerald-500 mr-1" />
-                      <span className="text-sm text-emerald-600 dark:text-emerald-400">+8.1%</span>
+                      <TrendingDown className="w-4 h-4 text-emerald-500 mr-1" />
+                      <span className="text-sm text-emerald-600 dark:text-emerald-400">-5 days</span>
+                      <span className="text-xs text-gray-500 ml-1">improved</span>
                     </div>
                   </div>
                   <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center">
