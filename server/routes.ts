@@ -34,6 +34,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Analytics routes
+  app.get('/api/analytics/detailed', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const analytics = await storage.getDetailedAnalytics(userId);
+      res.json(analytics);
+    } catch (error) {
+      console.error("Error fetching detailed analytics:", error);
+      res.status(500).json({ message: "Failed to fetch analytics" });
+    }
+  });
+
   // Lead routes
   app.get('/api/leads', isAuthenticated, async (req: any, res) => {
     try {

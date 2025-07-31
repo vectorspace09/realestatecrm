@@ -2,19 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
-import Sidebar from "@/components/layout/sidebar";
-import Header from "@/components/layout/header";
+import MobileHeader from "@/components/layout/mobile-header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, TrendingDown, Users, Building, DollarSign, Calendar, BarChart3, PieChart, Download } from "lucide-react";
+import { TrendingUp, TrendingDown, Users, Building, DollarSign, Calendar, BarChart3, PieChart, Download, Target, Zap } from "lucide-react";
 
 export default function Analytics() {
   const { toast } = useToast();
   const { isAuthenticated, isLoading } = useAuth();
 
-  const { data: metrics } = useQuery({
-    queryKey: ["/api/dashboard/metrics"],
+  const { data: analytics, isLoading: analyticsLoading } = useQuery({
+    queryKey: ["/api/analytics/detailed"],
     retry: false,
   });
 
@@ -42,14 +41,25 @@ export default function Analytics() {
     </div>;
   }
 
+  if (analyticsLoading || !analytics) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+        <MobileHeader />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-400">Loading analytics...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
-      <Sidebar />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <MobileHeader />
       
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header />
-        
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6">
+      <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -74,14 +84,13 @@ export default function Analytics() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Pipeline Value</p>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Revenue</p>
                     <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                      ${parseInt(metrics?.totalRevenue || '0').toLocaleString()}
+                      ${analytics.totalRevenue.toLocaleString()}
                     </p>
                     <div className="flex items-center mt-2">
                       <TrendingUp className="w-4 h-4 text-emerald-500 mr-1" />
-                      <span className="text-sm text-emerald-600 dark:text-emerald-400">+23.5%</span>
-                      <span className="text-xs text-gray-500 ml-1">vs last quarter</span>
+                      <span className="text-sm text-emerald-600 dark:text-emerald-400">{analytics.closedDeals} closed deals</span>
                     </div>
                   </div>
                   <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center">
@@ -95,12 +104,11 @@ export default function Analytics() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Lead Quality Score</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">8.7</p>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Conversion Rate</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{analytics.conversionRate}%</p>
                     <div className="flex items-center mt-2">
-                      <TrendingUp className="w-4 h-4 text-blue-500 mr-1" />
-                      <span className="text-sm text-blue-600 dark:text-blue-400">+0.8</span>
-                      <span className="text-xs text-gray-500 ml-1">AI optimized</span>
+                      <Target className="w-4 h-4 text-blue-500 mr-1" />
+                      <span className="text-sm text-blue-600 dark:text-blue-400">{analytics.qualifiedLeads}/{analytics.totalLeads} qualified</span>
                     </div>
                   </div>
                   <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
@@ -114,15 +122,15 @@ export default function Analytics() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Market Performance</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">145%</p>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Average Lead Score</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{analytics.averageLeadScore}</p>
                     <div className="flex items-center mt-2">
-                      <TrendingUp className="w-4 h-4 text-purple-500 mr-1" />
-                      <span className="text-sm text-purple-600 dark:text-purple-400">vs market avg</span>
+                      <Zap className="w-4 h-4 text-purple-500 mr-1" />
+                      <span className="text-sm text-purple-600 dark:text-purple-400">AI optimized</span>
                     </div>
                   </div>
                   <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                    <Building className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                    <BarChart3 className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                   </div>
                 </div>
               </CardContent>
@@ -132,16 +140,15 @@ export default function Analytics() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Time to Close</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">28</p>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Pipeline</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{analytics.activePipeline}</p>
                     <div className="flex items-center mt-2">
-                      <TrendingDown className="w-4 h-4 text-emerald-500 mr-1" />
-                      <span className="text-sm text-emerald-600 dark:text-emerald-400">-5 days</span>
-                      <span className="text-xs text-gray-500 ml-1">improved</span>
+                      <TrendingUp className="w-4 h-4 text-amber-500 mr-1" />
+                      <span className="text-sm text-amber-600 dark:text-amber-400">${analytics.averageDealValue.toLocaleString()} avg</span>
                     </div>
                   </div>
                   <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center">
-                    <BarChart3 className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                    <Building className="w-6 h-6 text-amber-600 dark:text-amber-400" />
                   </div>
                 </div>
               </CardContent>
@@ -179,46 +186,23 @@ export default function Analytics() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Website</span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">35%</span>
-                      <Badge variant="secondary">3 leads</Badge>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 bg-emerald-500 rounded-full mr-3"></div>
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Referrals</span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">30%</span>
-                      <Badge variant="secondary">2 leads</Badge>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 bg-purple-500 rounded-full mr-3"></div>
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Social Media</span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">20%</span>
-                      <Badge variant="secondary">2 leads</Badge>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 bg-amber-500 rounded-full mr-3"></div>
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Google Ads</span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">15%</span>
-                      <Badge variant="secondary">1 lead</Badge>
-                    </div>
-                  </div>
+                  {analytics.leadsBySource.map((source, index) => {
+                    const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-purple-500', 'bg-amber-500', 'bg-red-500'];
+                    const percentage = analytics.totalLeads > 0 ? Math.round((source.count / analytics.totalLeads) * 100) : 0;
+                    
+                    return (
+                      <div key={source.source} className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <div className={`w-3 h-3 ${colors[index % colors.length]} rounded-full mr-3`}></div>
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{source.source}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">{percentage}%</span>
+                          <Badge variant="secondary">{source.count} leads</Badge>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
@@ -233,31 +217,19 @@ export default function Analytics() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Chelsea Loft</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">15 inquiries</p>
+                  {analytics.topPerformingProperties.slice(0, 3).map((property, index) => (
+                    <div key={property.id} className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium text-gray-900 dark:text-white">{property.title}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">${property.price?.toLocaleString()}</p>
+                      </div>
+                      <Badge className={index === 0 ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100" : 
+                                      index === 1 ? "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100" : 
+                                      "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100"}>
+                        {property.status}
+                      </Badge>
                     </div>
-                    <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
-                      Hot
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Tribeca Residence</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">12 inquiries</p>
-                    </div>
-                    <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100">
-                      Warm
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Penthouse Suite</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">8 inquiries</p>
-                    </div>
-                    <Badge variant="secondary">Active</Badge>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
@@ -272,22 +244,30 @@ export default function Analytics() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">High Quality (90-100)</span>
                     <div className="flex items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">37.5%</span>
-                      <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">3</Badge>
+                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">
+                        {analytics.totalLeads > 0 ? Math.round((analytics.highValueLeads.length / analytics.totalLeads) * 100) : 0}%
+                      </span>
+                      <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
+                        {analytics.highValueLeads.length}
+                      </Badge>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Medium Quality (70-89)</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Task Completion</span>
                     <div className="flex items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">50%</span>
-                      <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100">4</Badge>
+                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">{analytics.taskCompletionRate}%</span>
+                      <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100">
+                        {analytics.completedTasks}/{analytics.completedTasks + analytics.pendingTasks}
+                      </Badge>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Low Quality (50-69)</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Properties Sold</span>
                     <div className="flex items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">12.5%</span>
-                      <Badge variant="secondary">1</Badge>
+                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">
+                        {analytics.totalProperties > 0 ? Math.round((analytics.soldProperties / analytics.totalProperties) * 100) : 0}%
+                      </span>
+                      <Badge variant="secondary">{analytics.soldProperties}</Badge>
                     </div>
                   </div>
                 </div>
@@ -303,15 +283,15 @@ export default function Analytics() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Tasks Completed</span>
-                    <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">1</span>
+                    <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{analytics.completedTasks}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Pending Tasks</span>
-                    <span className="text-2xl font-bold text-amber-600 dark:text-amber-400">5</span>
+                    <span className="text-2xl font-bold text-amber-600 dark:text-amber-400">{analytics.pendingTasks}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Overdue Tasks</span>
-                    <span className="text-2xl font-bold text-red-600 dark:text-red-400">0</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Total Properties</span>
+                    <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">{analytics.totalProperties}</span>
                   </div>
                 </div>
               </CardContent>
@@ -349,8 +329,7 @@ export default function Analytics() {
               </div>
             </CardContent>
           </Card>
-        </main>
-      </div>
+      </main>
     </div>
   );
 }

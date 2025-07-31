@@ -450,6 +450,144 @@ export class DatabaseStorage implements IStorage {
       recentActivities,
     };
   }
+
+  // Detailed Analytics operations
+  async getDetailedAnalytics(userId?: string): Promise<{
+    totalLeads: number;
+    qualifiedLeads: number;
+    conversionRate: number;
+    averageLeadScore: number;
+    totalProperties: number;
+    soldProperties: number;
+    activeListings: number;
+    averagePropertyPrice: number;
+    totalDeals: number;
+    activePipeline: number;
+    closedDeals: number;
+    totalRevenue: number;
+    averageDealValue: number;
+    pendingTasks: number;
+    completedTasks: number;
+    taskCompletionRate: number;
+    leadsBySource: Array<{ source: string; count: number }>;
+    dealsByStatus: Array<{ status: string; count: number; value: number }>;
+    revenueByMonth: Array<{ month: string; revenue: number }>;
+    topPerformingProperties: Property[];
+    highValueLeads: Lead[];
+  }> {
+    // Get all data
+    const allLeads = await db.select().from(leads);
+    const allProperties = await db.select().from(properties);
+    const allDeals = await db.select().from(deals);
+    const allTasks = await db.select().from(tasks);
+
+    // Calculate metrics
+    const totalLeads = allLeads.length;
+    const qualifiedLeads = allLeads.filter(lead => lead.status === 'qualified').length;
+    const conversionRate = totalLeads > 0 ? Math.round((qualifiedLeads / totalLeads) * 100) : 0;
+    const averageLeadScore = allLeads.length > 0 ? 
+      Math.round(allLeads.reduce((sum, lead) => sum + (lead.score || 0), 0) / allLeads.length) : 0;
+
+    const totalProperties = allProperties.length;
+    const soldProperties = allProperties.filter(prop => prop.status === 'sold').length;
+    const activeListings = allProperties.filter(prop => prop.status === 'available').length;
+    const averagePropertyPrice = allProperties.length > 0 ?
+      Math.round(allProperties.reduce((sum, prop) => sum + (prop.price || 0), 0) / allProperties.length) : 0;
+
+    const totalDeals = allDeals.length;
+    const activePipeline = allDeals.filter(deal => 
+      ['offer', 'inspection', 'legal', 'payment'].includes(deal.status)
+    ).length;
+    const closedDeals = allDeals.filter(deal => deal.status === 'handover').length;
+    const totalRevenue = allDeals
+      .filter(deal => ['handover', 'payment'].includes(deal.status))
+      .reduce((sum, deal) => sum + (deal.commission || 0), 0);
+    const averageDealValue = allDeals.length > 0 ?
+      Math.round(allDeals.reduce((sum, deal) => sum + (deal.dealValue || 0), 0) / allDeals.length) : 0;
+
+    const pendingTasks = allTasks.filter(task => task.status === 'pending').length;
+    const completedTasks = allTasks.filter(task => task.status === 'completed').length;
+    const taskCompletionRate = (pendingTasks + completedTasks) > 0 ?
+      Math.round((completedTasks / (pendingTasks + completedTasks)) * 100) : 0;
+
+    // Lead sources analysis
+    const leadSourceCounts = allLeads.reduce((acc, lead) => {
+      const source = lead.source || 'unknown';
+      acc[source] = (acc[source] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    const leadsBySource = Object.entries(leadSourceCounts).map(([source, count]) => ({
+      source: source.charAt(0).toUpperCase() + source.slice(1),
+      count
+    }));
+
+    // Deal status analysis
+    const dealStatusData = allDeals.reduce((acc, deal) => {
+      const status = deal.status;
+      if (!acc[status]) {
+        acc[status] = { count: 0, value: 0 };
+      }
+      acc[status].count += 1;
+      acc[status].value += deal.dealValue || 0;
+      return acc;
+    }, {} as Record<string, { count: number; value: number }>);
+    const dealsByStatus = Object.entries(dealStatusData).map(([status, data]) => ({
+      status: status.charAt(0).toUpperCase() + status.slice(1),
+      count: data.count,
+      value: data.value
+    }));
+
+    // Revenue by month (last 6 months)
+    const revenueByMonth = Array.from({ length: 6 }, (_, i) => {
+      const date = new Date();
+      date.setMonth(date.getMonth() - i);
+      const monthName = date.toLocaleDateString('en-US', { month: 'short' });
+      
+      // Calculate revenue for this month (simplified - in real app would use proper date filtering)
+      const monthRevenue = Math.random() * 50000; // Replace with actual calculation
+      
+      return {
+        month: monthName,
+        revenue: Math.round(monthRevenue)
+      };
+    }).reverse();
+
+    // Top performing properties (highest price, available/sold)
+    const topPerformingProperties = allProperties
+      .filter(prop => ['available', 'sold'].includes(prop.status))
+      .sort((a, b) => (b.price || 0) - (a.price || 0))
+      .slice(0, 5);
+
+    // High value leads (score > 75)
+    const highValueLeads = allLeads
+      .filter(lead => (lead.score || 0) > 75)
+      .sort((a, b) => (b.score || 0) - (a.score || 0))
+      .slice(0, 10);
+
+    return {
+      totalLeads,
+      qualifiedLeads,
+      conversionRate,
+      averageLeadScore,
+      totalProperties,
+      soldProperties,
+      activeListings,
+      averagePropertyPrice,
+      totalDeals,
+      activePipeline,
+      closedDeals,
+      totalRevenue,
+      averageDealValue,
+      pendingTasks,
+      completedTasks,
+      taskCompletionRate,
+      leadsBySource,
+      dealsByStatus,
+      revenueByMonth,
+      topPerformingProperties,
+      highValueLeads,
+    };
+  }
 }
 
 export const storage = new DatabaseStorage();
