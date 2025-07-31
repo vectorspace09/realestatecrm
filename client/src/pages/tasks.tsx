@@ -45,6 +45,7 @@ export default function Tasks() {
     description: "",
     type: "call",
     priority: "medium",
+    status: "pending",
     dueDate: "",
     leadId: "",
     propertyId: "",
@@ -164,6 +165,7 @@ export default function Tasks() {
       description: "",
       type: "call",
       priority: "medium",
+      status: "pending",
       dueDate: "",
       leadId: "",
       propertyId: "",
@@ -178,12 +180,19 @@ export default function Tasks() {
       description: task.description || "",
       type: task.type,
       priority: task.priority,
+      status: task.status,
       dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : "",
       leadId: task.leadId || "",
       propertyId: task.propertyId || "",
       dealId: task.dealId || ""
     });
     setEditingTask(task);
+    setShowAddForm(true);
+  };
+
+  const addTaskWithStatus = (status: string) => {
+    resetForm();
+    setFormData(prev => ({ ...prev, status }));
     setShowAddForm(true);
   };
 
@@ -196,6 +205,8 @@ export default function Tasks() {
       leadId: formData.leadId && formData.leadId !== "none" ? formData.leadId : null,
       propertyId: formData.propertyId && formData.propertyId !== "none" ? formData.propertyId : null,
       dealId: formData.dealId && formData.dealId !== "none" ? formData.dealId : null,
+      // Set completion time if creating a completed task
+      completedAt: formData.status === 'completed' ? new Date().toISOString() : null,
     };
 
     if (editingTask) {
@@ -365,9 +376,20 @@ export default function Tasks() {
                     <Clock className="w-5 h-5 mr-2 text-amber-500" />
                     Pending
                   </CardTitle>
-                  <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100">
-                    {tasksByStatus.pending.length}
-                  </Badge>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0 hover:bg-amber-100 dark:hover:bg-amber-900/20"
+                      onClick={() => addTaskWithStatus('pending')}
+                      title="Add pending task"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                    <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100">
+                      {tasksByStatus.pending.length}
+                    </Badge>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
@@ -463,9 +485,20 @@ export default function Tasks() {
                     <AlertCircle className="w-5 h-5 mr-2 text-blue-500" />
                     In Progress
                   </CardTitle>
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                    {tasksByStatus.in_progress.length}
-                  </Badge>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0 hover:bg-blue-100 dark:hover:bg-blue-900/20"
+                      onClick={() => addTaskWithStatus('in_progress')}
+                      title="Add in progress task"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+                      {tasksByStatus.in_progress.length}
+                    </Badge>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
@@ -560,9 +593,20 @@ export default function Tasks() {
                     <CheckSquare className="w-5 h-5 mr-2 text-emerald-500" />
                     Completed
                   </CardTitle>
-                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
-                    {tasksByStatus.completed.length}
-                  </Badge>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0 hover:bg-emerald-100 dark:hover:bg-emerald-900/20"
+                      onClick={() => addTaskWithStatus('completed')}
+                      title="Add completed task"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                    <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
+                      {tasksByStatus.completed.length}
+                    </Badge>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
