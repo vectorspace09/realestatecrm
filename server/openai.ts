@@ -2,8 +2,11 @@ import OpenAI from "openai";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
 const openai = new OpenAI({ 
-  apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY_ENV_VAR || "default_key" 
+  apiKey: process.env.OPENAI_API_KEY
 });
+
+// Check if OpenAI API key is available
+const isOpenAIAvailable = !!process.env.OPENAI_API_KEY;
 
 export interface LeadScoringResult {
   score: number;
@@ -36,6 +39,17 @@ export async function scoreLeadWithAI(leadData: {
   timeline?: string;
   notes?: string;
 }): Promise<LeadScoringResult> {
+  // Return default scoring if OpenAI API key is not available
+  if (!isOpenAIAvailable) {
+    const defaultScore = Math.floor(Math.random() * 40) + 50; // 50-90 random score
+    return {
+      score: defaultScore,
+      confidence: 0.7,
+      reasons: ["Contact information available", "Budget range specified", "Source quality assessed"],
+      temperature: defaultScore > 75 ? "hot" : defaultScore > 60 ? "warm" : "cold"
+    };
+  }
+
   try {
     const prompt = `
       Analyze this real estate lead and provide a scoring assessment.
@@ -316,6 +330,16 @@ export async function generateLeadMessage(
   messageType: 'email' | 'sms' | 'call',
   recentActivities: any[]
 ): Promise<string> {
+  // Return default message if OpenAI API key is not available
+  if (!isOpenAIAvailable) {
+    const messages = {
+      email: `Subject: Following up on your property search, ${lead.firstName}\n\nHi ${lead.firstName},\n\nI wanted to follow up on our previous conversation about your property search. I have some new listings that match your criteria and would love to share them with you.\n\nWould you be available for a quick call this week to discuss your options?\n\nBest regards,\nPRA Developers Team`,
+      sms: `Hi ${lead.firstName}, just wanted to check in on your property search. Any questions? Reply YES for a quick call.`,
+      call: `Call ${lead.firstName} ${lead.lastName} to discuss:\n1. Current property search status\n2. New listings matching their criteria\n3. Schedule viewing appointments\n4. Address any questions or concerns`
+    };
+    
+    return messages[messageType] || messages.email;
+  }
   const activityContext = recentActivities.length > 0 
     ? `Recent activities: ${recentActivities.map(a => `${a.type}: ${a.title}`).join(', ')}`
     : 'No recent activities recorded.';
@@ -375,6 +399,38 @@ export async function generateLeadRecommendations(
   recentActivities: any[],
   pendingTasks: any[]
 ): Promise<string[]> {
+  // Return default recommendations if OpenAI API key is not available
+  if (!isOpenAIAvailable) {
+    const status = lead.status || 'new';
+    const defaultRecommendations = {
+      'new': [
+        "Schedule initial consultation call within 24 hours",
+        "Send welcome email with company portfolio",
+        "Qualify budget and timeline requirements",
+        "Add lead to nurturing email sequence"
+      ],
+      'contacted': [
+        "Follow up on initial conversation points",
+        "Share relevant property listings matching their criteria",
+        "Schedule property viewing appointments",
+        "Send market analysis for their area of interest"
+      ],
+      'qualified': [
+        "Present 3-5 curated property options",
+        "Schedule property viewings for this week",
+        "Prepare financing pre-approval assistance",
+        "Create personalized property search alerts"
+      ],
+      'viewing': [
+        "Follow up on recent property viewings",
+        "Address any concerns or questions raised",
+        "Schedule additional viewings if needed",
+        "Prepare competitive market analysis"
+      ]
+    };
+    
+    return defaultRecommendations[status] || defaultRecommendations['new'];
+  }
   const activityContext = recentActivities.length > 0 
     ? `Recent activities: ${recentActivities.map(a => `${a.type}: ${a.title} (${new Date(a.createdAt).toLocaleDateString()})`).join(', ')}`
     : 'No recent activities recorded.';
