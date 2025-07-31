@@ -80,38 +80,38 @@ export default function Dashboard() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
+                <div className="bg-red-500/20 border border-red-400/30 rounded-lg p-4 backdrop-blur">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
                       <Flame className="w-4 h-4 text-white" />
                     </div>
                     <div>
                       <p className="font-medium text-white">Hot Leads</p>
-                      <p className="text-sm text-white/80">Ready for follow-up</p>
+                      <p className="text-sm text-red-100">Ready for follow-up</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
+                <div className="bg-amber-500/20 border border-amber-400/30 rounded-lg p-4 backdrop-blur">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-amber-400 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
                       <Home className="w-4 h-4 text-white" />
                     </div>
                     <div>
                       <p className="font-medium text-white">New Matches</p>
-                      <p className="text-sm text-white/80">AI property suggestions</p>
+                      <p className="text-sm text-amber-100">AI property suggestions</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
+                <div className="bg-rose-500/20 border border-rose-400/30 rounded-lg p-4 backdrop-blur">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-rose-400 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-rose-500 rounded-full flex items-center justify-center">
                       <Calendar className="w-4 h-4 text-white" />
                     </div>
                     <div>
                       <p className="font-medium text-white">Appointments</p>
-                      <p className="text-sm text-white/80">Scheduled today</p>
+                      <p className="text-sm text-rose-100">Scheduled today</p>
                     </div>
                   </div>
                 </div>
