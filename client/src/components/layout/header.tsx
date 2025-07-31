@@ -16,7 +16,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { Menu, Search, Bell, Moon, Sun, Plus, User, Settings, LogOut } from "lucide-react";
 import Sidebar from "./sidebar";
 
-export default function Header() {
+interface HeaderProps {
+  onMenuClick?: () => void;
+}
+
+export default function Header({ onMenuClick }: HeaderProps) {
   const { theme, toggleTheme } = useTheme();
   const { user } = useAuth();
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -41,7 +45,7 @@ export default function Header() {
               variant="ghost"
               size="sm"
               className="lg:hidden"
-              onClick={() => setIsMobileSidebarOpen(true)}
+              onClick={onMenuClick}
             >
               <Menu className="w-4 h-4" />
             </Button>

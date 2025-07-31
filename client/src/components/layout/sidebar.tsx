@@ -55,7 +55,7 @@ export default function Sidebar({ className, isMobile = false, isOpen = true, on
 
   const handleNavClick = (href: string) => {
     setLocation(href);
-    if (isMobile && onClose) {
+    if (onClose) {
       onClose();
     }
   };
@@ -67,14 +67,16 @@ export default function Sidebar({ className, isMobile = false, isOpen = true, on
   return (
     <>
       {/* Mobile overlay */}
-      {isMobile && isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={onClose} />
-      )}
+      <div className={cn(
+        "fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden",
+        isOpen ? "block" : "hidden"
+      )} onClick={onClose} />
       
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0",
-          isMobile ? (isOpen ? "translate-x-0" : "-translate-x-full") : "",
+          "fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out",
+          "lg:relative lg:translate-x-0",
+          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
           className
         )}
       >
