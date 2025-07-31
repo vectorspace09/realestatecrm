@@ -66,7 +66,7 @@ export default function Deals() {
     mutationFn: async (data: DealFormData) => {
       return apiRequest("/api/deals", {
         method: "POST",
-        body: JSON.stringify(data),
+        body: data,
       });
     },
     onSuccess: () => {
@@ -102,7 +102,7 @@ export default function Deals() {
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
       return apiRequest(`/api/deals/${id}/status`, {
         method: "PATCH",
-        body: JSON.stringify({ status }),
+        body: { status },
       });
     },
     onSuccess: () => {

@@ -77,8 +77,11 @@ export default function Tasks() {
   });
 
   const updateTaskMutation = useMutation({
-    mutationFn: async ({ id, data }) => {
-      const response = await apiRequest("PATCH", `/api/tasks/${id}`, data);
+    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+      const response = await apiRequest(`/api/tasks/${id}`, {
+        method: "PATCH",
+        body: data
+      });
       return response.json();
     },
     onSuccess: () => {
@@ -98,8 +101,11 @@ export default function Tasks() {
   });
 
   const addTaskMutation = useMutation({
-    mutationFn: async (taskData) => {
-      const response = await apiRequest("POST", "/api/tasks", taskData);
+    mutationFn: async (taskData: any) => {
+      const response = await apiRequest("/api/tasks", {
+        method: "POST",
+        body: taskData
+      });
       return response.json();
     },
     onSuccess: () => {
@@ -162,7 +168,7 @@ export default function Tasks() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     const submitData = {
@@ -181,7 +187,7 @@ export default function Tasks() {
     }
   };
 
-  const getTypeIcon = (type) => {
+  const getTypeIcon = (type: string) => {
     const icons = {
       call: Phone,
       email: Mail,
@@ -194,7 +200,7 @@ export default function Tasks() {
     return <Icon className="w-4 h-4" />;
   };
 
-  const getTypeColor = (type) => {
+  const getTypeColor = (type: string) => {
     const colors = {
       call: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100",
       email: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100",
@@ -206,7 +212,7 @@ export default function Tasks() {
     return colors[type] || colors.call;
   };
 
-  const getPriorityColor = (priority) => {
+  const getPriorityColor = (priority: string) => {
     const colors = {
       high: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100",
       medium: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100",
@@ -215,7 +221,7 @@ export default function Tasks() {
     return colors[priority] || colors.medium;
   };
 
-  const isOverdue = (dueDate) => {
+  const isOverdue = (dueDate: string | null) => {
     if (!dueDate) return false;
     return new Date(dueDate) < new Date();
   };
