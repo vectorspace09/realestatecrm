@@ -13,23 +13,35 @@ export default function Landing() {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center mr-4">
-              <Home className="w-8 h-8 text-white" />
-            </div>
+            <img 
+              src="/attached_assets/image_1753994146328.png" 
+              alt="PRA Developers" 
+              className="w-16 h-16 object-contain mr-4"
+            />
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white">
-              RealtyFlow
+              PRA Developers
             </h1>
           </div>
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
             AI-Powered Real Estate CRM that transforms how you manage leads, properties, and deals
           </p>
-          <Button 
-            onClick={handleLogin}
-            size="lg"
-            className="px-8 py-4 text-lg bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700"
-          >
-            Get Started Today
-          </Button>
+          <div className="space-x-4">
+            <Button 
+              onClick={handleLogin}
+              size="lg"
+              className="px-8 py-4 text-lg bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700"
+            >
+              Get Started Today
+            </Button>
+            <Button 
+              onClick={handleLogin}
+              variant="outline"
+              size="lg"
+              className="px-8 py-4 text-lg border-primary-600 text-primary-600 hover:bg-primary-50 dark:border-primary-400 dark:text-primary-400"
+            >
+              View Demo
+            </Button>
+          </div>
         </div>
 
         {/* Features Grid */}
@@ -125,7 +137,7 @@ export default function Landing() {
             Ready to Transform Your Real Estate Business?
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-            Join thousands of real estate professionals who have increased their productivity and closed more deals with RealtyFlow
+            Join thousands of real estate professionals who have increased their productivity and closed more deals with PRA Developers CRM
           </p>
           <Button 
             onClick={handleLogin}

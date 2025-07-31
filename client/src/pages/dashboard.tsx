@@ -20,6 +20,7 @@ import {
   Calendar,
   Target,
   AlertCircle,
+  AlertTriangle,
   Star,
   Phone,
   Mail,
@@ -27,7 +28,8 @@ import {
   BarChart3,
   ArrowUpRight,
   ArrowDownRight,
-  Zap
+  Zap,
+  Bot
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -271,6 +273,74 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
+
+          {/* AI Priority TODOs - Action Required */}
+          <Card className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900 dark:to-orange-900 border-red-200 dark:border-red-700">
+            <CardHeader>
+              <CardTitle className="flex items-center text-red-800 dark:text-red-200">
+                <AlertTriangle className="w-5 h-5 mr-2" />
+                Action Required - Priority TODOs
+              </CardTitle>
+              <CardDescription className="text-red-600 dark:text-red-300">
+                These require your immediate attention to optimize performance
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-red-500">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium text-gray-900 dark:text-white">Follow up with Emily Davis (Score: 92)</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Highest scoring lead - call within 24 hours</p>
+                    </div>
+                  </div>
+                  <Button size="sm" className="bg-red-600 hover:bg-red-700">
+                    Call Now
+                  </Button>
+                </div>
+                
+                <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-orange-500">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium text-gray-900 dark:text-white">Review 3 stale leads (No contact in 7+ days)</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Michael Brown, Sarah Johnson, David Lee need attention</p>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" className="border-orange-500 text-orange-600">
+                    Review
+                  </Button>
+                </div>
+                
+                <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-yellow-500">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium text-gray-900 dark:text-white">Price Downtown Condo ($850k) competitively</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Market analysis suggests 10% price reduction</p>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" className="border-yellow-500 text-yellow-600">
+                    Adjust
+                  </Button>
+                </div>
+                
+                <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-blue-500">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium text-gray-900 dark:text-white">Schedule 2 property showings this week</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Lisa Wilson & James Miller awaiting appointments</p>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" className="border-blue-500 text-blue-600">
+                    Schedule
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Activity Overview */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -84,10 +84,12 @@ export default function Sidebar({ className, isMobile = false, isOpen = true, on
           {/* Logo & Brand */}
           <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <Home className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">RealtyFlow</span>
+              <img 
+                src="/attached_assets/image_1753994146328.png" 
+                alt="PRA Developers" 
+                className="w-8 h-8 object-contain"
+              />
+              <span className="text-lg font-bold text-gray-900 dark:text-white">PRA Developers</span>
             </div>
             {isMobile && onClose && (
               <Button variant="ghost" size="sm" onClick={onClose}>

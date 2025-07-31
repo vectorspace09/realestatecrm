@@ -1,6 +1,6 @@
 # Overview
 
-RealtyFlow CRM is an AI-powered real estate customer relationship management system built with modern web technologies. The application provides comprehensive lead management, property listings, deal tracking, and task management capabilities with integrated AI assistance. It features a Kanban-style pipeline interface, automated lead scoring, property matching, and intelligent follow-up suggestions to streamline real estate operations.
+PRA Developers CRM is an AI-powered real estate customer relationship management system built with modern web technologies. The application provides comprehensive lead management, property listings, deal tracking, and task management capabilities with integrated AI assistance. It features a Kanban-style pipeline interface, automated lead scoring, property matching, and intelligent follow-up suggestions to streamline real estate operations for PRA Developers.
 
 # User Preferences
 
