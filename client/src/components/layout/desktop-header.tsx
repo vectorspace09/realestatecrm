@@ -20,17 +20,21 @@ import {
   Moon
 } from "lucide-react";
 
-const navigationItems = [
-  { href: "/", icon: Home, label: "Dashboard" },
-  { href: "/leads", icon: Users, label: "Leads" },
-  { href: "/properties", icon: Building, label: "Properties" },
-  { href: "/deals", icon: DollarSign, label: "Deals" },
-  { href: "/tasks", icon: CheckSquare, label: "Tasks" },
-  { href: "/analytics", icon: BarChart3, label: "Analytics" },
-  { href: "/workflows", icon: Workflow, label: "Workflows" },
-  { href: "/ai", icon: Zap, label: "AI Assistant" },
-  { href: "/communications", icon: MessageSquare, label: "Communications" },
-];
+const navigationItems = {
+  primary: [
+    { href: "/", icon: Home, label: "Dashboard" },
+    { href: "/leads", icon: Users, label: "Leads" },
+    { href: "/properties", icon: Building, label: "Properties" },
+    { href: "/deals", icon: DollarSign, label: "Deals" },
+    { href: "/tasks", icon: CheckSquare, label: "Tasks" },
+  ],
+  secondary: [
+    { href: "/analytics", icon: BarChart3, label: "Analytics" },
+    { href: "/workflows", icon: Workflow, label: "Workflows" },
+    { href: "/ai", icon: Zap, label: "AI Assistant" },
+    { href: "/communications", icon: MessageSquare, label: "Communications" },
+  ]
+};
 
 export default function DesktopHeader() {
   const { user } = useAuth();
@@ -51,9 +55,31 @@ export default function DesktopHeader() {
     window.location.href = "/api/logout";
   };
 
+  const renderNavItem = (item: any) => {
+    const Icon = item.icon;
+    const active = isActive(item.href);
+    
+    return (
+      <Link key={item.href} href={item.href}>
+        <Button
+          variant={active ? "default" : "outline"}
+          size="sm"
+          className={`px-3 py-1.5 text-sm transition-all ${
+            active 
+              ? "bg-blue-600 text-white hover:bg-blue-700 border-blue-600" 
+              : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500"
+          }`}
+        >
+          <Icon className="w-3.5 h-3.5 mr-1.5" />
+          {item.label}
+        </Button>
+      </Link>
+    );
+  };
+
   return (
-    <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
-      <div className="flex items-center justify-between">
+    <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-6 py-3">
+      <div className="flex items-start justify-between">
         {/* Brand */}
         <div className="flex items-center">
           <div>
@@ -62,28 +88,16 @@ export default function DesktopHeader() {
           </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="hidden lg:flex items-center space-x-1">
-          {navigationItems.map((item) => {
-            const Icon = item.icon;
-            const active = isActive(item.href);
-            
-            return (
-              <Link key={item.href} href={item.href}>
-                <Button
-                  variant={active ? "default" : "ghost"}
-                  className={`px-4 py-2 ${
-                    active 
-                      ? "bg-blue-600 text-white hover:bg-blue-700" 
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
-                  }`}
-                >
-                  <Icon className="w-4 h-4 mr-2" />
-                  {item.label}
-                </Button>
-              </Link>
-            );
-          })}
+        {/* Navigation - Two Rows */}
+        <nav className="hidden lg:block">
+          {/* Primary Navigation */}
+          <div className="flex items-center space-x-2 mb-2">
+            {navigationItems.primary.map((item) => renderNavItem(item))}
+          </div>
+          {/* Secondary Navigation */}
+          <div className="flex items-center space-x-2">
+            {navigationItems.secondary.map((item) => renderNavItem(item))}
+          </div>
         </nav>
 
         {/* Right Side - Theme Toggle, AI Status, User */}
