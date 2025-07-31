@@ -135,13 +135,14 @@ export default function LeadDetail() {
     try {
       const response = await apiRequest("/api/ai/lead-recommendations", {
         method: "POST",
-        body: JSON.stringify({ 
+        body: { 
           lead,
-          recentActivities: activities.slice(0, 5),
-          pendingTasks: tasks.filter(t => t.status === 'pending')
-        }),
+          recentActivities: activities?.slice(0, 5) || [],
+          pendingTasks: tasks?.filter((t: Task) => t.status === 'pending') || []
+        },
       });
-      setAiRecommendations(response.recommendations || []);
+      const data = await response.json();
+      setAiRecommendations(data.recommendations || []);
     } catch (error) {
       console.error("Error generating AI recommendations:", error);
     } finally {
@@ -156,13 +157,14 @@ export default function LeadDetail() {
     try {
       const response = await apiRequest("/api/ai/generate-message", {
         method: "POST",
-        body: JSON.stringify({ 
+        body: { 
           lead,
           messageType,
-          recentActivities: activities.slice(0, 3)
-        }),
+          recentActivities: activities?.slice(0, 3) || []
+        },
       });
-      setGeneratedMessage(response.message || "");
+      const data = await response.json();
+      setGeneratedMessage(data.message || "");
     } catch (error) {
       console.error("Error generating AI message:", error);
       toast({
@@ -180,13 +182,13 @@ export default function LeadDetail() {
     mutationFn: async (data: ActionFormData) => {
       return apiRequest("/api/activities", {
         method: "POST",
-        body: JSON.stringify({
+        body: {
           type: data.type,
           title: data.title,
           description: data.description,
           leadId,
           metadata: data.dueDate ? { dueDate: data.dueDate } : null,
-        }),
+        },
       });
     },
     onSuccess: () => {

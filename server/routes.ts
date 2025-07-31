@@ -412,8 +412,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user?.claims?.sub;
       
       // Get leads and properties for analysis
-      const leads = await storage.getAllLeads();
-      const properties = await storage.getAllProperties();
+      const leads = await storage.getLeads();
+      const properties = await storage.getProperties();
       
       // Simple AI query processing
       let response = "I've analyzed your request. Here's what I found:";
@@ -424,12 +424,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       if (queryLower.includes('lead') || queryLower.includes('client')) {
         if (queryLower.includes('high') || queryLower.includes('score') || queryLower.includes('hot')) {
-          const hotLeads = leads.filter(lead => lead.score >= 80).sort((a, b) => b.score - a.score);
+          const hotLeads = leads.filter((lead: any) => lead.score >= 80).sort((a: any, b: any) => b.score - a.score);
           response = `Found ${hotLeads.length} high-scoring leads. These prospects show strong purchase intent and should be prioritized for immediate follow-up.`;
           data = { leads: hotLeads };
           suggestions = ["Show lead contact details", "Create follow-up tasks", "Find matching properties"];
         } else if (queryLower.includes('budget') || queryLower.includes('money')) {
-          const sortedByBudget = leads.filter(lead => lead.budget).sort((a, b) => (b.budget || 0) - (a.budget || 0));
+          const sortedByBudget = leads.filter((lead: any) => lead.budget).sort((a: any, b: any) => (b.budget || 0) - (a.budget || 0));
           response = `Here are your leads sorted by budget. The highest budget is $${sortedByBudget[0]?.budget?.toLocaleString()}.`;
           data = { leads: sortedByBudget };
           suggestions = ["Show budget ranges", "Find matching properties", "Create targeted campaigns"];
@@ -443,13 +443,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (queryLower.includes('price') || queryLower.includes('under') || queryLower.includes('below')) {
           const priceMatch = queryLower.match(/(\d+[,\d]*)/);
           const priceLimit = priceMatch ? parseInt(priceMatch[1].replace(/,/g, '')) : 500000;
-          const affordableProperties = properties.filter(prop => prop.price <= priceLimit);
+          const affordableProperties = properties.filter((prop: any) => prop.price <= priceLimit);
           response = `Found ${affordableProperties.length} properties under $${priceLimit.toLocaleString()}.`;
           data = { properties: affordableProperties };
           suggestions = ["Show property details", "Find interested leads", "Schedule showings"];
         } else {
           const recentProperties = properties.slice(0, 5);
-          response = `You have ${properties.length} properties in your portfolio with a total value of $${properties.reduce((sum, p) => sum + (p.price || 0), 0).toLocaleString()}.`;
+          response = `You have ${properties.length} properties in your portfolio with a total value of $${properties.reduce((sum: number, p: any) => sum + (p.price || 0), 0).toLocaleString()}.`;
           data = { properties: recentProperties };
           suggestions = ["Filter by type", "Show market analysis", "Find buyer matches"];
         }

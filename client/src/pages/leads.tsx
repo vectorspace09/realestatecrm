@@ -71,8 +71,11 @@ export default function Leads() {
   });
 
   const addLeadMutation = useMutation({
-    mutationFn: async (leadData) => {
-      const response = await apiRequest("POST", "/api/leads", leadData);
+    mutationFn: async (leadData: any) => {
+      const response = await apiRequest("/api/leads", {
+        method: "POST",
+        body: leadData
+      });
       return response.json();
     },
     onSuccess: () => {
@@ -84,7 +87,7 @@ export default function Leads() {
       setShowAddForm(false);
       resetForm();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast({
         title: "Error",
         description: "Failed to add lead: " + error.message,
@@ -94,8 +97,11 @@ export default function Leads() {
   });
 
   const updateLeadMutation = useMutation({
-    mutationFn: async ({ id, data }) => {
-      const response = await apiRequest("PATCH", `/api/leads/${id}`, data);
+    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+      const response = await apiRequest(`/api/leads/${id}`, {
+        method: "PATCH",
+        body: data
+      });
       return response.json();
     },
     onSuccess: () => {
@@ -107,7 +113,7 @@ export default function Leads() {
       setEditingLead(null);
       resetForm();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast({
         title: "Error",
         description: "Failed to update lead: " + error.message,
@@ -148,7 +154,7 @@ export default function Leads() {
     });
   };
 
-  const handleEdit = (lead) => {
+  const handleEdit = (lead: any) => {
     setEditingLead(lead);
     setFormData({
       firstName: lead.firstName || "",
@@ -171,7 +177,7 @@ export default function Leads() {
     setShowAddForm(true);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     const submitData = {
@@ -189,17 +195,17 @@ export default function Leads() {
     }
   };
 
-  const getInitials = (firstName, lastName) => {
+  const getInitials = (firstName: string, lastName: string) => {
     return `${firstName?.charAt(0) || ""}${lastName?.charAt(0) || ""}`.toUpperCase() || "L";
   };
 
-  const getScoreBadge = (score) => {
+  const getScoreBadge = (score: number) => {
     if (score >= 90) return "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100";
     if (score >= 70) return "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100";
     return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100";
   };
 
-  const getStatusBadge = (status) => {
+  const getStatusBadge = (status: string) => {
     const statusMap = {
       new: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100",
       contacted: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100",
@@ -212,7 +218,7 @@ export default function Leads() {
     return statusMap[status] || statusMap.new;
   };
 
-  const filteredLeads = leads?.filter(lead => {
+  const filteredLeads = leads?.filter((lead: any) => {
     const matchesSearch = !searchTerm || 
       `${lead.firstName} ${lead.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
