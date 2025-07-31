@@ -28,7 +28,9 @@ import {
   Building,
   DollarSign,
   AlertCircle,
-  Filter
+  Filter,
+  Edit3,
+  Trash2
 } from "lucide-react";
 
 export default function Tasks() {
@@ -167,6 +169,22 @@ export default function Tasks() {
       propertyId: "",
       dealId: ""
     });
+    setEditingTask(null);
+  };
+
+  const startEditTask = (task: any) => {
+    setFormData({
+      title: task.title,
+      description: task.description || "",
+      type: task.type,
+      priority: task.priority,
+      dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : "",
+      leadId: task.leadId || "",
+      propertyId: task.propertyId || "",
+      dealId: task.dealId || ""
+    });
+    setEditingTask(task);
+    setShowAddForm(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -183,6 +201,8 @@ export default function Tasks() {
     if (editingTask) {
       updateTaskMutation.mutate({ id: editingTask.id, data: submitData });
       setEditingTask(null);
+      setShowAddForm(false);
+      resetForm();
     } else {
       addTaskMutation.mutate(submitData);
     }
@@ -362,10 +382,23 @@ export default function Tasks() {
                       } ${isOverdue(task.dueDate) ? 'border-red-300 bg-red-50 dark:bg-red-900/20' : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700'}`}
                     >
                       <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-medium text-gray-900 dark:text-white text-sm leading-tight">
+                        <h4 className="font-medium text-gray-900 dark:text-white text-sm leading-tight flex-1">
                           {task.title}
                         </h4>
-                        {isOverdue(task.dueDate) && <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 ml-2" />}
+                        <div className="flex items-center space-x-1 ml-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 w-7 p-0 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              startEditTask(task);
+                            }}
+                          >
+                            <Edit3 className="w-3 h-3" />
+                          </Button>
+                          {isOverdue(task.dueDate) && <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />}
+                        </div>
                       </div>
                       
                       <div className="flex items-center space-x-2 mb-3">
@@ -447,9 +480,22 @@ export default function Tasks() {
                       }`}
                     >
                       <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-medium text-gray-900 dark:text-white text-sm leading-tight">
+                        <h4 className="font-medium text-gray-900 dark:text-white text-sm leading-tight flex-1">
                           {task.title}
                         </h4>
+                        <div className="flex items-center space-x-1 ml-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 w-7 p-0 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              startEditTask(task);
+                            }}
+                          >
+                            <Edit3 className="w-3 h-3" />
+                          </Button>
+                        </div>
                       </div>
                       
                       <div className="flex items-center space-x-2 mb-3">
@@ -531,10 +577,23 @@ export default function Tasks() {
                       }`}
                     >
                       <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-medium text-gray-900 dark:text-white text-sm leading-tight">
+                        <h4 className="font-medium text-gray-900 dark:text-white text-sm leading-tight flex-1">
                           {task.title}
                         </h4>
-                        <CheckSquare className="w-4 h-4 text-emerald-500 flex-shrink-0 ml-2" />
+                        <div className="flex items-center space-x-1 ml-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 w-7 p-0 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              startEditTask(task);
+                            }}
+                          >
+                            <Edit3 className="w-3 h-3" />
+                          </Button>
+                          <CheckSquare className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                        </div>
                       </div>
                       
                       <div className="flex items-center space-x-2 mb-3">
@@ -593,9 +652,9 @@ export default function Tasks() {
       <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Add New Task</DialogTitle>
+            <DialogTitle>{editingTask ? 'Edit Task' : 'Add New Task'}</DialogTitle>
             <DialogDescription>
-              Create a new task and link it to leads, properties, or deals
+              {editingTask ? 'Update task details and assignments' : 'Create a new task and link it to leads, properties, or deals'}
             </DialogDescription>
           </DialogHeader>
           
@@ -731,10 +790,13 @@ export default function Tasks() {
               </Button>
               <Button 
                 type="submit" 
-                disabled={addTaskMutation.isPending}
+                disabled={addTaskMutation.isPending || updateTaskMutation.isPending}
                 className="bg-primary-600 hover:bg-primary-700"
               >
-                {addTaskMutation.isPending ? 'Adding...' : 'Add Task'}
+                {editingTask
+                  ? (updateTaskMutation.isPending ? 'Updating...' : 'Update Task')
+                  : (addTaskMutation.isPending ? 'Adding...' : 'Add Task')
+                }
               </Button>
             </DialogFooter>
           </form>
