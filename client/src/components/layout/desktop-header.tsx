@@ -54,13 +54,8 @@ export default function DesktopHeader() {
   return (
     <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
       <div className="flex items-center justify-between">
-        {/* Logo and Brand */}
-        <div className="flex items-center space-x-4">
-          <img 
-            src="/attached_assets/image_1753994146328.png" 
-            alt="PRA Developers" 
-            className="w-10 h-10 object-contain"
-          />
+        {/* Brand */}
+        <div className="flex items-center">
           <div>
             <h1 className="text-xl font-bold text-gray-900 dark:text-white">PRA Developers</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">Real Estate CRM</p>
