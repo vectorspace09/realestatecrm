@@ -1,0 +1,76 @@
+# Real Estate CRM – AI-Driven, Agentic UI/UX
+
+**Objective:** Build a multi-tenant, AI-powered Real Estate CRM with end-to-end lead, listing, deal, task and communication workflows—including Email, WhatsApp and AI assistant—using React + Tailwind (lovable.dev codegen).
+
+---
+
+## ✨ Design & UX Requirements
+
+1. **Modern Minimalism**  
+   - Light/dark mode toggle, clean typography, indigo accents.  
+   - Card-first layouts (draggable Kanban, modular widgets).
+
+2. **Agentic AI Integration**  
+   - Persistent AI assistant chat panel (GPT-4o).  
+   - Proactive “Today’s Focus” carousel on dashboard.  
+   - In-context drafting (emails/WhatsApp), predictive lead/property matching.
+
+3. **Immersive Interactions**  
+   - Smooth micro-animations (hover, drag/drop).  
+   - Inline editing, voice command triggers.
+
+---
+
+## 🗂 Core Pages & Flows
+
+1. **Login / Welcome**  
+   - Full-screen hero image, social/OTP sign-in, AI greeting.
+
+2. **Dashboard**  
+   - Sidebar nav: Dashboard, Leads, Properties, Deals, AI Hub, Workflows, Analytics, Settings.  
+   - Top bar: AI search, notifications.  
+   - Widgets: Lead funnel, AI property matches, upcoming tasks.  
+   - Floating AI chat bubble.
+
+3. **Leads Pipeline**  
+   - Kanban board per stage (New → Contacted → Tour → Offer → Closed → Lost).  
+   - Cards: Photo, name, budget, AI tags (hot/cold).  
+   - FAB to “Add Lead”.
+
+4. **Lead Detail**  
+   - Header with quick actions (Call, Email, WhatsApp).  
+   - Tabs: Overview, Activity timeline, Documents, AI Chat.  
+   - Sidebar: Next-step suggestions.
+
+5. **Properties & Matches**  
+   - Filter bar + AI match-score slider.  
+   - Property cards with match % overlay.  
+   - Detail modal: full specs, media carousel, notes.
+
+6. **Deals & Transactions**  
+   - Opportunity view linked to leads & properties.  
+   - Milestone tracker (Offer → Inspection → Legal → Payment → Handover).  
+   - Commission calculator & invoice PDF export.
+
+7. **Tasks & Calendar**  
+   - Task list, due dates, Google Calendar sync.  
+   - Reminders via email/WhatsApp/SMS/in-app.  
+   - Recurrence & escalation rules.
+
+8. **Workflow Builder**  
+   - Drag-and-drop canvas: Events, Conditions, Actions.  
+   - Node library + AI recipe suggester.  
+   - Test & publish controls.
+
+9. **Analytics & Reports**  
+   - Funnel, source performance, agent leaderboard.  
+   - Custom report builder + scheduled exports.  
+   - AI Insight cards.
+
+10. **Settings & Integrations**  
+    - Tabs: General, Users/Roles, Templates, Integrations, Branding.  
+    - Toggles for WhatsApp API, SendGrid, OpenAI, portal connectors.  
+    - Branding: logo upload, theme colors, custom domain.
+
+11. **Mobile PWA**  
+    - Swipeable cards, bottom navigation, quick-action FAB. 
