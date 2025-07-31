@@ -408,10 +408,10 @@ export class DatabaseStorage implements IStorage {
 
   // Dashboard/Analytics operations
   async getDashboardMetrics(userId?: string): Promise<{
-    totalLeads: number;
-    activeProperties: number;
-    activeDeals: number;
-    monthlyRevenue: number;
+    totalLeads: string;
+    activeProperties: string;
+    activeDeals: string;
+    totalRevenue: string;
     recentActivities: Activity[];
   }> {
     const [totalLeadsResult] = await db
@@ -428,17 +428,13 @@ export class DatabaseStorage implements IStorage {
       .from(deals)
       .where(inArray(deals.status, ["offer", "inspection", "legal", "payment"]));
     
-    const [monthlyRevenueResult] = await db
+    // Calculate total revenue from all completed deals and commissions
+    const [totalRevenueResult] = await db
       .select({ 
-        revenue: sql<number>`COALESCE(SUM(${deals.dealValue}), 0)` 
+        revenue: sql<number>`COALESCE(SUM(${deals.commission}), 0)` 
       })
       .from(deals)
-      .where(
-        and(
-          eq(deals.status, "closed"),
-          sql`${deals.actualCloseDate} >= date_trunc('month', CURRENT_DATE)`
-        )
-      );
+      .where(inArray(deals.status, ["handover", "payment"]));
     
     const recentActivities = await db
       .select()
@@ -447,10 +443,10 @@ export class DatabaseStorage implements IStorage {
       .limit(10);
 
     return {
-      totalLeads: totalLeadsResult.count,
-      activeProperties: activePropertiesResult.count,
-      activeDeals: activeDealsResult.count,
-      monthlyRevenue: monthlyRevenueResult.revenue || 0,
+      totalLeads: totalLeadsResult.count.toString(),
+      activeProperties: activePropertiesResult.count.toString(),
+      activeDeals: activeDealsResult.count.toString(),
+      totalRevenue: (totalRevenueResult.revenue || 0).toString(),
       recentActivities,
     };
   }

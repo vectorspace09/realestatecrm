@@ -5,8 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
-import Sidebar from "@/components/layout/sidebar";
-import Header from "@/components/layout/header";
+import MobileHeader from "@/components/layout/mobile-header";
 import AIChat from "@/components/layout/ai-chat";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -190,14 +189,11 @@ export default function Dashboard() {
   const overdueTask = pendingTasks.find(task => new Date(task.dueDate) < new Date());
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
-      <Sidebar />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <MobileHeader />
       
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header />
-        
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6">
-          {/* Welcome Header */}
+      <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6">
+        {/* Welcome Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -657,8 +653,7 @@ export default function Dashboard() {
               </div>
             </CardContent>
           </Card>
-        </main>
-      </div>
+      </main>
       
       <AIChat />
     </div>
