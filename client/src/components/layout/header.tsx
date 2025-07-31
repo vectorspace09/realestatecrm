@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 import { Menu, Search, Bell, Moon, Sun, Plus, User, Settings, LogOut } from "lucide-react";
-import Sidebar from "./sidebar";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -23,7 +22,6 @@ interface HeaderProps {
 export default function Header({ onMenuClick }: HeaderProps) {
   const { theme, toggleTheme } = useTheme();
   const { user } = useAuth();
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const getInitials = (firstName?: string, lastName?: string) => {
@@ -153,12 +151,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
         </div>
       </header>
 
-      {/* Mobile Sidebar */}
-      <Sidebar
-        isMobile={true}
-        isOpen={isMobileSidebarOpen}
-        onClose={() => setIsMobileSidebarOpen(false)}
-      />
+      
     </>
   );
 }

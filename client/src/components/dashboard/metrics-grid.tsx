@@ -80,7 +80,7 @@ export default function MetricsGrid({ metrics, isLoading }: MetricsGridProps) {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   {metric.title}
                 </p>
                 <p className="text-3xl font-bold text-gray-900 dark:text-white">
