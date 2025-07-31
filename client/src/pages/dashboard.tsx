@@ -86,8 +86,8 @@ export default function Dashboard() {
                       <Flame className="w-4 h-4 text-white" />
                     </div>
                     <div>
-                      <p className="font-medium">Hot Leads</p>
-                      <p className="text-sm text-primary-100">Ready for follow-up</p>
+                      <p className="font-medium text-white">Hot Leads</p>
+                      <p className="text-sm text-white/80">Ready for follow-up</p>
                     </div>
                   </div>
                 </div>
@@ -98,8 +98,8 @@ export default function Dashboard() {
                       <Home className="w-4 h-4 text-white" />
                     </div>
                     <div>
-                      <p className="font-medium">New Matches</p>
-                      <p className="text-sm text-primary-100">AI property suggestions</p>
+                      <p className="font-medium text-white">New Matches</p>
+                      <p className="text-sm text-white/80">AI property suggestions</p>
                     </div>
                   </div>
                 </div>
@@ -110,8 +110,8 @@ export default function Dashboard() {
                       <Calendar className="w-4 h-4 text-white" />
                     </div>
                     <div>
-                      <p className="font-medium">Appointments</p>
-                      <p className="text-sm text-primary-100">Scheduled today</p>
+                      <p className="font-medium text-white">Appointments</p>
+                      <p className="text-sm text-white/80">Scheduled today</p>
                     </div>
                   </div>
                 </div>
