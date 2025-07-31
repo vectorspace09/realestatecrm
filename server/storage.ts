@@ -49,6 +49,7 @@ export interface IStorage {
   getDeal(id: string): Promise<Deal | undefined>;
   createDeal(deal: InsertDeal): Promise<Deal>;
   updateDeal(id: string, deal: Partial<InsertDeal>): Promise<Deal>;
+  updateDealStatus(id: string, status: string): Promise<Deal>;
   deleteDeal(id: string): Promise<void>;
   
   // Task operations
@@ -296,6 +297,25 @@ export class DatabaseStorage implements IStorage {
       .set({ ...deal, updatedAt: new Date() })
       .where(eq(deals.id, id))
       .returning();
+    return updatedDeal;
+  }
+
+  async updateDealStatus(id: string, status: string): Promise<Deal> {
+    const [updatedDeal] = await db
+      .update(deals)
+      .set({ status, updatedAt: new Date() })
+      .where(eq(deals.id, id))
+      .returning();
+      
+    // Create activity
+    await this.createActivity({
+      type: "status_change",
+      title: "Deal status updated",
+      description: `Deal status changed to ${status}`,
+      dealId: id,
+      userId: updatedDeal.assignedTo,
+    });
+    
     return updatedDeal;
   }
 

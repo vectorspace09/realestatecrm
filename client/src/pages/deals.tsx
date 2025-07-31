@@ -12,30 +12,148 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { DollarSign, Calendar, TrendingUp, FileText, User, Home } from "lucide-react";
-import type { Deal } from "@shared/schema";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CalendarIcon, DollarSign, Calendar, TrendingUp, FileText, User, Home, Plus, ArrowRight, Clock } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { insertDealSchema } from "@shared/schema";
+import { z } from "zod";
+import { useDragDrop } from "@/hooks/use-drag-drop";
+import { apiRequest } from "@/lib/queryClient";
+import type { Deal, Lead, Property } from "@shared/schema";
 
 const DEAL_STAGES = [
-  { id: "offer", label: "Offer", progress: 20 },
-  { id: "inspection", label: "Inspection", progress: 40 },
-  { id: "legal", label: "Legal Review", progress: 60 },
-  { id: "payment", label: "Payment", progress: 80 },
-  { id: "handover", label: "Handover", progress: 100 },
+  { id: "offer", label: "Offer", progress: 20, color: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100", borderColor: "border-blue-200 dark:border-blue-800" },
+  { id: "inspection", label: "Inspection", progress: 40, color: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-100", borderColor: "border-orange-200 dark:border-orange-800" },
+  { id: "legal", label: "Legal Review", progress: 60, color: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100", borderColor: "border-purple-200 dark:border-purple-800" },
+  { id: "payment", label: "Payment", progress: 80, color: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100", borderColor: "border-amber-200 dark:border-amber-800" },
+  { id: "handover", label: "Handover", progress: 100, color: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100", borderColor: "border-emerald-200 dark:border-emerald-800" },
 ];
 
 function getDealStageInfo(status: string) {
   return DEAL_STAGES.find(stage => stage.id === status) || DEAL_STAGES[0];
 }
 
+type DealFormData = z.infer<typeof insertDealSchema>;
+
 export default function Deals() {
   const { toast } = useToast();
   const { isAuthenticated, isLoading } = useAuth();
   const queryClient = useQueryClient();
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const { data: deals = [], isLoading: dealsLoading, error } = useQuery({
     queryKey: ["/api/deals"],
     retry: false,
   });
+
+  const { data: leads = [] } = useQuery({
+    queryKey: ["/api/leads"],
+    retry: false,
+  });
+
+  const { data: properties = [] } = useQuery({
+    queryKey: ["/api/properties"],
+    retry: false,
+  });
+
+  // Deal creation mutation
+  const createDealMutation = useMutation({
+    mutationFn: async (data: DealFormData) => {
+      return apiRequest("/api/deals", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/deals"] });
+      setIsCreateDialogOpen(false);
+      toast({
+        title: "Success",
+        description: "Deal created successfully!",
+      });
+    },
+    onError: (error) => {
+      if (isUnauthorizedError(error)) {
+        toast({
+          title: "Unauthorized",
+          description: "You are logged out. Logging in again...",
+          variant: "destructive",
+        });
+        setTimeout(() => {
+          window.location.href = "/api/login";
+        }, 500);
+        return;
+      }
+      toast({
+        title: "Error",
+        description: "Failed to create deal. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Deal status update mutation
+  const updateDealStatusMutation = useMutation({
+    mutationFn: async ({ id, status }: { id: string; status: string }) => {
+      return apiRequest(`/api/deals/${id}/status`, {
+        method: "PATCH",
+        body: JSON.stringify({ status }),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/deals"] });
+      toast({
+        title: "Success",
+        description: "Deal status updated successfully!",
+      });
+    },
+    onError: (error) => {
+      if (isUnauthorizedError(error)) {
+        toast({
+          title: "Unauthorized",
+          description: "You are logged out. Logging in again...",
+          variant: "destructive",
+        });
+        setTimeout(() => {
+          window.location.href = "/api/login";
+        }, 500);
+        return;
+      }
+      toast({
+        title: "Error",
+        description: "Failed to update deal status. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Drag and drop functionality
+  const { handleDragStart, handleDragOver, handleDrop } = useDragDrop({
+    onDrop: (deal: Deal, targetStatus: string) => {
+      if (deal.status !== targetStatus) {
+        updateDealStatusMutation.mutate({ id: deal.id, status: targetStatus });
+      }
+    },
+  });
+
+  const form = useForm<DealFormData>({
+    resolver: zodResolver(insertDealSchema.omit({ id: true, createdAt: true, updatedAt: true })),
+    defaultValues: {
+      status: "offer",
+      dealValue: 0,
+      offerAmount: 0,
+      commission: 0,
+    },
+  });
+
+  const handleCreateDeal = (data: DealFormData) => {
+    createDealMutation.mutate(data);
+  };
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -97,6 +215,170 @@ export default function Deals() {
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Deals & Transactions</h1>
               <p className="text-gray-600 dark:text-gray-400">Track your active deals and commission pipeline</p>
             </div>
+            <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-primary-600 hover:bg-primary-700">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Deal
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[600px]">
+                <DialogHeader>
+                  <DialogTitle>Create New Deal</DialogTitle>
+                  <DialogDescription>
+                    Create a new deal by linking a lead with a property.
+                  </DialogDescription>
+                </DialogHeader>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(handleCreateDeal)} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="leadId"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Lead *</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a lead" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {leads.map((lead: Lead) => (
+                                  <SelectItem key={lead.id} value={lead.id}>
+                                    {lead.firstName} {lead.lastName} - ${lead.budget?.toLocaleString()}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="propertyId"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Property *</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a property" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {properties.map((property: Property) => (
+                                  <SelectItem key={property.id} value={property.id}>
+                                    {property.title} - ${Number(property.price).toLocaleString()}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="dealValue"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Deal Value *</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder="Enter deal value"
+                                {...field}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="offerAmount"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Offer Amount</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder="Initial offer amount"
+                                {...field}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <FormField
+                      control={form.control}
+                      name="commission"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Commission Amount</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              placeholder="Expected commission"
+                              {...field}
+                              onChange={(e) => field.onChange(Number(e.target.value))}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="notes"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Notes</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Additional notes about this deal..."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="flex justify-end space-x-3 pt-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsCreateDialogOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="submit"
+                        disabled={createDealMutation.isPending}
+                        className="bg-primary-600 hover:bg-primary-700"
+                      >
+                        {createDealMutation.isPending ? "Creating..." : "Create Deal"}
+                      </Button>
+                    </div>
+                  </form>
+                </Form>
+              </DialogContent>
+            </Dialog>
           </div>
 
           {/* Deal Overview Cards */}

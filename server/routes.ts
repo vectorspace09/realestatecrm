@@ -248,6 +248,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.patch('/api/deals/:id/status', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      
+      // Validate status
+      const validStatuses = ['offer', 'inspection', 'legal', 'payment', 'handover'];
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({ message: "Invalid deal status" });
+      }
+      
+      const deal = await storage.updateDealStatus(id, status);
+      if (!deal) {
+        return res.status(404).json({ message: "Deal not found" });
+      }
+      
+      res.json(deal);
+    } catch (error) {
+      console.error("Error updating deal status:", error);
+      res.status(500).json({ message: "Failed to update deal status" });
+    }
+  });
+
   // Task routes
   app.get('/api/tasks', isAuthenticated, async (req: any, res) => {
     try {
