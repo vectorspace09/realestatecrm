@@ -62,7 +62,8 @@ export default function Tasks() {
 
   const { data: tasks, isLoading: tasksLoading } = useQuery({
     queryKey: ["/api/tasks"],
-    retry: false,
+    staleTime: 1 * 60 * 1000, // 1 minute - tasks change frequently
+    gcTime: 3 * 60 * 1000, // 3 minutes
   });
 
   const { data: leads } = useQuery({

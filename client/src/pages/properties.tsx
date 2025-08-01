@@ -34,7 +34,8 @@ export default function Properties() {
 
   const { data: properties = [], isLoading: propertiesLoading, error } = useQuery({
     queryKey: ["/api/properties", { search, propertyType: typeFilter }],
-    retry: false,
+    staleTime: 3 * 60 * 1000, // 3 minutes - properties change less frequently
+    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
   const updatePropertyStatusMutation = useMutation({

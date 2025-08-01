@@ -3,11 +3,11 @@ import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
+import { useMobile } from "@/hooks/use-mobile";
+import { useEffect, useState, useMemo } from "react";
 import { useLocation } from "wouter";
 import DesktopHeader from "@/components/layout/desktop-header";
 import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
-import AIChat from "@/components/layout/ai-chat";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -42,29 +42,33 @@ export default function Dashboard() {
   const [location, navigate] = useLocation();
   const [completingTask, setCompletingTask] = useState<string | null>(null);
 
+  // Optimize API calls with better caching and mobile-specific limits
+  const isMobile = useMobile();
+  
   const { data: metrics } = useQuery({
     queryKey: ["/api/dashboard/metrics"],
-    retry: false,
+    staleTime: 2 * 60 * 1000, // 2 minutes
   });
 
   const { data: insights } = useQuery({
     queryKey: ["/api/ai/insights"],
-    retry: false,
+    staleTime: 5 * 60 * 1000, // 5 minutes - AI insights don't change frequently
+    enabled: !isMobile, // Skip on mobile for performance
   });
 
   const { data: recentTasks } = useQuery({
-    queryKey: ["/api/tasks", { limit: 5 }],
-    retry: false,
+    queryKey: ["/api/tasks", { limit: isMobile ? 3 : 5 }],
+    staleTime: 1 * 60 * 1000, // 1 minute
   });
 
   const { data: recentLeads } = useQuery({
-    queryKey: ["/api/leads", { limit: 3 }],
-    retry: false,
+    queryKey: ["/api/leads", { limit: isMobile ? 2 : 3 }],
+    staleTime: 2 * 60 * 1000, // 2 minutes
   });
 
   const { data: recentDeals } = useQuery({
-    queryKey: ["/api/deals", { limit: 3 }],
-    retry: false,
+    queryKey: ["/api/deals", { limit: isMobile ? 2 : 3 }],
+    staleTime: 2 * 60 * 1000, // 2 minutes
   });
 
   // Redirect to login if not authenticated
@@ -657,7 +661,6 @@ export default function Dashboard() {
       </main>
       
       <MobileBottomTabs />
-      <AIChat />
     </div>
   );
 }

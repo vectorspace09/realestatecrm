@@ -1,7 +1,8 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
+import { useMobile } from "@/hooks/use-mobile";
+import { useEffect, useState, useMemo } from "react";
 import { useLocation } from "wouter";
 import DesktopHeader from "@/components/layout/desktop-header";
 import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
@@ -34,15 +35,19 @@ import {
   MessageSquare,
   FileText
 } from "lucide-react";
+import Pagination from "@/components/ui/pagination";
 
 export default function Leads() {
   const { toast } = useToast();
   const { isAuthenticated, isLoading } = useAuth();
+  const isMobile = useMobile();
   const [location, navigate] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingLead, setEditingLead] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const leadsPerPage = isMobile ? 10 : 20;
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -68,7 +73,8 @@ export default function Leads() {
 
   const { data: leads, isLoading: leadsLoading } = useQuery({
     queryKey: ["/api/leads"],
-    retry: false,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    gcTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const addLeadMutation = useMutation({
@@ -219,16 +225,31 @@ export default function Leads() {
     return statusMap[status] || statusMap.new;
   };
 
-  const filteredLeads = leads?.filter((lead: any) => {
-    const matchesSearch = !searchTerm || 
-      `${lead.firstName} ${lead.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lead.phone?.includes(searchTerm);
+  // Memoize filtered leads for performance
+  const filteredLeads = useMemo(() => {
+    if (!leads) return [];
     
-    const matchesStatus = statusFilter === "all" || lead.status === statusFilter;
-    
-    return matchesSearch && matchesStatus;
-  }) || [];
+    return leads.filter((lead: any) => {
+      const matchesSearch = !searchTerm || 
+        `${lead.firstName} ${lead.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        lead.phone?.includes(searchTerm);
+      
+      const matchesStatus = statusFilter === "all" || lead.status === statusFilter;
+      
+      return matchesSearch && matchesStatus;
+    });
+  }, [leads, searchTerm, statusFilter]);
+
+  // Paginate for better performance
+  const totalPages = Math.ceil(filteredLeads.length / leadsPerPage);
+  const startIndex = (currentPage - 1) * leadsPerPage;
+  const paginatedLeads = filteredLeads.slice(startIndex, startIndex + leadsPerPage);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter]);
 
   if (isLoading || !isAuthenticated) {
     return <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
@@ -272,7 +293,12 @@ export default function Leads() {
                       type="text"
                       placeholder="Search leads by name, email, or phone..."
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setSearchTerm(value);
+                        // Reset to first page when searching
+                        setCurrentPage(1);
+                      }}
                       className="pl-10"
                     />
                   </div>
@@ -331,21 +357,84 @@ export default function Leads() {
                   </Button>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Lead</TableHead>
-                        <TableHead>Contact</TableHead>
-                        <TableHead>Budget</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Score</TableHead>
-                        <TableHead>Timeline</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredLeads.map((lead) => (
+                <>
+                  {/* Mobile view - Cards */}
+                  {isMobile ? (
+                    <div className="space-y-4">
+                      {paginatedLeads.map((lead) => (
+                        <Card 
+                          key={lead.id} 
+                          className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md transition-shadow"
+                          onClick={() => navigate(`/leads/${lead.id}`)}
+                        >
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between mb-3">
+                              <div className="flex items-center space-x-3">
+                                <Avatar className="w-10 h-10">
+                                  <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${lead.firstName}`} />
+                                  <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-white">
+                                    {getInitials(lead.firstName, lead.lastName)}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div>
+                                  <p className="font-medium text-gray-900 dark:text-white">
+                                    {lead.firstName} {lead.lastName}
+                                  </p>
+                                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    {lead.source}
+                                  </p>
+                                </div>
+                              </div>
+                              <Badge className={getStatusBadge(lead.status)}>
+                                {lead.status}
+                              </Badge>
+                            </div>
+                            
+                            <div className="space-y-2 text-sm">
+                              <div className="flex items-center space-x-2">
+                                <Mail className="w-3 h-3 text-gray-400" />
+                                <span className="text-gray-600 dark:text-gray-400">{lead.email}</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Phone className="w-3 h-3 text-gray-400" />
+                                <span className="text-gray-600 dark:text-gray-400">{lead.phone}</span>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-2">
+                                  <DollarSign className="w-3 h-3 text-gray-400" />
+                                  <span className="text-gray-600 dark:text-gray-400">
+                                    ${parseInt(lead.budget || '0').toLocaleString()}{lead.budgetMax ? ` - $${parseInt(lead.budgetMax).toLocaleString()}` : ''}
+                                  </span>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Badge className={getScoreBadge(lead.score)}>
+                                    {lead.score || 0}
+                                  </Badge>
+                                  {lead.score >= 90 && <Star className="w-4 h-4 text-amber-500" />}
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  ) : (
+                    /* Desktop view - Table */
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Lead</TableHead>
+                            <TableHead>Contact</TableHead>
+                            <TableHead>Budget</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Score</TableHead>
+                            <TableHead>Timeline</TableHead>
+                            <TableHead>Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                      {paginatedLeads.map((lead) => (
                         <TableRow 
                           key={lead.id} 
                           className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
@@ -441,9 +530,27 @@ export default function Leads() {
                             </div>
                           </TableCell>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  )}
+                </>
+              )}
+              
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Showing {startIndex + 1}-{Math.min(startIndex + leadsPerPage, filteredLeads.length)} of {filteredLeads.length} leads
+                    </p>
+                    <Pagination 
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={setCurrentPage}
+                    />
+                  </div>
                 </div>
               )}
             </CardContent>

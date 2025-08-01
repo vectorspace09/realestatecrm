@@ -5,20 +5,27 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/hooks/use-theme";
+import { Suspense, lazy } from "react";
 import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
 import Dashboard from "@/pages/dashboard";
-import Leads from "@/pages/leads";
-import LeadDetail from "@/pages/lead-detail";
-import Properties from "@/pages/properties";
-import Deals from "@/pages/deals";
-import Tasks from "@/pages/tasks";
-import AI from "@/pages/ai";
-import WorkflowBuilder from "@/pages/workflows";
-import Analytics from "@/pages/analytics";
-import Communications from "@/pages/communications";
-import Integrations from "@/pages/integrations";
-import Settings from "@/pages/settings";
+
+// Lazy load heavy pages for better performance
+const Leads = lazy(() => import("@/pages/leads"));
+const LeadDetail = lazy(() => import("@/pages/lead-detail"));
+const Properties = lazy(() => import("@/pages/properties"));
+const Deals = lazy(() => import("@/pages/deals"));
+const Tasks = lazy(() => import("@/pages/tasks"));
+const AI = lazy(() => import("@/pages/ai"));
+const WorkflowBuilder = lazy(() => import("@/pages/workflows"));
+const Analytics = lazy(() => import("@/pages/analytics"));
+const Communications = lazy(() => import("@/pages/communications"));
+const Integrations = lazy(() => import("@/pages/integrations"));
+const Settings = lazy(() => import("@/pages/settings"));
+
+// Loading component for lazy routes
+import PageSkeleton from "@/components/loading/page-skeleton";
+const PageLoading = () => <PageSkeleton />;
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -28,7 +35,7 @@ function Router() {
       {isLoading || !isAuthenticated ? (
         <Route path="/" component={Landing} />
       ) : (
-        <>
+        <Suspense fallback={<PageLoading />}>
           <Route path="/" component={Dashboard} />
           <Route path="/leads" component={Leads} />
           <Route path="/leads/:id" component={LeadDetail} />
@@ -41,7 +48,7 @@ function Router() {
           <Route path="/communications" component={Communications} />
           <Route path="/integrations" component={Integrations} />
           <Route path="/settings" component={Settings} />
-        </>
+        </Suspense>
       )}
       <Route component={NotFound} />
     </Switch>

@@ -51,7 +51,8 @@ export default function AIAssistant() {
 
   const { data: insights } = useQuery({
     queryKey: ["/api/ai/insights"],
-    retry: false,
+    staleTime: 5 * 60 * 1000, // 5 minutes - AI insights don't change frequently
+    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
   const { data: leads } = useQuery({
