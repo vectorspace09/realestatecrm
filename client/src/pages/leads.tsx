@@ -71,7 +71,7 @@ export default function Leads() {
     }
   }, []);
 
-  const { data: leads, isLoading: leadsLoading } = useQuery({
+  const { data: leads = [], isLoading: leadsLoading } = useQuery({
     queryKey: ["/api/leads"],
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 5 * 60 * 1000, // 5 minutes
@@ -196,7 +196,7 @@ export default function Leads() {
     };
 
     if (editingLead) {
-      updateLeadMutation.mutate({ id: editingLead.id, data: submitData });
+      updateLeadMutation.mutate({ id: (editingLead as any).id, data: submitData });
     } else {
       addLeadMutation.mutate(submitData);
     }
@@ -222,12 +222,12 @@ export default function Leads() {
       closed: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100",
       nurturing: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100"
     };
-    return statusMap[status] || statusMap.new;
+    return statusMap[status as keyof typeof statusMap] || statusMap.new;
   };
 
   // Memoize filtered leads for performance
   const filteredLeads = useMemo(() => {
-    if (!leads) return [];
+    if (!leads || !Array.isArray(leads)) return [];
     
     return leads.filter((lead: any) => {
       const matchesSearch = !searchTerm || 
@@ -444,52 +444,6 @@ export default function Leads() {
                                   </span>
                                 </div>
                               )}
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  ) : (
-                                    {getInitials(lead.firstName, lead.lastName)}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <div>
-                                  <p className="font-medium text-white">
-                                    {lead.firstName} {lead.lastName}
-                                  </p>
-                                  <p className="text-sm text-gray-400">
-                                    {lead.source}
-                                  </p>
-                                </div>
-                              </div>
-                              <Badge className={getStatusBadge(lead.status)}>
-                                {lead.status}
-                              </Badge>
-                            </div>
-                            
-                            <div className="space-y-2 text-sm">
-                              <div className="flex items-center space-x-2">
-                                <Mail className="w-3 h-3 text-gray-400" />
-                                <span className="text-gray-400">{lead.email}</span>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <Phone className="w-3 h-3 text-gray-400" />
-                                <span className="text-gray-400">{lead.phone}</span>
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-2">
-                                  <DollarSign className="w-3 h-3 text-gray-400" />
-                                  <span className="text-gray-400">
-                                    ${parseInt(lead.budget || '0').toLocaleString()}{lead.budgetMax ? ` - $${parseInt(lead.budgetMax).toLocaleString()}` : ''}
-                                  </span>
-                                </div>
-                                <div className="flex items-center space-x-1">
-                                  <Badge className={getScoreBadge(lead.score)}>
-                                    {lead.score || 0}
-                                  </Badge>
-                                  {lead.score >= 90 && <Star className="w-4 h-4 text-amber-500" />}
-                                </div>
-                              </div>
                             </div>
                           </CardContent>
                         </Card>
