@@ -61,40 +61,41 @@ export default function Settings() {
     <div className="min-h-screen bg-gray-900 flex flex-col">
       <DesktopHeader />
       
-      <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
+      <main className="flex-1 overflow-y-auto mobile-padding pb-20 lg:pb-6">
           <div className="max-w-6xl mx-auto">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h1 className="text-2xl font-bold text-white">Settings</h1>
-                <p className="text-gray-400">Manage your account settings and preferences</p>
+            {/* Header - Mobile Optimized */}
+            <div className="flex flex-col space-y-4 mb-6 sm:mb-8">
+              <div className="text-center sm:text-left">
+                <h1 className="mobile-title text-white">Settings</h1>
+                <p className="mobile-subtitle text-gray-400">Manage your account settings and preferences</p>
               </div>
-              <Button className="bg-primary-600 hover:bg-primary-700">
+              <Button className="mobile-button bg-primary-600 hover:bg-primary-700 w-full sm:w-auto sm:self-start">
                 <Save className="w-4 h-4 mr-2" />
                 Save Changes
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-              {/* Sidebar Navigation */}
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8">
+              {/* Sidebar Navigation - Mobile Optimized */}
               <div className="lg:col-span-1">
                 <Card className="bg-gray-800 border-gray-700">
                   <CardContent className="p-0">
-                    <nav className="space-y-1">
+                    {/* Mobile: Horizontal scroll tabs */}
+                    <nav className="lg:space-y-1 flex lg:flex-col overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
                       {tabs.map((tab) => {
                         const Icon = tab.icon;
                         return (
                           <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+                            className={`w-full flex-shrink-0 lg:flex-shrink flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors min-h-[48px] ${
                               activeTab === tab.id
-                                ? "bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 border-r-2 border-primary-600"
+                                ? "bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 lg:border-r-2 border-primary-600"
                                 : "text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-700"
                             }`}
                           >
-                            <Icon className="w-4 h-4 mr-3" />
-                            {tab.name}
+                            <Icon className="w-4 h-4 mr-3 flex-shrink-0" />
+                            <span className="whitespace-nowrap">{tab.name}</span>
                           </button>
                         );
                       })}

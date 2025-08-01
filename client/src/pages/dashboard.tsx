@@ -50,7 +50,7 @@ export default function Dashboard() {
   const [completingTask, setCompletingTask] = useState<string | null>(null);
 
   // Optimize API calls with better caching and mobile-specific limits
-  const isMobile = useMobile();
+  const { isMobile, isTablet } = useMobile();
   
   const { data: metrics } = useQuery({
     queryKey: ["/api/dashboard/metrics"],
@@ -202,42 +202,42 @@ export default function Dashboard() {
       <DesktopHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6 pb-20 lg:pb-6">
-        {/* Welcome Header */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-white">
-                Welcome back, {user?.firstName || 'Agent'}!
+        {/* Welcome Header - Mobile Optimized */}
+          <div className="flex flex-col space-y-4">
+            <div className="text-center sm:text-left">
+              <h1 className="mobile-title text-white">
+                Welcome back, {(user as any)?.firstName || 'Agent'}!
               </h1>
-              <p className="text-gray-400 mt-1">
+              <p className="mobile-subtitle text-gray-400 mt-1">
                 Here's what's happening with your real estate business today.
               </p>
             </div>
-            <div className="flex items-center space-x-3 mt-4 lg:mt-0">
-              <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3">
+              <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100 w-full sm:w-auto justify-center">
                 <Zap className="w-3 h-3 mr-1" />
                 AI Insights Ready
               </Badge>
-              <Button className="bg-primary-600 hover:bg-primary-700">
+              <Button className="mobile-button bg-primary-600 hover:bg-primary-700 w-full sm:w-auto">
                 <Target className="w-4 h-4 mr-2" />
                 View Goals
               </Button>
             </div>
           </div>
 
-          {/* AI-Powered Priority Insights */}
+          {/* AI-Powered Priority Insights - Mobile Optimized */}
           <Card className="bg-gradient-to-r from-primary-500 to-purple-600 border-0 text-white">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-xl font-bold">AI Priority Dashboard</h2>
-                  <p className="text-primary-100">Your top 3 action items for maximum impact</p>
+            <CardContent className="mobile-card">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
+                <div className="text-center sm:text-left">
+                  <h2 className="text-lg sm:text-xl font-bold">AI Priority Dashboard</h2>
+                  <p className="text-sm sm:text-base text-primary-100">Your top 3 action items for maximum impact</p>
                 </div>
-                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                  <Zap className="w-6 h-6" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto sm:mx-0">
+                  <Zap className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {/* High Priority Task */}
                 <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
                   <div className="flex items-center space-x-3">
@@ -290,8 +290,8 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Key Metrics Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Key Metrics Grid - Mobile Optimized */}
+          <div className="mobile-grid">
             <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">

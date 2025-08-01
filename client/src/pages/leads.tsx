@@ -40,7 +40,7 @@ import Pagination from "@/components/ui/pagination";
 export default function Leads() {
   const { toast } = useToast();
   const { isAuthenticated, isLoading } = useAuth();
-  const isMobile = useMobile();
+  const { isMobile, isTablet } = useMobile();
   const [location, navigate] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -265,14 +265,14 @@ export default function Leads() {
       <DesktopHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
-          {/* Header */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-white">Leads Management</h1>
-              <p className="text-gray-400">Manage and track all your potential clients</p>
+          {/* Header - Mobile Optimized */}
+          <div className="flex flex-col space-y-4 mb-6">
+            <div className="text-center sm:text-left">
+              <h1 className="mobile-title text-white">Leads Management</h1>
+              <p className="mobile-subtitle text-gray-400">Manage and track all your potential clients</p>
             </div>
             <Button 
-              className="bg-primary-600 hover:bg-primary-700 mt-4 lg:mt-0"
+              className="mobile-button bg-primary-600 hover:bg-primary-700 w-full sm:w-auto sm:self-start"
               onClick={() => setShowAddForm(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -359,20 +359,97 @@ export default function Leads() {
               ) : (
                 <>
                   {/* Mobile view - Cards */}
-                  {isMobile ? (
-                    <div className="space-y-4">
+                  {isMobile || isTablet ? (
+                    <div className="space-y-3">
                       {paginatedLeads.map((lead) => (
                         <Card 
                           key={lead.id} 
-                          className="bg-gray-800 border-gray-700 cursor-pointer hover:shadow-md transition-shadow"
+                          className="bg-gray-800 border-gray-700 cursor-pointer hover:shadow-md transition-all duration-200 active:scale-[0.98]"
                           onClick={() => navigate(`/leads/${lead.id}`)}
                         >
-                          <CardContent className="p-4">
-                            <div className="flex items-center justify-between mb-3">
-                              <div className="flex items-center space-x-3">
-                                <Avatar className="w-10 h-10">
+                          <CardContent className="mobile-card">
+                            <div className="flex items-start justify-between mb-3">
+                              <div className="flex items-center space-x-3 flex-1 min-w-0">
+                                <Avatar className="w-12 h-12 flex-shrink-0">
                                   <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${lead.firstName}`} />
-                                  <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-white">
+                                  <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-white text-sm">
+                                    {getInitials(lead.firstName, lead.lastName)}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 min-w-0">
+                                  <h3 className="font-semibold text-white text-base truncate">
+                                    {lead.firstName} {lead.lastName}
+                                  </h3>
+                                  <div className="flex items-center space-x-2 mt-1">
+                                    <Badge className={`${getStatusBadge(lead.status)} text-xs px-2 py-1`}>
+                                      {lead.status?.charAt(0).toUpperCase() + lead.status?.slice(1)}
+                                    </Badge>
+                                    <Badge className={`${getScoreBadge(lead.score)} text-xs px-2 py-1`}>
+                                      <Star className="w-3 h-3 mr-1" />
+                                      {lead.score}/100
+                                    </Badge>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex flex-col items-end space-y-1">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="p-2 h-8 w-8"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/leads/${lead.id}`);
+                                  }}
+                                >
+                                  <Eye className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <div className="flex items-center space-x-4 text-sm text-gray-400">
+                                <div className="flex items-center space-x-1 flex-1 min-w-0">
+                                  <Mail className="w-3 h-3 flex-shrink-0" />
+                                  <span className="truncate">{lead.email}</span>
+                                </div>
+                                {lead.phone && (
+                                  <div className="flex items-center space-x-1">
+                                    <Phone className="w-3 h-3 flex-shrink-0" />
+                                    <span className="text-xs">{lead.phone}</span>
+                                  </div>
+                                )}
+                              </div>
+                              
+                              {lead.budget && (
+                                <div className="flex items-center space-x-1 text-sm text-gray-300">
+                                  <DollarSign className="w-3 h-3" />
+                                  <span>
+                                    ${lead.budget?.toLocaleString()}
+                                    {lead.budgetMax && lead.budgetMax !== lead.budget && ` - $${lead.budgetMax.toLocaleString()}`}
+                                  </span>
+                                </div>
+                              )}
+                              
+                              {lead.preferredLocations && lead.preferredLocations.length > 0 && (
+                                <div className="flex items-center space-x-1 text-sm text-gray-400">
+                                  <MapPin className="w-3 h-3 flex-shrink-0" />
+                                  <span className="truncate">
+                                    {Array.isArray(lead.preferredLocations) 
+                                      ? lead.preferredLocations.slice(0, 2).join(", ")
+                                      : lead.preferredLocations
+                                    }
+                                    {Array.isArray(lead.preferredLocations) && lead.preferredLocations.length > 2 && 
+                                      ` +${lead.preferredLocations.length - 2} more`
+                                    }
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  ) : (
                                     {getInitials(lead.firstName, lead.lastName)}
                                   </AvatarFallback>
                                 </Avatar>

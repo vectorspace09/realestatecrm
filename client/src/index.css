@@ -33,4 +33,62 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
+
+  /* Mobile optimizations */
+  html {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Better mobile scroll behavior */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Improve tap targets for mobile */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Mobile-first responsive text */
+  .mobile-title {
+    @apply text-xl sm:text-2xl lg:text-3xl font-bold;
+  }
+
+  .mobile-subtitle {
+    @apply text-sm sm:text-base lg:text-lg;
+  }
+
+  /* Mobile-optimized spacing */
+  .mobile-padding {
+    @apply p-3 sm:p-4 lg:p-6;
+  }
+
+  .mobile-margin {
+    @apply m-2 sm:m-4 lg:m-6;
+  }
+
+  /* Mobile-friendly card spacing */
+  .mobile-card {
+    @apply p-4 sm:p-6 rounded-lg;
+  }
+
+  /* Improved mobile touch targets */
+  .mobile-button {
+    @apply py-3 px-4 text-sm sm:text-base min-h-[44px] flex items-center justify-center;
+  }
+
+  /* Mobile-optimized grid */
+  .mobile-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6;
+  }
+
+  /* Safe area for mobile with notches */
+  .mobile-safe-area {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
