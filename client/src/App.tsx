@@ -17,6 +17,7 @@ const Leads = lazy(() => import("@/pages/leads"));
 const NativeLeads = lazy(() => import("@/pages/native-leads"));
 const LeadDetail = lazy(() => import("@/pages/lead-detail"));
 const Properties = lazy(() => import("@/pages/properties"));
+const PropertyDetail = lazy(() => import("@/pages/property-detail"));
 const NativeProperties = lazy(() => import("@/pages/native-properties"));
 const Deals = lazy(() => import("@/pages/deals"));
 const NativeDeals = lazy(() => import("@/pages/native-deals"));
@@ -52,6 +53,7 @@ function Router() {
           <Route path="/leads" component={LeadsComponent} />
           <Route path="/leads/:id" component={LeadDetail} />
           <Route path="/properties" component={PropertiesComponent} />
+          <Route path="/properties/:id" component={PropertyDetail} />
           <Route path="/deals" component={DealsComponent} />
           <Route path="/tasks" component={Tasks} />
           <Route path="/ai" component={AI} />

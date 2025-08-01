@@ -13,6 +13,7 @@ import NativeListItem from "@/components/native/native-list-item";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import StatusBadgeSelector, { LEAD_STATUS_OPTIONS } from "@/components/ui/status-badge-selector";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Search, 
@@ -53,10 +54,33 @@ export default function NativeLeads() {
     }
   }, [isAuthenticated, isLoading, toast]);
 
+  const queryClient = useQueryClient();
+
   const { data: leads, isLoading: leadsLoading, error } = useQuery({
     queryKey: ["/api/leads"],
     staleTime: 2 * 60 * 1000,
     gcTime: 5 * 60 * 1000,
+  });
+
+  // Status update mutation for leads
+  const updateLeadStatusMutation = useMutation({
+    mutationFn: async ({ leadId, newStatus }: { leadId: string; newStatus: string }) => {
+      return apiRequest(`/api/leads/${leadId}`, "PATCH", { status: newStatus });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
+      toast({
+        title: "Lead Updated",
+        description: "Lead status updated successfully",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Update Failed",
+        description: error.message || "Failed to update lead status",
+        variant: "destructive",
+      });
+    },
   });
 
   const getInitials = (firstName: string, lastName: string) => {
@@ -218,13 +242,17 @@ export default function NativeLeads() {
                             {lead.firstName} {lead.lastName}
                           </h3>
                           <div className="flex items-center space-x-2 mt-1">
-                            <Badge className={`text-xs px-2 py-1 ${
-                              statusBadge.variant === 'success' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100' :
-                              statusBadge.variant === 'warning' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100' :
-                              'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100'
-                            }`}>
-                              {statusBadge.label}
-                            </Badge>
+                            <StatusBadgeSelector
+                              currentStatus={lead.status}
+                              options={LEAD_STATUS_OPTIONS}
+                              onStatusChange={(newStatus) => {
+                                updateLeadStatusMutation.mutate({
+                                  leadId: lead.id,
+                                  newStatus
+                                });
+                              }}
+                              size="sm"
+                            />
                             <Badge className={`text-xs px-2 py-1 ${
                               scoreBadge.variant === 'success' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100' :
                               scoreBadge.variant === 'warning' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100' :

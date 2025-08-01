@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useLocation } from "wouter";
+import { apiRequest } from "@/lib/queryClient";
 import NativeHeader from "@/components/native/native-header";
 import NativeBottomTabs from "@/components/native/native-bottom-tabs";
 import NativeCard from "@/components/native/native-card";
@@ -11,6 +12,7 @@ import NativeSearchBar from "@/components/native/native-search-bar";
 import NativeFloatingActionButton from "@/components/native/native-floating-action-button";
 import NativeStatusBar from "@/components/native/native-status-bar";
 import { Badge } from "@/components/ui/badge";
+import StatusBadgeSelector, { PROPERTY_STATUS_OPTIONS } from "@/components/ui/status-badge-selector";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Building,
@@ -47,9 +49,32 @@ export default function NativeProperties() {
     }
   }, [isAuthenticated, isLoading, toast]);
 
+  const queryClient = useQueryClient();
+
   const { data: properties, isLoading: propertiesLoading } = useQuery({
     queryKey: ["/api/properties"],
     staleTime: 5 * 60 * 1000,
+  });
+
+  // Status update mutation for properties
+  const updatePropertyStatusMutation = useMutation({
+    mutationFn: async ({ propertyId, newStatus }: { propertyId: string; newStatus: string }) => {
+      return apiRequest(`/api/properties/${propertyId}`, "PATCH", { status: newStatus });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/properties"] });
+      toast({
+        title: "Property Updated",
+        description: "Property status updated successfully",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Update Failed",
+        description: error.message || "Failed to update property status",
+        variant: "destructive",
+      });
+    },
   });
 
   // Filter properties
@@ -213,13 +238,17 @@ export default function NativeProperties() {
                               {property.title}
                             </h3>
                             <div className="flex items-center space-x-2 mt-1">
-                              <Badge className={`text-xs px-2 py-1 ${
-                                statusBadge.variant === 'success' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100' :
-                                statusBadge.variant === 'warning' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100' :
-                                'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100'
-                              }`}>
-                                {statusBadge.label}
-                              </Badge>
+                              <StatusBadgeSelector
+                                currentStatus={property.status}
+                                options={PROPERTY_STATUS_OPTIONS}
+                                onStatusChange={(newStatus) => {
+                                  updatePropertyStatusMutation.mutate({
+                                    propertyId: property.id,
+                                    newStatus
+                                  });
+                                }}
+                                size="sm"
+                              />
                               <span className="text-xs text-gray-400 capitalize">
                                 {property.type}
                               </span>
