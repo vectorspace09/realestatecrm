@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import DesktopHeader from "@/components/layout/desktop-header";
 import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
-import AIChat from "@/components/layout/ai-chat";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -449,8 +449,6 @@ export default function Leads() {
             </CardContent>
           </Card>
         </main>
-
-      <MobileBottomTabs />
       
       {/* Add/Edit Lead Dialog */}
       <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
@@ -640,7 +638,6 @@ export default function Leads() {
       </Dialog>
       
       <MobileBottomTabs />
-      <AIChat />
     </div>
   );
 }
