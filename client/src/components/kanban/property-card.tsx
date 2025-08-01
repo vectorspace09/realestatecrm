@@ -74,7 +74,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       
       <div className="p-4">
         <div className="flex items-start justify-between mb-2">
-          <h4 className="font-semibold text-gray-900 dark:text-white truncate flex-1">
+          <h4 className="font-semibold text-white truncate flex-1">
             {property.title}
           </h4>
           <Badge className={cn("text-xs font-medium ml-2", getStatusColor(property.status))}>
@@ -89,7 +89,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           {formatPrice(property.price)}
         </p>
         
-        <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400 mb-3">
+        <div className="space-y-1 text-sm text-gray-400 mb-3">
           <div className="flex items-center">
             <Bed className="w-4 h-4 mr-2" />
             {property.bedrooms || 0} bed • {property.bathrooms || 0} bath
@@ -121,7 +121,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
               <span className="text-green-600 dark:text-green-400 text-sm font-medium">
                 Commission: $24K
               </span>
-              <span className="text-xs text-gray-500 dark:text-gray-400">
+              <span className="text-xs text-gray-400">
                 Closed {formatDistanceToNow(new Date(property.updatedAt), { addSuffix: true })}
               </span>
             </div>

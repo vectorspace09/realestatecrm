@@ -52,7 +52,7 @@ export default function KanbanColumn({
   return (
     <div
       className={cn(
-        "flex-shrink-0 w-80 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 transition-colors",
+        "flex-shrink-0 w-80 bg-gray-800 rounded-xl border border-gray-700 transition-colors",
         isDraggedOver && "border-primary-400 bg-primary-50 dark:bg-primary-900/20"
       )}
       onDragOver={onDragOver}
@@ -61,11 +61,11 @@ export default function KanbanColumn({
       onDrop={onDrop}
     >
       {/* Column Header */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="p-4 border-b border-gray-700">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className={cn("w-3 h-3 rounded-full", colorClass)}></div>
-            <h3 className="font-semibold text-gray-900 dark:text-white">{column.label}</h3>
+            <h3 className="font-semibold text-white">{column.label}</h3>
             <Badge variant="secondary" className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
               {items.length}
             </Badge>
@@ -106,7 +106,7 @@ export default function KanbanColumn({
             <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
               <Plus className="w-6 h-6 text-gray-400" />
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-gray-400">
               No {itemType}s in this stage
             </p>
           </div>

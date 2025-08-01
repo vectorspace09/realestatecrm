@@ -17,7 +17,7 @@ export default function MetricsGrid({ metrics, isLoading }: MetricsGridProps) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[...Array(4)].map((_, i) => (
-          <Card key={i} className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <Card key={i} className="bg-gray-800 border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-2">
@@ -76,14 +76,14 @@ export default function MetricsGrid({ metrics, isLoading }: MetricsGridProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {metricsData.map((metric, index) => (
-        <Card key={index} className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
+        <Card key={index} className="bg-gray-800 border-gray-700 hover:shadow-md transition-shadow">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   {metric.title}
                 </p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                <p className="text-3xl font-bold text-white">
                   {typeof metric.value === 'number' ? metric.value.toLocaleString() : metric.value}
                 </p>
                 <p className={`text-sm mt-1 ${metric.changeBg}`}>

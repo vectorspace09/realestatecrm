@@ -25,7 +25,7 @@ export default function MobileBottomTabs() {
   };
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 z-50">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-700 z-50">
       <div className="grid grid-cols-5 h-16">
         {tabItems.map((item) => {
           const Icon = item.icon;
@@ -36,7 +36,7 @@ export default function MobileBottomTabs() {
               <div className={`flex flex-col items-center justify-center h-full space-y-1 ${
                 active 
                   ? "text-blue-600 dark:text-blue-400" 
-                  : "text-gray-500 dark:text-gray-400"
+                  : "text-gray-400"
               }`}>
                 <Icon className="w-5 h-5" />
                 <span className="text-xs font-medium">{item.label}</span>

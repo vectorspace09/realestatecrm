@@ -74,7 +74,7 @@ export default function Sidebar({ className, isMobile = false, isOpen = true, on
       
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out",
+          "fixed inset-y-0 left-0 z-50 w-64 bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out",
           "lg:relative lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
           className
@@ -82,14 +82,14 @@ export default function Sidebar({ className, isMobile = false, isOpen = true, on
       >
         <div className="flex flex-col h-full">
           {/* Logo & Brand */}
-          <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between h-16 px-6 border-b border-gray-700">
             <div className="flex items-center space-x-3">
               <img 
                 src="/attached_assets/image_1753994146328.png" 
                 alt="PRA Developers" 
                 className="w-8 h-8 object-contain"
               />
-              <span className="text-lg font-bold text-gray-900 dark:text-white">PRA Developers</span>
+              <span className="text-lg font-bold text-white">PRA Developers</span>
             </div>
             {isMobile && onClose && (
               <Button variant="ghost" size="sm" onClick={onClose}>
@@ -136,8 +136,8 @@ export default function Sidebar({ className, isMobile = false, isOpen = true, on
             </div>
 
             {/* AI & Automation Section */}
-            <div className="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
-              <p className="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+            <div className="pt-4 mt-4 border-t border-gray-700">
+              <p className="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
                 AI & Automation
               </p>
               <div className="space-y-1">
@@ -166,7 +166,7 @@ export default function Sidebar({ className, isMobile = false, isOpen = true, on
             </div>
 
             {/* Other Section */}
-            <div className="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="pt-4 mt-4 border-t border-gray-700">
               <div className="space-y-1">
                 {other.map((item) => {
                   const isActive = location === item.href;
@@ -191,7 +191,7 @@ export default function Sidebar({ className, isMobile = false, isOpen = true, on
           </nav>
 
           {/* User Profile */}
-          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="p-4 border-t border-gray-700">
             <div className="flex items-center space-x-3">
               <Avatar className="w-8 h-8">
                 <AvatarImage src={user?.profileImageUrl} alt={user?.firstName} />
@@ -200,13 +200,13 @@ export default function Sidebar({ className, isMobile = false, isOpen = true, on
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                <p className="text-sm font-medium text-white truncate">
                   {user?.firstName && user?.lastName 
                     ? `${user.firstName} ${user.lastName}` 
                     : user?.email || "User"
                   }
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                <p className="text-xs text-gray-400 truncate">
                   Agent • RealtyFlow
                 </p>
               </div>

@@ -74,57 +74,57 @@ export default function Landing() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+          <Card className="bg-gray-800 border-gray-700 hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
               <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
                 <TrendingUp className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-xl font-semibold text-white mb-2">
                 Deal Tracking
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-400">
                 End-to-end transaction management with milestone tracking and commission calculations
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+          <Card className="bg-gray-800 border-gray-700 hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
               <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center mb-4">
                 <Zap className="w-6 h-6 text-amber-600 dark:text-amber-400" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-xl font-semibold text-white mb-2">
                 Workflow Automation
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-400">
                 Automate repetitive tasks with smart workflows and AI-driven recommendations
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+          <Card className="bg-gray-800 border-gray-700 hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
               <div className="w-12 h-12 bg-rose-100 dark:bg-rose-900 rounded-lg flex items-center justify-center mb-4">
                 <Bot className="w-6 h-6 text-rose-600 dark:text-rose-400" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-xl font-semibold text-white mb-2">
                 AI Assistant
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-400">
                 24/7 AI assistant for lead qualification, property matching, and communication drafting
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+          <Card className="bg-gray-800 border-gray-700 hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
               <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center mb-4">
                 <TrendingUp className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-xl font-semibold text-white mb-2">
                 Analytics & Insights
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-400">
                 Comprehensive dashboards with performance metrics and predictive analytics
               </p>
             </CardContent>

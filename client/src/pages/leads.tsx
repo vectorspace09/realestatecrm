@@ -252,24 +252,24 @@ export default function Leads() {
   }, [searchTerm, statusFilter]);
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-400">Loading...</p>
       </div>
     </div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gray-900 flex flex-col">
       <DesktopHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
           {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Leads Management</h1>
-              <p className="text-gray-600 dark:text-gray-400">Manage and track all your potential clients</p>
+              <h1 className="text-2xl font-bold text-white">Leads Management</h1>
+              <p className="text-gray-400">Manage and track all your potential clients</p>
             </div>
             <Button 
               className="bg-primary-600 hover:bg-primary-700 mt-4 lg:mt-0"
@@ -281,7 +281,7 @@ export default function Leads() {
           </div>
 
           {/* Filters and Search */}
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 mb-6">
+          <Card className="bg-gray-800 border-gray-700 mb-6">
             <CardContent className="p-6">
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
                 <div className="flex-1 max-w-md">
@@ -333,9 +333,9 @@ export default function Leads() {
           </Card>
 
           {/* Leads Table */}
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-lg text-gray-900 dark:text-white">All Leads</CardTitle>
+              <CardTitle className="text-lg text-white">All Leads</CardTitle>
               <CardDescription>Complete list of all leads in your pipeline</CardDescription>
             </CardHeader>
             <CardContent>
@@ -346,7 +346,7 @@ export default function Leads() {
               ) : filteredLeads.length === 0 ? (
                 <div className="text-center py-12">
                   <User className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500 dark:text-gray-400">No leads found</p>
+                  <p className="text-gray-400">No leads found</p>
                   <Button 
                     variant="outline" 
                     className="mt-4"
@@ -364,7 +364,7 @@ export default function Leads() {
                       {paginatedLeads.map((lead) => (
                         <Card 
                           key={lead.id} 
-                          className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md transition-shadow"
+                          className="bg-gray-800 border-gray-700 cursor-pointer hover:shadow-md transition-shadow"
                           onClick={() => navigate(`/leads/${lead.id}`)}
                         >
                           <CardContent className="p-4">
@@ -377,10 +377,10 @@ export default function Leads() {
                                   </AvatarFallback>
                                 </Avatar>
                                 <div>
-                                  <p className="font-medium text-gray-900 dark:text-white">
+                                  <p className="font-medium text-white">
                                     {lead.firstName} {lead.lastName}
                                   </p>
-                                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                                  <p className="text-sm text-gray-400">
                                     {lead.source}
                                   </p>
                                 </div>
@@ -393,16 +393,16 @@ export default function Leads() {
                             <div className="space-y-2 text-sm">
                               <div className="flex items-center space-x-2">
                                 <Mail className="w-3 h-3 text-gray-400" />
-                                <span className="text-gray-600 dark:text-gray-400">{lead.email}</span>
+                                <span className="text-gray-400">{lead.email}</span>
                               </div>
                               <div className="flex items-center space-x-2">
                                 <Phone className="w-3 h-3 text-gray-400" />
-                                <span className="text-gray-600 dark:text-gray-400">{lead.phone}</span>
+                                <span className="text-gray-400">{lead.phone}</span>
                               </div>
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-2">
                                   <DollarSign className="w-3 h-3 text-gray-400" />
-                                  <span className="text-gray-600 dark:text-gray-400">
+                                  <span className="text-gray-400">
                                     ${parseInt(lead.budget || '0').toLocaleString()}{lead.budgetMax ? ` - $${parseInt(lead.budgetMax).toLocaleString()}` : ''}
                                   </span>
                                 </div>
@@ -437,7 +437,7 @@ export default function Leads() {
                       {paginatedLeads.map((lead) => (
                         <TableRow 
                           key={lead.id} 
-                          className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
+                          className="hover:bg-gray-700 cursor-pointer transition-colors"
                           onClick={() => navigate(`/leads/${lead.id}`)}
                         >
                           <TableCell>
@@ -449,10 +449,10 @@ export default function Leads() {
                                 </AvatarFallback>
                               </Avatar>
                               <div>
-                                <p className="font-medium text-gray-900 dark:text-white">
+                                <p className="font-medium text-white">
                                   {lead.firstName} {lead.lastName}
                                 </p>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                <p className="text-sm text-gray-400">
                                   {lead.source}
                                 </p>
                               </div>
@@ -462,18 +462,18 @@ export default function Leads() {
                             <div className="space-y-1">
                               <div className="flex items-center space-x-2">
                                 <Mail className="w-3 h-3 text-gray-400" />
-                                <span className="text-sm text-gray-600 dark:text-gray-400">{lead.email}</span>
+                                <span className="text-sm text-gray-400">{lead.email}</span>
                               </div>
                               <div className="flex items-center space-x-2">
                                 <Phone className="w-3 h-3 text-gray-400" />
-                                <span className="text-sm text-gray-600 dark:text-gray-400">{lead.phone}</span>
+                                <span className="text-sm text-gray-400">{lead.phone}</span>
                               </div>
                             </div>
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center space-x-1">
                               <DollarSign className="w-3 h-3 text-gray-400" />
-                              <span className="text-sm font-medium text-gray-900 dark:text-white">
+                              <span className="text-sm font-medium text-white">
                                 {lead.budget ? `$${lead.budget.toLocaleString()}` : 'N/A'}
                               </span>
                               {lead.budgetMax && lead.budgetMax !== lead.budget && (
@@ -497,7 +497,7 @@ export default function Leads() {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <span className="text-sm text-gray-600 dark:text-gray-400">
+                            <span className="text-sm text-gray-400">
                               {lead.timeline?.replace('_', ' ') || 'Not specified'}
                             </span>
                           </TableCell>
@@ -540,9 +540,9 @@ export default function Leads() {
               
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="mt-6 pt-4 border-t border-gray-700">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-gray-400">
                       Showing {startIndex + 1}-{Math.min(startIndex + leadsPerPage, filteredLeads.length)} of {filteredLeads.length} leads
                     </p>
                     <Pagination 

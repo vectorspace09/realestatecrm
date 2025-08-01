@@ -181,10 +181,10 @@ export default function Dashboard() {
   };
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-400">Loading...</p>
       </div>
     </div>;
   }
@@ -194,17 +194,17 @@ export default function Dashboard() {
   const overdueTask = pendingTasks.find(task => new Date(task.dueDate) < new Date());
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gray-900 flex flex-col">
       <DesktopHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6 pb-20 lg:pb-6">
         {/* Welcome Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-3xl font-bold text-white">
                 Welcome back, {user?.firstName || 'Agent'}!
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">
+              <p className="text-gray-400 mt-1">
                 Here's what's happening with your real estate business today.
               </p>
             </div>
@@ -288,12 +288,12 @@ export default function Dashboard() {
 
           {/* Key Metrics Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Revenue</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-sm font-medium text-gray-400">Total Revenue</p>
+                    <p className="text-3xl font-bold text-white">
                       ${parseInt(metrics?.totalRevenue || '0').toLocaleString()}
                     </p>
                     <div className="flex items-center mt-2">
@@ -309,12 +309,12 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Leads</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-sm font-medium text-gray-400">Active Leads</p>
+                    <p className="text-3xl font-bold text-white">
                       {metrics?.totalLeads || 0}
                     </p>
                     <div className="flex items-center mt-2">
@@ -330,12 +330,12 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Properties Listed</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-sm font-medium text-gray-400">Properties Listed</p>
+                    <p className="text-3xl font-bold text-white">
                       {metrics?.activeProperties || 0}
                     </p>
                     <div className="flex items-center mt-2">
@@ -351,12 +351,12 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Conversion Rate</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">24.5%</p>
+                    <p className="text-sm font-medium text-gray-400">Conversion Rate</p>
+                    <p className="text-3xl font-bold text-white">24.5%</p>
                     <div className="flex items-center mt-2">
                       <ArrowUpRight className="w-4 h-4 text-emerald-500 mr-1" />
                       <span className="text-sm text-emerald-600 dark:text-emerald-400">+8.1%</span>
@@ -384,12 +384,12 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-red-500">
+                <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg border-l-4 border-red-500">
                   <div className="flex items-start space-x-3">
                     <div className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Follow up with Emily Davis (Score: 92)</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Highest scoring lead - call within 24 hours</p>
+                      <p className="font-medium text-white">Follow up with Emily Davis (Score: 92)</p>
+                      <p className="text-sm text-gray-400">Highest scoring lead - call within 24 hours</p>
                     </div>
                   </div>
                   <Button 
@@ -401,12 +401,12 @@ export default function Dashboard() {
                   </Button>
                 </div>
                 
-                <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-orange-500">
+                <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg border-l-4 border-orange-500">
                   <div className="flex items-start space-x-3">
                     <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Review 3 stale leads (No contact in 7+ days)</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Michael Brown, Sarah Johnson, David Lee need attention</p>
+                      <p className="font-medium text-white">Review 3 stale leads (No contact in 7+ days)</p>
+                      <p className="text-sm text-gray-400">Michael Brown, Sarah Johnson, David Lee need attention</p>
                     </div>
                   </div>
                   <Button 
@@ -419,12 +419,12 @@ export default function Dashboard() {
                   </Button>
                 </div>
                 
-                <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-yellow-500">
+                <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg border-l-4 border-yellow-500">
                   <div className="flex items-start space-x-3">
                     <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Price Downtown Condo ($850k) competitively</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Market analysis suggests 10% price reduction</p>
+                      <p className="font-medium text-white">Price Downtown Condo ($850k) competitively</p>
+                      <p className="text-sm text-gray-400">Market analysis suggests 10% price reduction</p>
                     </div>
                   </div>
                   <Button 
@@ -437,12 +437,12 @@ export default function Dashboard() {
                   </Button>
                 </div>
                 
-                <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-blue-500">
+                <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg border-l-4 border-blue-500">
                   <div className="flex items-start space-x-3">
                     <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Schedule 2 property showings this week</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Lisa Wilson & James Miller awaiting appointments</p>
+                      <p className="font-medium text-white">Schedule 2 property showings this week</p>
+                      <p className="text-sm text-gray-400">Lisa Wilson & James Miller awaiting appointments</p>
                     </div>
                   </div>
                   <Button 
@@ -461,9 +461,9 @@ export default function Dashboard() {
           {/* Activity Overview */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Recent Leads */}
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-lg text-gray-900 dark:text-white">Hot Leads</CardTitle>
+                <CardTitle className="text-lg text-white">Hot Leads</CardTitle>
                 <Button variant="ghost" size="sm" className="text-primary-600">
                   View All
                 </Button>
@@ -479,10 +479,10 @@ export default function Dashboard() {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 dark:text-white truncate">
+                        <p className="font-medium text-white truncate">
                           {lead.firstName} {lead.lastName}
                         </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-gray-400">
                           ${lead.budget?.toLocaleString()} budget • {lead.status}
                         </p>
                       </div>
@@ -498,7 +498,7 @@ export default function Dashboard() {
                       </Badge>
                     </div>
                   )) || (
-                    <p className="text-gray-500 dark:text-gray-400 text-center py-4">
+                    <p className="text-gray-400 text-center py-4">
                       No recent leads
                     </p>
                   )}
@@ -507,9 +507,9 @@ export default function Dashboard() {
             </Card>
 
             {/* Urgent Tasks */}
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-lg text-gray-900 dark:text-white">Urgent Tasks</CardTitle>
+                <CardTitle className="text-lg text-white">Urgent Tasks</CardTitle>
                 <Button variant="ghost" size="sm" className="text-primary-600">
                   View All
                 </Button>
@@ -527,13 +527,13 @@ export default function Dashboard() {
                         {task.type === 'call' && <Phone className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
                         {task.type === 'meeting' && <Calendar className="w-4 h-4 text-purple-600 dark:text-purple-400" />}
                         {task.type === 'document' && <CheckSquare className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
-                        {!['call', 'meeting', 'document'].includes(task.type) && <Clock className="w-4 h-4 text-gray-600 dark:text-gray-400" />}
+                        {!['call', 'meeting', 'document'].includes(task.type) && <Clock className="w-4 h-4 text-gray-400" />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 dark:text-white truncate">
+                        <p className="font-medium text-white truncate">
                           {task.title}
                         </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-gray-400">
                           Due {new Date(task.dueDate).toLocaleDateString()}
                         </p>
                       </div>
@@ -560,7 +560,7 @@ export default function Dashboard() {
                       </div>
                     </div>
                   )) || (
-                    <p className="text-gray-500 dark:text-gray-400 text-center py-4">
+                    <p className="text-gray-400 text-center py-4">
                       No urgent tasks
                     </p>
                   )}
@@ -569,9 +569,9 @@ export default function Dashboard() {
             </Card>
 
             {/* Pipeline Progress */}
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-lg text-gray-900 dark:text-white">Pipeline Progress</CardTitle>
+                <CardTitle className="text-lg text-white">Pipeline Progress</CardTitle>
                 <CardDescription>This month's deal progression</CardDescription>
               </CardHeader>
               <CardContent>
@@ -579,7 +579,7 @@ export default function Dashboard() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Qualified Leads</span>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                      <span className="text-sm text-gray-400">
                         {recentLeads?.filter(lead => lead.status === 'qualified').length || 0}
                       </span>
                     </div>
@@ -589,7 +589,7 @@ export default function Dashboard() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Active Deals</span>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                      <span className="text-sm text-gray-400">
                         {recentDeals?.filter(deal => deal.status === 'under_contract').length || 0}
                       </span>
                     </div>
@@ -599,7 +599,7 @@ export default function Dashboard() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Closing Soon</span>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                      <span className="text-sm text-gray-400">
                         {recentDeals?.filter(deal => 
                           deal.expectedCloseDate && 
                           new Date(deal.expectedCloseDate) <= new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
@@ -609,9 +609,9 @@ export default function Dashboard() {
                     <Progress value={45} className="h-2" />
                   </div>
                   
-                  <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                  <div className="pt-2 border-t border-gray-700">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-900 dark:text-white">Monthly Goal</span>
+                      <span className="text-sm font-medium text-white">Monthly Goal</span>
                       <span className="text-sm font-bold text-primary-600">68%</span>
                     </div>
                   </div>
@@ -621,9 +621,9 @@ export default function Dashboard() {
           </div>
 
           {/* Quick Actions */}
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-lg text-gray-900 dark:text-white">Quick Actions</CardTitle>
+              <CardTitle className="text-lg text-white">Quick Actions</CardTitle>
               <CardDescription>Common tasks to boost your productivity</CardDescription>
             </CardHeader>
             <CardContent>

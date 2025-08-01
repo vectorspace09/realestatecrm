@@ -288,24 +288,24 @@ export default function Tasks() {
   };
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-400">Loading...</p>
       </div>
     </div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gray-900 flex flex-col">
       <DesktopHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
           {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Task Management</h1>
-              <p className="text-gray-600 dark:text-gray-400">Organize and track your daily activities</p>
+              <h1 className="text-2xl font-bold text-white">Task Management</h1>
+              <p className="text-gray-400">Organize and track your daily activities</p>
             </div>
             <Button 
               className="bg-primary-600 hover:bg-primary-700 mt-4 lg:mt-0"
@@ -317,7 +317,7 @@ export default function Tasks() {
           </div>
 
           {/* Filters */}
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 mb-6">
+          <Card className="bg-gray-800 border-gray-700 mb-6">
             <CardContent className="p-6">
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
                 <div className="flex items-center space-x-4">
@@ -367,13 +367,13 @@ export default function Tasks() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Pending Tasks */}
             <Card 
-              className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+              className="bg-gray-800 border-gray-700"
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, 'pending')}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg text-gray-900 dark:text-white flex items-center">
+                  <CardTitle className="text-lg text-white flex items-center">
                     <Clock className="w-5 h-5 mr-2 text-amber-500" />
                     Pending
                   </CardTitle>
@@ -405,7 +405,7 @@ export default function Tasks() {
                       } ${isOverdue(task.dueDate) ? 'border-red-300 bg-red-50 dark:bg-red-900/20' : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700'}`}
                     >
                       <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-medium text-gray-900 dark:text-white text-sm leading-tight flex-1">
+                        <h4 className="font-medium text-white text-sm leading-tight flex-1">
                           {task.title}
                         </h4>
                         <div className="flex items-center space-x-1 ml-2">
@@ -437,7 +437,7 @@ export default function Tasks() {
                       </div>
                       
                       {task.description && (
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                        <p className="text-xs text-gray-400 mb-3 line-clamp-2">
                           {task.description}
                         </p>
                       )}
@@ -447,7 +447,7 @@ export default function Tasks() {
                           {task.leadId && <User className="w-3 h-3 text-gray-400" />}
                           {task.propertyId && <Building className="w-3 h-3 text-gray-400" />}
                           {task.dealId && <DollarSign className="w-3 h-3 text-gray-400" />}
-                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                          <span className="text-xs text-gray-400">
                             {getLinkedEntityName(task)}
                           </span>
                         </div>
@@ -456,7 +456,7 @@ export default function Tasks() {
                       {task.dueDate && (
                         <div className="flex items-center space-x-1">
                           <Calendar className="w-3 h-3 text-gray-400" />
-                          <span className={`text-xs ${isOverdue(task.dueDate) ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-600 dark:text-gray-400'}`}>
+                          <span className={`text-xs ${isOverdue(task.dueDate) ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-400'}`}>
                             Due {new Date(task.dueDate).toLocaleDateString()}
                           </span>
                         </div>
@@ -465,7 +465,7 @@ export default function Tasks() {
                   ))}
                   
                   {tasksByStatus.pending.length === 0 && (
-                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <div className="text-center py-8 text-gray-400">
                       <Clock className="w-8 h-8 mx-auto mb-2 text-gray-300" />
                       <p className="text-sm">No pending tasks</p>
                     </div>
@@ -476,13 +476,13 @@ export default function Tasks() {
 
             {/* In Progress Tasks */}
             <Card 
-              className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+              className="bg-gray-800 border-gray-700"
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, 'in_progress')}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg text-gray-900 dark:text-white flex items-center">
+                  <CardTitle className="text-lg text-white flex items-center">
                     <AlertCircle className="w-5 h-5 mr-2 text-blue-500" />
                     In Progress
                   </CardTitle>
@@ -514,7 +514,7 @@ export default function Tasks() {
                       }`}
                     >
                       <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-medium text-gray-900 dark:text-white text-sm leading-tight flex-1">
+                        <h4 className="font-medium text-white text-sm leading-tight flex-1">
                           {task.title}
                         </h4>
                         <div className="flex items-center space-x-1 ml-2">
@@ -545,7 +545,7 @@ export default function Tasks() {
                       </div>
                       
                       {task.description && (
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                        <p className="text-xs text-gray-400 mb-3 line-clamp-2">
                           {task.description}
                         </p>
                       )}
@@ -555,7 +555,7 @@ export default function Tasks() {
                           {task.leadId && <User className="w-3 h-3 text-gray-400" />}
                           {task.propertyId && <Building className="w-3 h-3 text-gray-400" />}
                           {task.dealId && <DollarSign className="w-3 h-3 text-gray-400" />}
-                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                          <span className="text-xs text-gray-400">
                             {getLinkedEntityName(task)}
                           </span>
                         </div>
@@ -564,7 +564,7 @@ export default function Tasks() {
                       {task.dueDate && (
                         <div className="flex items-center space-x-1">
                           <Calendar className="w-3 h-3 text-gray-400" />
-                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                          <span className="text-xs text-gray-400">
                             Due {new Date(task.dueDate).toLocaleDateString()}
                           </span>
                         </div>
@@ -573,7 +573,7 @@ export default function Tasks() {
                   ))}
                   
                   {tasksByStatus.in_progress.length === 0 && (
-                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <div className="text-center py-8 text-gray-400">
                       <AlertCircle className="w-8 h-8 mx-auto mb-2 text-gray-300" />
                       <p className="text-sm">No tasks in progress</p>
                     </div>
@@ -584,13 +584,13 @@ export default function Tasks() {
 
             {/* Completed Tasks */}
             <Card 
-              className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+              className="bg-gray-800 border-gray-700"
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, 'completed')}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg text-gray-900 dark:text-white flex items-center">
+                  <CardTitle className="text-lg text-white flex items-center">
                     <CheckSquare className="w-5 h-5 mr-2 text-emerald-500" />
                     Completed
                   </CardTitle>
@@ -622,7 +622,7 @@ export default function Tasks() {
                       }`}
                     >
                       <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-medium text-gray-900 dark:text-white text-sm leading-tight flex-1">
+                        <h4 className="font-medium text-white text-sm leading-tight flex-1">
                           {task.title}
                         </h4>
                         <div className="flex items-center space-x-1 ml-2">
@@ -654,7 +654,7 @@ export default function Tasks() {
                       </div>
                       
                       {task.description && (
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                        <p className="text-xs text-gray-400 mb-3 line-clamp-2">
                           {task.description}
                         </p>
                       )}
@@ -664,7 +664,7 @@ export default function Tasks() {
                           {task.leadId && <User className="w-3 h-3 text-gray-400" />}
                           {task.propertyId && <Building className="w-3 h-3 text-gray-400" />}
                           {task.dealId && <DollarSign className="w-3 h-3 text-gray-400" />}
-                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                          <span className="text-xs text-gray-400">
                             {getLinkedEntityName(task)}
                           </span>
                         </div>
@@ -682,7 +682,7 @@ export default function Tasks() {
                   ))}
                   
                   {tasksByStatus.completed.length === 0 && (
-                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <div className="text-center py-8 text-gray-400">
                       <CheckSquare className="w-8 h-8 mx-auto mb-2 text-gray-300" />
                       <p className="text-sm">No completed tasks</p>
                     </div>

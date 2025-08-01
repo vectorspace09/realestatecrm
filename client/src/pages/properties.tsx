@@ -100,10 +100,10 @@ export default function Properties() {
   }, [error, toast]);
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-400">Loading...</p>
       </div>
     </div>;
   }
@@ -118,15 +118,15 @@ export default function Properties() {
   }, {} as Record<string, Property[]>);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gray-900 flex flex-col">
       <DesktopHeader />
       
       <main className="flex-1 overflow-hidden p-4 lg:p-6 pb-20 lg:pb-6">
           <div className="mb-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Property Management</h1>
-                <p className="text-gray-600 dark:text-gray-400">Manage property listings and match with leads</p>
+                <h1 className="text-2xl font-bold text-white">Property Management</h1>
+                <p className="text-gray-400">Manage property listings and match with leads</p>
               </div>
               <Dialog open={isAddPropertyOpen} onOpenChange={setIsAddPropertyOpen}>
                 <DialogTrigger asChild>

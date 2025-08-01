@@ -36,8 +36,8 @@ export default function KanbanBoard({
     return (
       <div className="flex gap-6 overflow-x-auto pb-6">
         {columns.map((column) => (
-          <div key={column.id} className="flex-shrink-0 w-80 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          <div key={column.id} className="flex-shrink-0 w-80 bg-gray-800 rounded-xl border border-gray-700">
+            <div className="p-4 border-b border-gray-700">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>

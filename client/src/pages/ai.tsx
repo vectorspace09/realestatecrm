@@ -145,7 +145,7 @@ export default function AIAssistant() {
     if (data.leads) {
       return (
         <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-          <h4 className="font-medium text-gray-900 dark:text-white mb-3">Lead Analysis Results</h4>
+          <h4 className="font-medium text-white mb-3">Lead Analysis Results</h4>
           <div className="space-y-2">
             {data.leads.slice(0, 3).map((lead) => (
               <div key={lead.id} className="flex items-center space-x-3 p-2 bg-white dark:bg-gray-700 rounded">
@@ -155,10 +155,10 @@ export default function AIAssistant() {
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  <p className="text-sm font-medium text-white">
                     {lead.firstName} {lead.lastName}
                   </p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                  <p className="text-xs text-gray-400">
                     Score: {lead.score} • Budget: ${lead.budget?.toLocaleString()}
                   </p>
                 </div>
@@ -179,14 +179,14 @@ export default function AIAssistant() {
     if (data.properties) {
       return (
         <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-          <h4 className="font-medium text-gray-900 dark:text-white mb-3">Property Matches</h4>
+          <h4 className="font-medium text-white mb-3">Property Matches</h4>
           <div className="space-y-2">
             {data.properties.slice(0, 3).map((property) => (
               <div key={property.id} className="p-2 bg-white dark:bg-gray-700 rounded">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                <p className="text-sm font-medium text-white">
                   {property.title}
                 </p>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <p className="text-xs text-gray-400">
                   ${property.price?.toLocaleString()} • {property.type} • {property.location}
                 </p>
               </div>
@@ -200,16 +200,16 @@ export default function AIAssistant() {
   };
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-400">Loading...</p>
       </div>
     </div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-900">
       <DesktopHeader />
       
       <div className="hidden lg:block">
@@ -217,11 +217,11 @@ export default function AIAssistant() {
           {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+              <h1 className="text-2xl font-bold text-white flex items-center">
                 <Bot className="w-7 h-7 mr-3 text-primary-600" />
                 AI Assistant
               </h1>
-              <p className="text-gray-600 dark:text-gray-400">Ask questions about your leads, properties, and market insights</p>
+              <p className="text-gray-400">Ask questions about your leads, properties, and market insights</p>
             </div>
             <Badge className="bg-gradient-to-r from-primary-500 to-purple-600 text-white mt-4 lg:mt-0">
               <Zap className="w-3 h-3 mr-1" />
@@ -233,9 +233,9 @@ export default function AIAssistant() {
             {/* Chat Interface */}
             <div className="lg:col-span-2 space-y-6">
               {/* Messages */}
-              <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+              <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-lg text-gray-900 dark:text-white">Conversation</CardTitle>
+                  <CardTitle className="text-lg text-white">Conversation</CardTitle>
                   <CardDescription>Chat with AI to get insights about your real estate business</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -255,7 +255,7 @@ export default function AIAssistant() {
                           <div className={`rounded-lg px-4 py-3 ${
                             msg.type === 'user'
                               ? 'bg-primary-600 text-white'
-                              : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                              : 'bg-gray-100 dark:bg-gray-700 text-white'
                           }`}>
                             <p className="text-sm">{msg.content}</p>
                             {msg.data && renderAIData(msg.data)}
@@ -324,34 +324,34 @@ export default function AIAssistant() {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Quick Stats */}
-              <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+              <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-lg text-gray-900 dark:text-white">Quick Stats</CardTitle>
+                  <CardTitle className="text-lg text-white">Quick Stats</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <Users className="w-4 h-4 text-blue-500" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Total Leads</span>
+                        <span className="text-sm text-gray-400">Total Leads</span>
                       </div>
-                      <span className="font-semibold text-gray-900 dark:text-white">{leads?.length || 0}</span>
+                      <span className="font-semibold text-white">{leads?.length || 0}</span>
                     </div>
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <Building className="w-4 h-4 text-purple-500" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Properties</span>
+                        <span className="text-sm text-gray-400">Properties</span>
                       </div>
-                      <span className="font-semibold text-gray-900 dark:text-white">{properties?.length || 0}</span>
+                      <span className="font-semibold text-white">{properties?.length || 0}</span>
                     </div>
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <Star className="w-4 h-4 text-amber-500" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Hot Leads</span>
+                        <span className="text-sm text-gray-400">Hot Leads</span>
                       </div>
-                      <span className="font-semibold text-gray-900 dark:text-white">
+                      <span className="font-semibold text-white">
                         {leads?.filter(lead => lead.score >= 90).length || 0}
                       </span>
                     </div>
@@ -359,9 +359,9 @@ export default function AIAssistant() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <DollarSign className="w-4 h-4 text-emerald-500" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Avg. Budget</span>
+                        <span className="text-sm text-gray-400">Avg. Budget</span>
                       </div>
-                      <span className="font-semibold text-gray-900 dark:text-white">
+                      <span className="font-semibold text-white">
                         ${leads?.length ? Math.round(leads.reduce((sum, lead) => sum + (lead.budget || 0), 0) / leads.length).toLocaleString() : '0'}
                       </span>
                     </div>
@@ -370,9 +370,9 @@ export default function AIAssistant() {
               </Card>
 
               {/* AI Insights */}
-              <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+              <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-lg text-gray-900 dark:text-white flex items-center">
+                  <CardTitle className="text-lg text-white flex items-center">
                     <Lightbulb className="w-5 h-5 mr-2 text-amber-500" />
                     AI Insights
                   </CardTitle>
@@ -395,9 +395,9 @@ export default function AIAssistant() {
               </Card>
 
               {/* Sample Questions */}
-              <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+              <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-lg text-gray-900 dark:text-white flex items-center">
+                  <CardTitle className="text-lg text-white flex items-center">
                     <MessageSquare className="w-5 h-5 mr-2 text-blue-500" />
                     Sample Questions
                   </CardTitle>
@@ -416,7 +416,7 @@ export default function AIAssistant() {
                         key={index}
                         variant="ghost"
                         size="sm"
-                        className="w-full justify-start text-left h-auto p-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20"
+                        className="w-full justify-start text-left h-auto p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20"
                         onClick={() => handleSuggestionClick(question)}
                       >
                         <Search className="w-3 h-3 mr-2 flex-shrink-0" />
@@ -436,17 +436,17 @@ export default function AIAssistant() {
         <main className="p-4 pb-20">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+            <h1 className="text-2xl font-bold text-white flex items-center">
               <Bot className="w-7 h-7 mr-3 text-primary-600" />
               AI Assistant
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">Ask questions about your leads and properties</p>
+            <p className="text-gray-400">Ask questions about your leads and properties</p>
           </div>
 
           {/* Mobile Chat Interface */}
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 mb-6">
+          <Card className="bg-gray-800 border-gray-700 mb-6">
             <CardHeader>
-              <CardTitle className="text-lg text-gray-900 dark:text-white">Chat with AI</CardTitle>
+              <CardTitle className="text-lg text-white">Chat with AI</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4 max-h-64 overflow-y-auto mb-4">
@@ -465,7 +465,7 @@ export default function AIAssistant() {
                       <div className={`rounded-lg px-3 py-2 ${
                         msg.type === 'user'
                           ? 'bg-primary-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                          : 'bg-gray-100 dark:bg-gray-700 text-white'
                       }`}>
                         <p className="text-sm">{msg.content}</p>
                         {msg.data && renderAIData(msg.data)}
@@ -532,9 +532,9 @@ export default function AIAssistant() {
           </Card>
 
           {/* Quick Stats - Mobile */}
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-lg text-gray-900 dark:text-white">Quick Stats</CardTitle>
+              <CardTitle className="text-lg text-white">Quick Stats</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
@@ -542,36 +542,36 @@ export default function AIAssistant() {
                   <div className="flex items-center justify-center mb-1">
                     <Users className="w-4 h-4 text-blue-500" />
                   </div>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{leads?.length || 0}</p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Total Leads</p>
+                  <p className="text-2xl font-bold text-white">{leads?.length || 0}</p>
+                  <p className="text-xs text-gray-400">Total Leads</p>
                 </div>
                 
                 <div className="text-center">
                   <div className="flex items-center justify-center mb-1">
                     <Building className="w-4 h-4 text-purple-500" />
                   </div>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{properties?.length || 0}</p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Properties</p>
+                  <p className="text-2xl font-bold text-white">{properties?.length || 0}</p>
+                  <p className="text-xs text-gray-400">Properties</p>
                 </div>
                 
                 <div className="text-center">
                   <div className="flex items-center justify-center mb-1">
                     <Star className="w-4 h-4 text-amber-500" />
                   </div>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-2xl font-bold text-white">
                     {leads?.filter(lead => lead.score >= 90).length || 0}
                   </p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Hot Leads</p>
+                  <p className="text-xs text-gray-400">Hot Leads</p>
                 </div>
                 
                 <div className="text-center">
                   <div className="flex items-center justify-center mb-1">
                     <DollarSign className="w-4 h-4 text-emerald-500" />
                   </div>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-2xl font-bold text-white">
                     ${leads?.length ? Math.round(leads.reduce((sum, lead) => sum + (lead.budget || 0), 0) / leads.length).toLocaleString() : '0'}
                   </p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Avg. Budget</p>
+                  <p className="text-xs text-gray-400">Avg. Budget</p>
                 </div>
               </div>
             </CardContent>

@@ -136,14 +136,14 @@ export default function AIChat() {
     <div className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${
       isMinimized ? 'w-80 h-16' : 'w-80 h-96'
     }`}>
-      <Card className="w-full h-full bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-xl">
-        <CardHeader className="flex-row items-center justify-between space-y-0 pb-2 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+      <Card className="w-full h-full bg-gray-800 border-gray-700 shadow-xl">
+        <CardHeader className="flex-row items-center justify-between space-y-0 pb-2 px-4 py-3 border-b border-gray-700">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-purple-600 rounded-full flex items-center justify-center">
               <Bot className="w-4 h-4 text-white" />
             </div>
             <div>
-              <CardTitle className="text-sm font-medium text-gray-900 dark:text-white">AI Assistant</CardTitle>
+              <CardTitle className="text-sm font-medium text-white">AI Assistant</CardTitle>
               <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 text-xs">
                 Online
               </Badge>
@@ -187,7 +187,7 @@ export default function AIChat() {
                     <div className={`px-3 py-2 rounded-lg text-sm ${
                       msg.type === 'user'
                         ? 'bg-primary-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                        : 'bg-gray-100 dark:bg-gray-700 text-white'
                     }`}>
                       {msg.content}
                     </div>
@@ -198,7 +198,7 @@ export default function AIChat() {
             
             {/* Quick suggestions */}
             {!chatMutation.isPending && (
-              <div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700">
+              <div className="px-4 py-2 border-t border-gray-700">
                 <div className="flex flex-wrap gap-1">
                   {getQuickSuggestions().map((suggestion: string, index: number) => (
                     <Button
@@ -215,7 +215,7 @@ export default function AIChat() {
               </div>
             )}
             
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="p-4 border-t border-gray-700">
               <div className="flex space-x-2">
                 <Input
                   value={message}

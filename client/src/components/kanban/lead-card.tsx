@@ -49,10 +49,10 @@ export default function LeadCard({ lead }: LeadCardProps) {
             </AvatarFallback>
           </Avatar>
           <div>
-            <h4 className="font-medium text-gray-900 dark:text-white">
+            <h4 className="font-medium text-white">
               {lead.firstName} {lead.lastName}
             </h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-gray-400">
               {lead.email}
             </p>
           </div>
@@ -63,20 +63,20 @@ export default function LeadCard({ lead }: LeadCardProps) {
       </div>
       
       <div className="space-y-2 text-sm">
-        <div className="flex items-center text-gray-600 dark:text-gray-400">
+        <div className="flex items-center text-gray-400">
           <DollarSign className="w-4 h-4 mr-2" />
           {formatBudget(lead.budget, lead.budgetMax)}
         </div>
         
         {lead.preferredLocations && lead.preferredLocations.length > 0 && (
-          <div className="flex items-center text-gray-600 dark:text-gray-400">
+          <div className="flex items-center text-gray-400">
             <MapPin className="w-4 h-4 mr-2" />
             {lead.preferredLocations.slice(0, 2).join(", ")}
             {lead.preferredLocations.length > 2 && " +more"}
           </div>
         )}
         
-        <div className="flex items-center text-gray-600 dark:text-gray-400">
+        <div className="flex items-center text-gray-400">
           <Clock className="w-4 h-4 mr-2" />
           Added {formatDistanceToNow(new Date(lead.createdAt), { addSuffix: true })}
         </div>
@@ -101,7 +101,7 @@ export default function LeadCard({ lead }: LeadCardProps) {
             WhatsApp
           </Button>
         </div>
-        <div className="text-xs text-gray-500 dark:text-gray-400">
+        <div className="text-xs text-gray-400">
           Score: {lead.score || 0}/100
         </div>
       </div>

@@ -34,22 +34,22 @@ export default function Analytics() {
   }, [isAuthenticated, isLoading, toast]);
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-400">Loading...</p>
       </div>
     </div>;
   }
 
   if (analyticsLoading || !analytics) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <div className="min-h-screen bg-gray-900 flex flex-col">
         <DesktopHeader />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-400">Loading analytics...</p>
+            <p className="text-gray-400">Loading analytics...</p>
           </div>
         </div>
       </div>
@@ -57,15 +57,15 @@ export default function Analytics() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gray-900 flex flex-col">
       <DesktopHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6 space-y-6">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Analytics & Reports</h1>
-              <p className="text-gray-600 dark:text-gray-400">Comprehensive insights into your real estate business</p>
+              <h1 className="text-2xl font-bold text-white">Analytics & Reports</h1>
+              <p className="text-gray-400">Comprehensive insights into your real estate business</p>
             </div>
             <div className="flex items-center space-x-2 mt-4 sm:mt-0">
               <Button variant="outline" size="sm">
@@ -81,12 +81,12 @@ export default function Analytics() {
 
           {/* Advanced Analytics Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Revenue</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-sm font-medium text-gray-400">Total Revenue</p>
+                    <p className="text-3xl font-bold text-white">
                       ${analytics.totalRevenue?.toLocaleString() || '0'}
                     </p>
                     <div className="flex items-center mt-2">
@@ -101,12 +101,12 @@ export default function Analytics() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Conversion Rate</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{analytics.conversionRate}%</p>
+                    <p className="text-sm font-medium text-gray-400">Conversion Rate</p>
+                    <p className="text-3xl font-bold text-white">{analytics.conversionRate}%</p>
                     <div className="flex items-center mt-2">
                       <Target className="w-4 h-4 text-blue-500 mr-1" />
                       <span className="text-sm text-blue-600 dark:text-blue-400">{analytics.qualifiedLeads}/{analytics.totalLeads} qualified</span>
@@ -119,12 +119,12 @@ export default function Analytics() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Average Lead Score</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{analytics.averageLeadScore}</p>
+                    <p className="text-sm font-medium text-gray-400">Average Lead Score</p>
+                    <p className="text-3xl font-bold text-white">{analytics.averageLeadScore}</p>
                     <div className="flex items-center mt-2">
                       <Zap className="w-4 h-4 text-purple-500 mr-1" />
                       <span className="text-sm text-purple-600 dark:text-purple-400">AI optimized</span>
@@ -137,12 +137,12 @@ export default function Analytics() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Pipeline</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{analytics.activePipeline}</p>
+                    <p className="text-sm font-medium text-gray-400">Active Pipeline</p>
+                    <p className="text-3xl font-bold text-white">{analytics.activePipeline}</p>
                     <div className="flex items-center mt-2">
                       <TrendingUp className="w-4 h-4 text-amber-500 mr-1" />
                       <span className="text-sm text-amber-600 dark:text-amber-400">${analytics.averageDealValue?.toLocaleString() || '0'} avg</span>
@@ -158,9 +158,9 @@ export default function Analytics() {
 
           {/* Charts Row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
-                <CardTitle className="flex items-center text-lg text-gray-900 dark:text-white">
+                <CardTitle className="flex items-center text-lg text-white">
                   <TrendingUp className="w-5 h-5 mr-2" />
                   Revenue Trend
                 </CardTitle>
@@ -170,16 +170,16 @@ export default function Analytics() {
                 <div className="h-64 flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg">
                   <div className="text-center">
                     <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500 dark:text-gray-400">Revenue Chart</p>
+                    <p className="text-gray-400">Revenue Chart</p>
                     <p className="text-sm text-gray-400 mt-2">Interactive chart coming soon</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
-                <CardTitle className="flex items-center text-lg text-gray-900 dark:text-white">
+                <CardTitle className="flex items-center text-lg text-white">
                   <PieChart className="w-5 h-5 mr-2" />
                   Lead Sources
                 </CardTitle>
@@ -198,7 +198,7 @@ export default function Analytics() {
                           <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{source.source}</span>
                         </div>
                         <div className="flex items-center">
-                          <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">{percentage}%</span>
+                          <span className="text-sm text-gray-400 mr-2">{percentage}%</span>
                           <Badge variant="secondary">{source.count} leads</Badge>
                         </div>
                       </div>
@@ -211,9 +211,9 @@ export default function Analytics() {
 
           {/* Performance Metrics */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-lg text-gray-900 dark:text-white">Top Performing Properties</CardTitle>
+                <CardTitle className="text-lg text-white">Top Performing Properties</CardTitle>
                 <CardDescription>Properties with highest engagement</CardDescription>
               </CardHeader>
               <CardContent>
@@ -221,8 +221,8 @@ export default function Analytics() {
                   {analytics.topPerformingProperties.slice(0, 3).map((property, index) => (
                     <div key={property.id} className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-gray-900 dark:text-white">{property.title}</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">${property.price?.toLocaleString() || '0'}</p>
+                        <p className="font-medium text-white">{property.title}</p>
+                        <p className="text-sm text-gray-400">${property.price?.toLocaleString() || '0'}</p>
                       </div>
                       <Badge className={index === 0 ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100" : 
                                       index === 1 ? "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100" : 
@@ -235,9 +235,9 @@ export default function Analytics() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-lg text-gray-900 dark:text-white">Lead Quality Score</CardTitle>
+                <CardTitle className="text-lg text-white">Lead Quality Score</CardTitle>
                 <CardDescription>Average AI-generated lead scores</CardDescription>
               </CardHeader>
               <CardContent>
@@ -245,7 +245,7 @@ export default function Analytics() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">High Quality (90-100)</span>
                     <div className="flex items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">
+                      <span className="text-sm text-gray-400 mr-2">
                         {analytics.totalLeads > 0 ? Math.round((analytics.highValueLeads.length / analytics.totalLeads) * 100) : 0}%
                       </span>
                       <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
@@ -256,7 +256,7 @@ export default function Analytics() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Task Completion</span>
                     <div className="flex items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">{analytics.taskCompletionRate}%</span>
+                      <span className="text-sm text-gray-400 mr-2">{analytics.taskCompletionRate}%</span>
                       <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100">
                         {analytics.completedTasks}/{analytics.completedTasks + analytics.pendingTasks}
                       </Badge>
@@ -265,7 +265,7 @@ export default function Analytics() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Properties Sold</span>
                     <div className="flex items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">
+                      <span className="text-sm text-gray-400 mr-2">
                         {analytics.totalProperties > 0 ? Math.round((analytics.soldProperties / analytics.totalProperties) * 100) : 0}%
                       </span>
                       <Badge variant="secondary">{analytics.soldProperties}</Badge>
@@ -275,9 +275,9 @@ export default function Analytics() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-lg text-gray-900 dark:text-white">Activity Summary</CardTitle>
+                <CardTitle className="text-lg text-white">Activity Summary</CardTitle>
                 <CardDescription>Recent activity metrics</CardDescription>
               </CardHeader>
               <CardContent>
@@ -300,9 +300,9 @@ export default function Analytics() {
           </div>
 
           {/* Report Generation */}
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-lg text-gray-900 dark:text-white">Generate Reports</CardTitle>
+              <CardTitle className="text-lg text-white">Generate Reports</CardTitle>
               <CardDescription>Create detailed reports for your business analysis</CardDescription>
             </CardHeader>
             <CardContent>

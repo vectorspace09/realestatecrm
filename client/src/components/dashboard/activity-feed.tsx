@@ -80,11 +80,11 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
   ];
 
   return (
-    <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+    <Card className="bg-gray-800 border-gray-700">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-lg text-gray-900 dark:text-white">Recent Activity</CardTitle>
+            <CardTitle className="text-lg text-white">Recent Activity</CardTitle>
             <CardDescription>Latest updates and notifications</CardDescription>
           </div>
           <Button variant="outline" size="sm">
@@ -101,7 +101,7 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
             return (
               <div
                 key={activity.id || index}
-                className="flex items-start space-x-3 p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                className="flex items-start space-x-3 p-4 hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0"
               >
                 <Avatar className="w-8 h-8 flex-shrink-0">
                   <AvatarFallback className={colorClass}>
@@ -109,13 +109,13 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  <p className="text-sm font-medium text-white">
                     {activity.title}
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="text-sm text-gray-400 mt-1">
                     {activity.description}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-gray-400 mt-1">
                     {formatDistanceToNow(new Date(activity.createdAt), { addSuffix: true })}
                   </p>
                 </div>
@@ -129,8 +129,8 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
             <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-4">
               <AlertTriangle className="w-8 h-8 text-gray-400" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No recent activity</h3>
-            <p className="text-gray-500 dark:text-gray-400">Activity will appear here as you use the system</p>
+            <h3 className="text-lg font-medium text-white mb-2">No recent activity</h3>
+            <p className="text-gray-400">Activity will appear here as you use the system</p>
           </div>
         )}
       </CardContent>

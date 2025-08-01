@@ -41,10 +41,10 @@ export default function Settings() {
   };
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-400">Loading...</p>
       </div>
     </div>;
   }
@@ -58,7 +58,7 @@ export default function Settings() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gray-900 flex flex-col">
       <DesktopHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
@@ -66,8 +66,8 @@ export default function Settings() {
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h1>
-                <p className="text-gray-600 dark:text-gray-400">Manage your account settings and preferences</p>
+                <h1 className="text-2xl font-bold text-white">Settings</h1>
+                <p className="text-gray-400">Manage your account settings and preferences</p>
               </div>
               <Button className="bg-primary-600 hover:bg-primary-700">
                 <Save className="w-4 h-4 mr-2" />
@@ -78,7 +78,7 @@ export default function Settings() {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               {/* Sidebar Navigation */}
               <div className="lg:col-span-1">
-                <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                <Card className="bg-gray-800 border-gray-700">
                   <CardContent className="p-0">
                     <nav className="space-y-1">
                       {tabs.map((tab) => {
@@ -90,7 +90,7 @@ export default function Settings() {
                             className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                               activeTab === tab.id
                                 ? "bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 border-r-2 border-primary-600"
-                                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700"
+                                : "text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-700"
                             }`}
                           >
                             <Icon className="w-4 h-4 mr-3" />
@@ -107,9 +107,9 @@ export default function Settings() {
               <div className="lg:col-span-3">
                 {activeTab === "profile" && (
                   <div className="space-y-6">
-                    <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <Card className="bg-gray-800 border-gray-700">
                       <CardHeader>
-                        <CardTitle className="text-lg text-gray-900 dark:text-white">Profile Information</CardTitle>
+                        <CardTitle className="text-lg text-white">Profile Information</CardTitle>
                         <CardDescription>Update your personal information and profile details</CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-6">
@@ -158,9 +158,9 @@ export default function Settings() {
                       </CardContent>
                     </Card>
 
-                    <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <Card className="bg-gray-800 border-gray-700">
                       <CardHeader>
-                        <CardTitle className="text-lg text-gray-900 dark:text-white">Professional Information</CardTitle>
+                        <CardTitle className="text-lg text-white">Professional Information</CardTitle>
                         <CardDescription>Your real estate professional details</CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-6">
@@ -200,17 +200,17 @@ export default function Settings() {
                 )}
 
                 {activeTab === "notifications" && (
-                  <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                  <Card className="bg-gray-800 border-gray-700">
                     <CardHeader>
-                      <CardTitle className="text-lg text-gray-900 dark:text-white">Notification Preferences</CardTitle>
+                      <CardTitle className="text-lg text-white">Notification Preferences</CardTitle>
                       <CardDescription>Choose how you want to be notified about important updates</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
                           <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white">New Lead Notifications</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Get notified when new leads are added</p>
+                            <h4 className="font-medium text-white">New Lead Notifications</h4>
+                            <p className="text-sm text-gray-400">Get notified when new leads are added</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -219,8 +219,8 @@ export default function Settings() {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white">Task Reminders</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Receive reminders for upcoming tasks</p>
+                            <h4 className="font-medium text-white">Task Reminders</h4>
+                            <p className="text-sm text-gray-400">Receive reminders for upcoming tasks</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -229,8 +229,8 @@ export default function Settings() {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white">Deal Updates</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Updates on deal status changes</p>
+                            <h4 className="font-medium text-white">Deal Updates</h4>
+                            <p className="text-sm text-gray-400">Updates on deal status changes</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -239,8 +239,8 @@ export default function Settings() {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white">AI Insights</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">AI-generated insights and recommendations</p>
+                            <h4 className="font-medium text-white">AI Insights</h4>
+                            <p className="text-sm text-gray-400">AI-generated insights and recommendations</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -249,8 +249,8 @@ export default function Settings() {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white">Weekly Reports</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Weekly performance and activity summary</p>
+                            <h4 className="font-medium text-white">Weekly Reports</h4>
+                            <p className="text-sm text-gray-400">Weekly performance and activity summary</p>
                           </div>
                           <Switch />
                         </div>
@@ -261,19 +261,19 @@ export default function Settings() {
 
                 {activeTab === "security" && (
                   <div className="space-y-6">
-                    <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <Card className="bg-gray-800 border-gray-700">
                       <CardHeader>
-                        <CardTitle className="text-lg text-gray-900 dark:text-white">Security Settings</CardTitle>
+                        <CardTitle className="text-lg text-white">Security Settings</CardTitle>
                         <CardDescription>Manage your account security and privacy</CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-6">
                         <div>
-                          <h4 className="font-medium text-gray-900 dark:text-white mb-4">Login & Authentication</h4>
+                          <h4 className="font-medium text-white mb-4">Login & Authentication</h4>
                           <div className="space-y-4">
                             <div className="flex items-center justify-between">
                               <div>
-                                <p className="font-medium text-gray-900 dark:text-white">Two-Factor Authentication</p>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">Add an extra layer of security</p>
+                                <p className="font-medium text-white">Two-Factor Authentication</p>
+                                <p className="text-sm text-gray-400">Add an extra layer of security</p>
                               </div>
                               <Button variant="outline">Enable</Button>
                             </div>
@@ -283,12 +283,12 @@ export default function Settings() {
                         <Separator />
 
                         <div>
-                          <h4 className="font-medium text-gray-900 dark:text-white mb-4">Active Sessions</h4>
+                          <h4 className="font-medium text-white mb-4">Active Sessions</h4>
                           <div className="space-y-3">
                             <div className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-600 rounded-lg">
                               <div>
-                                <p className="font-medium text-gray-900 dark:text-white">Current Session</p>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">Chrome on Windows • New York, NY</p>
+                                <p className="font-medium text-white">Current Session</p>
+                                <p className="text-sm text-gray-400">Chrome on Windows • New York, NY</p>
                               </div>
                               <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
                                 Active
@@ -302,15 +302,15 @@ export default function Settings() {
                 )}
 
                 {activeTab === "appearance" && (
-                  <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                  <Card className="bg-gray-800 border-gray-700">
                     <CardHeader>
-                      <CardTitle className="text-lg text-gray-900 dark:text-white">Appearance Settings</CardTitle>
+                      <CardTitle className="text-lg text-white">Appearance Settings</CardTitle>
                       <CardDescription>Customize how the application looks and feels</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div>
-                        <Label className="text-base font-medium text-gray-900 dark:text-white">Theme</Label>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Choose your preferred color scheme</p>
+                        <Label className="text-base font-medium text-white">Theme</Label>
+                        <p className="text-sm text-gray-400 mb-4">Choose your preferred color scheme</p>
                         <div className="grid grid-cols-3 gap-4">
                           <div className="p-4 border-2 border-primary-600 rounded-lg cursor-pointer">
                             <div className="w-full h-20 bg-white rounded border mb-2"></div>
@@ -330,8 +330,8 @@ export default function Settings() {
                       <Separator />
 
                       <div>
-                        <Label className="text-base font-medium text-gray-900 dark:text-white">Display Density</Label>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Choose how compact you want the interface</p>
+                        <Label className="text-base font-medium text-white">Display Density</Label>
+                        <p className="text-sm text-gray-400 mb-4">Choose how compact you want the interface</p>
                         <Select defaultValue="comfortable">
                           <SelectTrigger className="w-full">
                             <SelectValue />
@@ -349,9 +349,9 @@ export default function Settings() {
 
                 {activeTab === "preferences" && (
                   <div className="space-y-6">
-                    <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <Card className="bg-gray-800 border-gray-700">
                       <CardHeader>
-                        <CardTitle className="text-lg text-gray-900 dark:text-white">General Preferences</CardTitle>
+                        <CardTitle className="text-lg text-white">General Preferences</CardTitle>
                         <CardDescription>Configure your general application preferences</CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-6">
@@ -417,16 +417,16 @@ export default function Settings() {
                       </CardContent>
                     </Card>
 
-                    <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <Card className="bg-gray-800 border-gray-700">
                       <CardHeader>
-                        <CardTitle className="text-lg text-gray-900 dark:text-white">Data & Privacy</CardTitle>
+                        <CardTitle className="text-lg text-white">Data & Privacy</CardTitle>
                         <CardDescription>Manage your data and privacy settings</CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="flex items-center justify-between">
                           <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white">Analytics & Performance</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Help improve the app by sharing usage data</p>
+                            <h4 className="font-medium text-white">Analytics & Performance</h4>
+                            <p className="text-sm text-gray-400">Help improve the app by sharing usage data</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -435,8 +435,8 @@ export default function Settings() {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white">Marketing Communications</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Receive updates about new features and tips</p>
+                            <h4 className="font-medium text-white">Marketing Communications</h4>
+                            <p className="text-sm text-gray-400">Receive updates about new features and tips</p>
                           </div>
                           <Switch />
                         </div>
