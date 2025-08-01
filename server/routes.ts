@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertLeadSchema, insertPropertySchema, insertDealSchema, insertTaskSchema } from "@shared/schema";
-import { scoreLeadWithAI, matchPropertyToLead, generateFollowUpMessage, getAIInsights, generateLeadMessage, generateLeadRecommendations, generateContextualAIResponse } from "./openai";
+import { scoreLeadWithAI, matchPropertyToLead, generateFollowUpMessage, getAIInsights, generateLeadMessage, generateLeadRecommendations, generateContextualAIResponse, generateNextAction } from "./openai";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -413,6 +413,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error generating lead recommendations:", error);
       res.status(500).json({ message: "Failed to generate recommendations" });
+    }
+  });
+
+  app.post('/api/ai/generate-next-action', isAuthenticated, async (req: any, res) => {
+    try {
+      const { lead, recentActivities, pendingTasks, currentScore, status } = req.body;
+      const nextAction = await generateNextAction(lead, recentActivities, pendingTasks, currentScore, status);
+      res.json({ nextAction });
+    } catch (error) {
+      console.error("Error generating next action:", error);
+      res.status(500).json({ message: "Failed to generate next action" });
     }
   });
 

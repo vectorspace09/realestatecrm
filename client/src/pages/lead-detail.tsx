@@ -72,6 +72,7 @@ export default function LeadDetail() {
   const [generatedMessage, setGeneratedMessage] = useState("");
   const [isGeneratingMessage, setIsGeneratingMessage] = useState(false);
   const [isGeneratingRecommendations, setIsGeneratingRecommendations] = useState(false);
+  const [isGeneratingNextAction, setIsGeneratingNextAction] = useState(false);
 
   const { data: lead, isLoading: leadLoading, error } = useQuery({
     queryKey: ["/api/leads", leadId],
@@ -83,13 +84,13 @@ export default function LeadDetail() {
     queryKey: ["/api/activities", { leadId }],
     retry: false,
     enabled: !!leadId,
-  });
+  }) as { data: Activity[] };
 
   const { data: tasks = [] } = useQuery({
     queryKey: ["/api/tasks", { leadId }],
     retry: false,
     enabled: !!leadId,
-  });
+  }) as { data: Task[] };
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -137,8 +138,8 @@ export default function LeadDetail() {
         method: "POST",
         body: { 
           lead,
-          recentActivities: activities?.slice(0, 5) || [],
-          pendingTasks: tasks?.filter((t: Task) => t.status === 'pending') || []
+          recentActivities: (activities || []).slice(0, 5),
+          pendingTasks: (tasks || []).filter((t: Task) => t.status === 'pending')
         },
       });
       const data = await response.json();
@@ -147,6 +148,55 @@ export default function LeadDetail() {
       console.error("Error generating AI recommendations:", error);
     } finally {
       setIsGeneratingRecommendations(false);
+    }
+  };
+
+  const generateNextAction = async () => {
+    if (!lead) return;
+    
+    setIsGeneratingNextAction(true);
+    try {
+      // Generate intelligent next action based on lead data and history
+      const leadData = lead as any;
+      const recentActivities = (activities || []).slice(0, 5);
+      const pendingTasks = (tasks || []).filter((t: Task) => t.status === 'pending');
+      
+      const response = await apiRequest("/api/ai/generate-next-action", {
+        method: "POST",
+        body: { 
+          lead: leadData,
+          recentActivities,
+          pendingTasks,
+          currentScore: leadData?.score || 0,
+          status: leadData?.status || 'new'
+        },
+      });
+      
+      const data = await response.json();
+      
+      if (data.nextAction) {
+        // Auto-fill the action form with AI-generated recommendation
+        actionForm.setValue('type', data.nextAction.type || 'note');
+        actionForm.setValue('title', data.nextAction.title || '');
+        actionForm.setValue('description', data.nextAction.description || '');
+        actionForm.setValue('dueDate', data.nextAction.dueDate || '');
+        
+        // Show success message and open action dialog
+        toast({
+          title: "Next Action Generated",
+          description: "AI has suggested the optimal next step for this lead.",
+        });
+        setIsActionDialogOpen(true);
+      }
+    } catch (error) {
+      console.error("Error generating next action:", error);
+      toast({
+        title: "Error",
+        description: "Failed to generate next action. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingNextAction(false);
     }
   };
 
@@ -160,7 +210,7 @@ export default function LeadDetail() {
         body: { 
           lead,
           messageType,
-          recentActivities: activities?.slice(0, 3) || []
+          recentActivities: (activities || []).slice(0, 3)
         },
       });
       const data = await response.json();
@@ -342,20 +392,20 @@ export default function LeadDetail() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-                {lead.firstName?.charAt(0)}{lead.lastName?.charAt(0)}
+                {(lead as any)?.firstName?.charAt(0)}{(lead as any)?.lastName?.charAt(0)}
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white">
-                  {lead.firstName} {lead.lastName}
+                  {(lead as any)?.firstName} {(lead as any)?.lastName}
                 </h1>
                 <div className="flex items-center space-x-3 mt-2">
-                  <Badge className={getStatusColor(lead.status)}>
-                    {lead.status?.charAt(0).toUpperCase() + lead.status?.slice(1)}
+                  <Badge className={getStatusColor((lead as any)?.status)}>
+                    {(lead as any)?.status?.charAt(0).toUpperCase() + (lead as any)?.status?.slice(1)}
                   </Badge>
                   <div className="flex items-center space-x-1">
                     <Star className="w-4 h-4 text-yellow-500" />
-                    <span className={`font-semibold ${getScoreColor(lead.score)}`}>
-                      {lead.score}/100
+                    <span className={`font-semibold ${getScoreColor((lead as any)?.score)}`}>
+                      {(lead as any)?.score}/100
                     </span>
                   </div>
                 </div>
@@ -615,16 +665,16 @@ export default function LeadDetail() {
                 <CardContent className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <Mail className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm">{lead.email}</span>
+                    <span className="text-sm">{(lead as any)?.email}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Phone className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm">{lead.phone}</span>
+                    <span className="text-sm">{(lead as any)?.phone}</span>
                   </div>
-                  {lead.location && (
+                  {(lead as any)?.location && (
                     <div className="flex items-center space-x-3">
                       <MapPin className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm">{lead.location}</span>
+                      <span className="text-sm">{(lead as any)?.location}</span>
                     </div>
                   )}
                 </CardContent>
@@ -641,12 +691,12 @@ export default function LeadDetail() {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-400">Budget</span>
-                    <span className="font-medium">${lead.budget?.toLocaleString()}</span>
+                    <span className="font-medium">${(lead as any)?.budget?.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-400">Property Types</span>
                     <div className="flex flex-wrap gap-1">
-                      {lead.propertyTypes?.map((type, index) => (
+                      {(lead as any)?.propertyTypes?.map((type: string, index: number) => (
                         <Badge key={index} variant="outline" className="text-xs">
                           {type}
                         </Badge>
@@ -655,11 +705,11 @@ export default function LeadDetail() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-400">Timeline</span>
-                    <span className="font-medium">{lead.timeline}</span>
+                    <span className="font-medium">{(lead as any)?.timeline}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-400">Source</span>
-                    <span className="font-medium">{lead.source}</span>
+                    <span className="font-medium">{(lead as any)?.source}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -722,13 +772,25 @@ export default function LeadDetail() {
                 <TabsContent value="timeline">
                   <Card>
                     <CardHeader>
-                      <CardTitle className="flex items-center">
-                        <Clock className="w-5 h-5 mr-2" />
-                        Activity Timeline
-                      </CardTitle>
-                      <CardDescription>
-                        Complete history of interactions with this lead
-                      </CardDescription>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <CardTitle className="flex items-center">
+                            <Clock className="w-5 h-5 mr-2" />
+                            Activity Timeline
+                          </CardTitle>
+                          <CardDescription>
+                            Complete history of interactions with this lead
+                          </CardDescription>
+                        </div>
+                        <Button
+                          onClick={generateNextAction}
+                          disabled={isGeneratingNextAction}
+                          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
+                        >
+                          <Bot className="w-4 h-4 mr-2" />
+                          {isGeneratingNextAction ? "Generating..." : "Generate Next Action"}
+                        </Button>
+                      </div>
                     </CardHeader>
                     <CardContent>
                       {activities.length > 0 ? (
@@ -794,9 +856,9 @@ export default function LeadDetail() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      {tasks.length > 0 ? (
+                      {(tasks as Task[]).length > 0 ? (
                         <div className="space-y-4">
-                          {tasks.map((task: Task) => (
+                          {(tasks as Task[]).map((task: Task) => (
                             <div key={task.id} className="flex items-start space-x-3 p-3 border border-gray-700 rounded-lg">
                               <div className={`w-4 h-4 rounded-full mt-1 ${
                                 task.status === "completed" ? "bg-green-500" : 
@@ -835,13 +897,13 @@ export default function LeadDetail() {
             </div>
           </div>
 
-          {lead.notes && (
+          {(lead as any)?.notes && (
             <Card>
               <CardHeader>
                 <CardTitle>Notes</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{lead.notes}</p>
+                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{(lead as any)?.notes}</p>
               </CardContent>
             </Card>
           )}

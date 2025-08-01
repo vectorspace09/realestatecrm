@@ -394,6 +394,115 @@ ${messageType === 'call' ? 'Provide talking points and conversation structure' :
   }
 }
 
+export async function generateNextAction(
+  lead: any,
+  recentActivities: any[],
+  pendingTasks: any[],
+  currentScore: number,
+  status: string
+): Promise<any> {
+  // Return intelligent next action recommendation if OpenAI API key is not available
+  if (!isOpenAIAvailable) {
+    const actionRecommendations = {
+      'new': {
+        type: 'call',
+        title: 'Initial consultation call',
+        description: `Schedule and conduct initial consultation call with ${lead.firstName} ${lead.lastName} to understand their requirements, budget, and timeline. Discuss available properties that match their criteria.`,
+        dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0] // Tomorrow
+      },
+      'contacted': {
+        type: 'email', 
+        title: 'Follow-up with property recommendations',
+        description: `Send curated property listings that match ${lead.firstName}'s budget of $${lead.budget?.toLocaleString()} and preferred property types. Include market insights and schedule viewing appointments.`,
+        dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 2 days
+      },
+      'qualified': {
+        type: 'meeting',
+        title: 'Property viewing appointments',
+        description: `Schedule property viewings for ${lead.firstName} based on their preferences. Prepare market analysis and financing options discussion.`,
+        dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 3 days
+      },
+      'viewing': {
+        type: 'call',
+        title: 'Post-viewing follow-up',
+        description: `Follow up on recent property viewings with ${lead.firstName}. Address any questions or concerns and gauge interest level. Discuss next steps if interested.`,
+        dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // Tomorrow
+      }
+    };
+
+    // Customize based on score
+    const baseAction = actionRecommendations[status] || actionRecommendations['new'];
+    
+    if (currentScore >= 80) {
+      baseAction.title = `🔥 HIGH PRIORITY: ${baseAction.title}`;
+      baseAction.description = `URGENT - High-scoring lead (${currentScore}/100): ${baseAction.description}`;
+    } else if (currentScore < 50) {
+      baseAction.type = 'email';
+      baseAction.title = 'Re-engagement campaign';
+      baseAction.description = `Lead score is low (${currentScore}/100). Send re-engagement email to understand current needs and timeline. Consider offering market updates or new listings.`;
+    }
+
+    return baseAction;
+  }
+
+  try {
+    const activityContext = recentActivities.length > 0 
+      ? `Recent activities: ${recentActivities.map(a => `${a.type}: ${a.title}`).join(', ')}` 
+      : 'No recent activities';
+    
+    const taskContext = pendingTasks.length > 0
+      ? `Pending tasks: ${pendingTasks.map(t => t.title).join(', ')}`
+      : 'No pending tasks';
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+      messages: [
+        {
+          role: "system",
+          content: `You are an expert real estate CRM assistant. Generate the optimal next action for a lead based on their profile and interaction history. 
+
+          Respond with JSON in this exact format:
+          {
+            "type": "call|email|meeting|note",
+            "title": "Brief action title",
+            "description": "Detailed description of what should be done",
+            "dueDate": "YYYY-MM-DD format for recommended completion"
+          }
+
+          Consider the lead's score, status, and history to recommend the most impactful next step.`
+        },
+        {
+          role: "user",
+          content: `Lead: ${lead.firstName} ${lead.lastName}
+          Status: ${status}
+          Score: ${currentScore}/100
+          Budget: $${lead.budget?.toLocaleString()}
+          Timeline: ${lead.timeline}
+          Source: ${lead.source}
+          
+          ${activityContext}
+          ${taskContext}
+          
+          What should be the next action to maximize conversion chances?`
+        }
+      ],
+      response_format: { type: "json_object" },
+      temperature: 0.7,
+    });
+
+    return JSON.parse(response.choices[0].message.content || '{}');
+  } catch (error) {
+    console.error('OpenAI API error:', error);
+    // Fallback to default recommendation
+    return {
+      type: 'call',
+      title: 'Follow-up call',
+      description: `Contact ${lead.firstName} ${lead.lastName} to discuss their real estate needs and available opportunities.`,
+      dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+    };
+  }
+}
+
 export async function generateLeadRecommendations(
   lead: any,
   recentActivities: any[],
