@@ -92,3 +92,166 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+
+/* Native Mobile App UI Framework */
+/* App Shell - Native mobile app container */
+.app-shell {
+  @apply min-h-screen bg-gray-900 flex flex-col relative overflow-hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* App Header - Native app-style header */
+.app-header {
+  @apply bg-gray-900/95 backdrop-blur-md border-b border-gray-800 relative z-50;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  padding-top: env(safe-area-inset-top);
+}
+
+/* App Content - Main scrollable content area */
+.app-content {
+  @apply flex-1 overflow-y-auto relative;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* App Bottom Navigation - Native tab bar */
+.app-bottom-nav {
+  @apply bg-gray-900/95 backdrop-blur-md border-t border-gray-800 relative z-50;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Native Card Design */
+.native-card {
+  @apply bg-gray-800/90 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-4 shadow-xl;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Native Button Styles */
+.native-button-primary {
+  @apply bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-4 px-6 rounded-2xl min-h-[56px] transition-all duration-200 shadow-lg;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+  transform: translateZ(0);
+}
+
+.native-button-primary:active {
+  transform: scale(0.96) translateZ(0);
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+}
+
+.native-button-secondary {
+  @apply bg-gray-800/80 text-white font-medium py-3 px-5 rounded-xl min-h-[48px] transition-all duration-200 border border-gray-700/50;
+  backdrop-filter: blur(8px);
+}
+
+.native-button-secondary:active {
+  transform: scale(0.96) translateZ(0);
+  @apply bg-gray-700/80;
+}
+
+/* Native Input Styles */
+.native-input {
+  @apply bg-gray-800/60 border border-gray-700/50 text-white placeholder-gray-400 py-4 px-4 rounded-xl text-base min-h-[56px] backdrop-blur-sm;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.native-input:focus {
+  @apply ring-2 ring-blue-500/50 border-blue-500/50 bg-gray-800/80;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Native Typography */
+.native-title {
+  @apply text-2xl font-bold text-white tracking-tight;
+}
+
+.native-subtitle {
+  @apply text-base text-gray-300 font-medium;
+}
+
+.native-body {
+  @apply text-sm text-gray-400;
+}
+
+/* Native Touch Interactions */
+.touch-feedback {
+  @apply transition-all duration-150 active:scale-[0.96] active:opacity-80;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.touch-highlight {
+  @apply transition-all duration-150 active:bg-gray-700/50;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Native Tab Bar */
+.native-tab {
+  @apply flex-1 flex flex-col items-center justify-center py-2 px-1 min-h-[60px] transition-all duration-200;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.native-tab.active {
+  @apply text-blue-400;
+}
+
+.native-tab.active .tab-indicator {
+  @apply scale-100 opacity-100;
+}
+
+.tab-indicator {
+  @apply w-1 h-1 bg-blue-400 rounded-full mt-1 transition-all duration-200 scale-0 opacity-0;
+}
+
+/* Native List Items */
+.native-list-item {
+  @apply flex items-center p-4 border-b border-gray-800/50 transition-all duration-150 active:bg-gray-800/50;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.native-list-item:last-child {
+  @apply border-b-0;
+}
+
+/* Native Header Navigation */
+.native-nav-header {
+  @apply flex items-center justify-between p-4 relative;
+}
+
+.native-nav-title {
+  @apply text-lg font-semibold text-white absolute left-1/2 transform -translate-x-1/2;
+}
+
+.native-nav-button {
+  @apply w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-150 active:bg-gray-800/50;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* App-specific Safe Areas */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-right {
+  padding-right: env(safe-area-inset-right);
+}
