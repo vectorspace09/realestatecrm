@@ -32,7 +32,14 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Zap,
-  Bot
+  Bot,
+  Camera,
+  Eye,
+  Plus,
+  CheckCircle,
+  MessageSquare,
+  FileText,
+  PlusCircle
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -161,14 +168,11 @@ export default function Dashboard() {
             navigate(`/leads/${highScoreLead.id}?action=call`);
           }
           break;
-        case 'review_stale_leads':
-          navigate('/leads?filter=stale');
+        case 'schedule_walkthrough':
+          navigate('/deals?action=schedule_walkthrough');
           break;
-        case 'adjust_pricing':
-          navigate('/properties?action=adjust_pricing');
-          break;
-        case 'schedule_showings':
-          navigate('/leads?filter=tour');
+        case 'update_photos':
+          navigate('/properties?action=update_photos');
           break;
       }
     } catch (error) {
@@ -371,87 +375,199 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* AI Priority TODOs - Action Required */}
-          <Card className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900 dark:to-orange-900 border-red-200 dark:border-red-700">
-            <CardHeader>
-              <CardTitle className="flex items-center text-red-800 dark:text-red-200">
-                <AlertTriangle className="w-5 h-5 mr-2" />
-                Action Required - Priority TODOs
-              </CardTitle>
-              <CardDescription className="text-red-600 dark:text-red-300">
-                These require your immediate attention to optimize performance
-              </CardDescription>
+          {/* AI Priority TODOs - Redesigned */}
+          <Card className="bg-gradient-to-br from-gray-800 via-gray-800 to-gray-900 border-0 shadow-2xl ring-1 ring-gray-700">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <AlertTriangle className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl font-bold text-white flex items-center">
+                      Priority Actions
+                      <Badge className="ml-3 bg-red-500 text-white border-0 animate-pulse">
+                        3 urgent
+                      </Badge>
+                    </CardTitle>
+                    <CardDescription className="text-gray-400 mt-1">
+                      High-impact tasks requiring immediate attention
+                    </CardDescription>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                  onClick={() => navigate('/tasks')}
+                >
+                  View All
+                </Button>
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg border-l-4 border-red-500">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <p className="font-medium text-white">Follow up with Emily Davis (Score: 92)</p>
-                      <p className="text-sm text-gray-400">Highest scoring lead - call within 24 hours</p>
+            <CardContent className="space-y-4">
+              {/* High Priority Lead Follow-up */}
+              <div className="group relative overflow-hidden bg-gradient-to-r from-red-900/20 to-red-800/20 rounded-xl border border-red-500/30 hover:border-red-400/50 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative p-5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-3 h-3 bg-red-500 rounded-full mt-1.5 animate-pulse shadow-lg shadow-red-500/50"></div>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <h4 className="font-semibold text-white">Follow up with Emily Davis</h4>
+                          <Badge className="bg-red-500 text-white text-xs border-0">Score: 92</Badge>
+                          <Badge className="bg-orange-500 text-white text-xs border-0">Hot Lead</Badge>
+                        </div>
+                        <p className="text-sm text-gray-400 mb-3">
+                          Highest scoring lead from website inquiry • Last contact: 2 days ago
+                        </p>
+                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                          <span className="flex items-center">
+                            <Clock className="w-3 h-3 mr-1" />
+                            Due: Today 2:00 PM
+                          </span>
+                          <span className="flex items-center">
+                            <Phone className="w-3 h-3 mr-1" />
+                            (555) 123-4567
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        size="sm"
+                        className="bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-red-500/25 transition-all duration-200"
+                        onClick={() => handlePriorityAction('call_high_score_lead')}
+                      >
+                        <Phone className="w-4 h-4 mr-2" />
+                        Call Now
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                        onClick={() => navigate('/leads/emily-davis')}
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
-                  <Button 
-                    size="sm" 
-                    className="bg-red-600 hover:bg-red-700"
-                    onClick={() => handlePriorityAction('call_high_score_lead')}
-                  >
-                    Call Now
-                  </Button>
                 </div>
-                
-                <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg border-l-4 border-orange-500">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <p className="font-medium text-white">Review 3 stale leads (No contact in 7+ days)</p>
-                      <p className="text-sm text-gray-400">Michael Brown, Sarah Johnson, David Lee need attention</p>
+              </div>
+
+              {/* Deal Closing Soon */}
+              <div className="group relative overflow-hidden bg-gradient-to-r from-orange-900/20 to-amber-800/20 rounded-xl border border-orange-500/30 hover:border-orange-400/50 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative p-5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-3 h-3 bg-orange-500 rounded-full mt-1.5 animate-pulse shadow-lg shadow-orange-500/50"></div>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <h4 className="font-semibold text-white">Close Sunrise Apartments Deal</h4>
+                          <Badge className="bg-orange-500 text-white text-xs border-0">$450K</Badge>
+                        </div>
+                        <p className="text-sm text-gray-400 mb-3">
+                          Contract expires in 3 days • Final walkthrough pending
+                        </p>
+                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                          <span className="flex items-center">
+                            <Calendar className="w-3 h-3 mr-1" />
+                            Deadline: Jan 15
+                          </span>
+                          <span className="flex items-center">
+                            <Building className="w-3 h-3 mr-1" />
+                            Downtown
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        size="sm"
+                        className="bg-orange-600 hover:bg-orange-700 text-white shadow-lg hover:shadow-orange-500/25 transition-all duration-200"
+                        onClick={() => handlePriorityAction('schedule_walkthrough')}
+                      >
+                        <Calendar className="w-4 h-4 mr-2" />
+                        Schedule
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                        onClick={() => navigate('/deals')}
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    className="border-orange-500 text-orange-600"
-                    onClick={() => handlePriorityAction('review_stale_leads')}
-                  >
-                    Review
-                  </Button>
                 </div>
-                
-                <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg border-l-4 border-yellow-500">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <p className="font-medium text-white">Price Downtown Condo ($850k) competitively</p>
-                      <p className="text-sm text-gray-400">Market analysis suggests 10% price reduction</p>
+              </div>
+
+              {/* Property Update Required */}
+              <div className="group relative overflow-hidden bg-gradient-to-r from-blue-900/20 to-indigo-800/20 rounded-xl border border-blue-500/30 hover:border-blue-400/50 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative p-5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full mt-1.5 animate-pulse shadow-lg shadow-blue-500/50"></div>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <h4 className="font-semibold text-white">Update Maple Street Photos</h4>
+                          <Badge className="bg-blue-500 text-white text-xs border-0">Photos</Badge>
+                        </div>
+                        <p className="text-sm text-gray-400 mb-3">
+                          Property photos are 60+ days old • New staging completed
+                        </p>
+                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                          <span className="flex items-center">
+                            <Camera className="w-3 h-3 mr-1" />
+                            Last updated: Nov 15
+                          </span>
+                          <span className="flex items-center">
+                            <TrendingUp className="w-3 h-3 mr-1" />
+                            +25% views expected
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        size="sm"
+                        className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-blue-500/25 transition-all duration-200"
+                        onClick={() => handlePriorityAction('update_photos')}
+                      >
+                        <Camera className="w-4 h-4 mr-2" />
+                        Update
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                        onClick={() => navigate('/properties')}
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    className="border-yellow-500 text-yellow-600"
-                    onClick={() => handlePriorityAction('adjust_pricing')}
-                  >
-                    Adjust
-                  </Button>
                 </div>
-                
-                <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg border-l-4 border-blue-500">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <div>
-                      <p className="font-medium text-white">Schedule 2 property showings this week</p>
-                      <p className="text-sm text-gray-400">Lisa Wilson & James Miller awaiting appointments</p>
-                    </div>
+              </div>
+
+              {/* Quick Action Summary */}
+              <div className="mt-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-gray-400">
+                    Complete these 3 actions to boost performance by an estimated <span className="text-emerald-400 font-semibold">15-20%</span>
                   </div>
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    className="border-blue-500 text-blue-600"
-                    onClick={() => handlePriorityAction('schedule_showings')}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                    onClick={() => navigate('/ai')}
                   >
-                    Schedule
+                    <Zap className="w-4 h-4 mr-2" />
+                    AI Insights
                   </Button>
                 </div>
               </div>
