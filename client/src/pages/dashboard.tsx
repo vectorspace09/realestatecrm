@@ -624,28 +624,28 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => window.location.href = '/leads?action=add'}>
+                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/leads?action=add')}>
                   <div className="flex flex-col items-start">
                     <span className="font-medium">Add New Lead</span>
                     <span className="text-xs text-gray-500 mt-1">Capture potential client</span>
                   </div>
                 </Button>
                 
-                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => window.location.href = '/properties?action=add'}>
+                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/properties?action=add')}>
                   <div className="flex flex-col items-start">
                     <span className="font-medium">List Property</span>
                     <span className="text-xs text-gray-500 mt-1">Add new listing</span>
                   </div>
                 </Button>
                 
-                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => window.location.href = '/tasks?action=add'}>
+                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/tasks?action=add')}>
                   <div className="flex flex-col items-start">
                     <span className="font-medium">Schedule Task</span>
                     <span className="text-xs text-gray-500 mt-1">Plan your activities</span>
                   </div>
                 </Button>
                 
-                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => window.location.href = '/ai'}>
+                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/ai')}>
                   <div className="flex flex-col items-start">
                     <span className="font-medium">AI Analysis</span>
                     <span className="text-xs text-gray-500 mt-1">Get insights & recommendations</span>
