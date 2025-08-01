@@ -115,9 +115,9 @@ export default function Settings() {
                       <CardContent className="space-y-6">
                         <div className="flex items-center space-x-6">
                           <Avatar className="w-20 h-20">
-                            <AvatarImage src={user?.profileImageUrl} />
+                            <AvatarImage src={(user as any)?.profileImageUrl} />
                             <AvatarFallback className="text-lg">
-                              {getInitials(user?.firstName, user?.lastName)}
+                              {getInitials((user as any)?.firstName, (user as any)?.lastName)}
                             </AvatarFallback>
                           </Avatar>
                           <div>
@@ -129,17 +129,17 @@ export default function Settings() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                             <Label htmlFor="firstName">First Name</Label>
-                            <Input id="firstName" defaultValue={user?.firstName || ""} />
+                            <Input id="firstName" defaultValue={(user as any)?.firstName || ""} />
                           </div>
                           <div>
                             <Label htmlFor="lastName">Last Name</Label>
-                            <Input id="lastName" defaultValue={user?.lastName || ""} />
+                            <Input id="lastName" defaultValue={(user as any)?.lastName || ""} />
                           </div>
                         </div>
 
                         <div>
                           <Label htmlFor="email">Email Address</Label>
-                          <Input id="email" type="email" defaultValue={user?.email || ""} />
+                          <Input id="email" type="email" defaultValue={(user as any)?.email || ""} />
                         </div>
 
                         <div>
