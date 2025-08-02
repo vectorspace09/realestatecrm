@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertLeadSchema, insertPropertySchema, insertDealSchema, insertTaskSchema, insertNotificationSchema } from "@shared/schema";
 import { scoreLeadWithAI, matchPropertyToLead, generateFollowUpMessage, getAIInsights, generateLeadMessage, generateLeadRecommendations, generateContextualAIResponse, generateNextAction } from "./openai";
+import { NotificationService } from "./notification-service";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
