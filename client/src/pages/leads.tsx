@@ -49,20 +49,7 @@ export default function Leads() {
   const [editingLead, setEditingLead] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const leadsPerPage = isMobile ? 10 : 20;
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    source: "website",
-    status: "new",
-    budget: "",
-    budgetMax: "",
-    preferredLocations: "",
-    propertyTypes: "",
-    timeline: "3_months",
-    notes: ""
-  });
+
 
   // Check URL params for actions
   useEffect(() => {
@@ -145,63 +132,7 @@ export default function Leads() {
     }
   }, [isAuthenticated, isLoading, toast]);
 
-  const resetForm = () => {
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      source: "website",
-      status: "new",
-      budget: "",
-      budgetMax: "",
-      preferredLocations: "",
-      propertyTypes: "",
-      timeline: "3_months",
-      notes: ""
-    });
-  };
 
-  const handleEdit = (lead: any) => {
-    setEditingLead(lead);
-    setFormData({
-      firstName: lead.firstName || "",
-      lastName: lead.lastName || "",
-      email: lead.email || "",
-      phone: lead.phone || "",
-      source: lead.source || "website",
-      status: lead.status || "new",
-      budget: lead.budget?.toString() || "",
-      budgetMax: lead.budgetMax?.toString() || "",
-      preferredLocations: Array.isArray(lead.preferredLocations) 
-        ? lead.preferredLocations.join(", ") 
-        : lead.preferredLocations || "",
-      propertyTypes: Array.isArray(lead.propertyTypes) 
-        ? lead.propertyTypes.join(", ") 
-        : lead.propertyTypes || "",
-      timeline: lead.timeline || "3_months",
-      notes: lead.notes || ""
-    });
-    setShowAddForm(true);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    const submitData = {
-      ...formData,
-      budget: formData.budget ? parseInt(formData.budget) : null,
-      budgetMax: formData.budgetMax ? parseInt(formData.budgetMax) : null,
-      preferredLocations: formData.preferredLocations ? formData.preferredLocations.split(",").map(loc => loc.trim()) : [],
-      propertyTypes: formData.propertyTypes ? formData.propertyTypes.split(",").map(type => type.trim()) : [],
-    };
-
-    if (editingLead) {
-      updateLeadMutation.mutate({ id: (editingLead as any).id, data: submitData });
-    } else {
-      addLeadMutation.mutate(submitData);
-    }
-  };
 
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName?.charAt(0) || ""}${lastName?.charAt(0) || ""}`.toUpperCase() || "L";
@@ -600,181 +531,18 @@ export default function Leads() {
           </DialogHeader>
           
           <LeadForm onSuccess={() => setShowAddForm(false)} />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="firstName">First Name *</Label>
-                <Input
-                  id="firstName"
-                  value={formData.firstName}
-                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="lastName">Last Name *</Label>
-                <Input
-                  id="lastName"
-                  value={formData.lastName}
-                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="phone">Phone</Label>
-                <Input
-                  id="phone"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="source">Lead Source</Label>
-                <Select value={formData.source} onValueChange={(value) => setFormData({ ...formData, source: value })}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="website">Website</SelectItem>
-                    <SelectItem value="referral">Referral</SelectItem>
-                    <SelectItem value="facebook">Facebook</SelectItem>
-                    <SelectItem value="google">Google</SelectItem>
-                    <SelectItem value="phone">Phone</SelectItem>
-                    <SelectItem value="social_media">Social Media</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="status">Status</Label>
-                <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="new">New</SelectItem>
-                    <SelectItem value="contacted">Contacted</SelectItem>
-                    <SelectItem value="qualified">Qualified</SelectItem>
-                    <SelectItem value="tour">Tour Scheduled</SelectItem>
-                    <SelectItem value="offer">Offer Made</SelectItem>
-                    <SelectItem value="closed">Closed</SelectItem>
-                    <SelectItem value="nurturing">Nurturing</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="budget">Budget (Min)</Label>
-                <Input
-                  id="budget"
-                  type="number"
-                  value={formData.budget}
-                  onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                  placeholder="500000"
-                />
-              </div>
-              <div>
-                <Label htmlFor="budgetMax">Budget (Max)</Label>
-                <Input
-                  id="budgetMax"
-                  type="number"
-                  value={formData.budgetMax}
-                  onChange={(e) => setFormData({ ...formData, budgetMax: e.target.value })}
-                  placeholder="750000"
-                />
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="preferredLocations">Preferred Locations</Label>
-              <Input
-                id="preferredLocations"
-                value={formData.preferredLocations}
-                onChange={(e) => setFormData({ ...formData, preferredLocations: e.target.value })}
-                placeholder="Manhattan, Brooklyn Heights, SoHo"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="propertyTypes">Property Types</Label>
-                <Input
-                  id="propertyTypes"
-                  value={formData.propertyTypes}
-                  onChange={(e) => setFormData({ ...formData, propertyTypes: e.target.value })}
-                  placeholder="apartment, condo, townhouse"
-                />
-              </div>
-              <div>
-                <Label htmlFor="timeline">Timeline</Label>
-                <Select value={formData.timeline} onValueChange={(value) => setFormData({ ...formData, timeline: value })}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="immediate">Immediate</SelectItem>
-                    <SelectItem value="1_month">1 Month</SelectItem>
-                    <SelectItem value="2_months">2 Months</SelectItem>
-                    <SelectItem value="3_months">3 Months</SelectItem>
-                    <SelectItem value="6_months">6 Months</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="notes">Notes</Label>
-              <Textarea
-                id="notes"
-                value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="Additional information about the lead..."
-                rows={4}
-              />
-            </div>
-
-            <DialogFooter>
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => {
-                  setShowAddForm(false);
-                  setEditingLead(null);
-                  resetForm();
-                }}
-              >
-                Cancel
-              </Button>
-              <Button 
-                type="submit" 
-                disabled={addLeadMutation.isPending || updateLeadMutation.isPending}
-                className="bg-primary-600 hover:bg-primary-700"
-              >
-                {(addLeadMutation.isPending || updateLeadMutation.isPending) ? 
-                  'Saving...' : 
-                  (editingLead ? 'Update Lead' : 'Add Lead')
-                }
-              </Button>
-            </DialogFooter>
-          </form>
         </DialogContent>
       </Dialog>
+      
+      {/* Mobile Floating Action Button */}
+      {isMobile && (
+        <Button
+          className="lg:hidden fixed bottom-20 right-4 w-14 h-14 rounded-full bg-primary-600 hover:bg-primary-700 shadow-lg z-40 p-0"
+          onClick={() => setShowAddForm(true)}
+        >
+          <Plus className="w-6 h-6 text-white" />
+        </Button>
+      )}
       
       <MobileBottomTabs />
     </div>
