@@ -18,6 +18,7 @@ import {
   MessageSquare,
   Settings,
   Workflow,
+  Puzzle,
   LogOut,
   Sun,
   Moon
@@ -27,11 +28,12 @@ const allNavigationItems = [
   { href: "/", icon: Home, label: "Dashboard", category: "primary" },
   { href: "/leads", icon: Users, label: "Leads", category: "primary" },
   { href: "/properties", icon: Building, label: "Properties", category: "primary" },
-  { href: "/deals", icon: DollarSign, label: "Deals", category: "primary" },
   { href: "/tasks", icon: CheckSquare, label: "Tasks", category: "primary" },
+  { href: "/deals", icon: DollarSign, label: "Deals", category: "secondary" },
+  { href: "/ai", icon: Zap, label: "AI Assistant", category: "secondary" },
+  { href: "/integrations", icon: Puzzle, label: "Integrations", category: "secondary" },
   { href: "/analytics", icon: BarChart3, label: "Analytics", category: "secondary" },
   { href: "/workflows", icon: Workflow, label: "Workflows", category: "secondary" },
-  { href: "/ai", icon: Zap, label: "AI Assistant", category: "secondary" },
   { href: "/communications", icon: MessageSquare, label: "Communications", category: "secondary" },
   { href: "/settings", icon: Settings, label: "Settings", category: "secondary" },
 ];

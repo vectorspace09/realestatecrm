@@ -463,3 +463,145 @@ export default function NativeDashboard() {
     </div>
   );
 }
+              <div className="text-center">
+                <DollarSign className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-white">
+                  ${parseInt(metrics?.totalRevenue || '0').toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-400">Total Revenue</p>
+                <div className="flex items-center justify-center mt-1">
+                  <span className="text-xs text-emerald-500">+23.5%</span>
+                </div>
+              </div>
+            </NativeCard>
+            
+            <NativeCard>
+              <div className="text-center">
+                <Users className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-white">
+                  {metrics?.totalLeads || 0}
+                </p>
+                <p className="text-xs text-gray-400">Active Leads</p>
+                <div className="flex items-center justify-center mt-1">
+                  <span className="text-xs text-blue-500">+12.3%</span>
+                </div>
+              </div>
+            </NativeCard>
+            
+            <NativeCard>
+              <div className="text-center">
+                <Building className="w-8 h-8 text-purple-500 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-white">
+                  {metrics?.activeProperties || 0}
+                </p>
+                <p className="text-xs text-gray-400">Properties</p>
+                <div className="flex items-center justify-center mt-1">
+                  <span className="text-xs text-purple-500">+5.7%</span>
+                </div>
+              </div>
+            </NativeCard>
+            
+            <NativeCard>
+              <div className="text-center">
+                <HandCoins className="w-8 h-8 text-amber-500 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-white">
+                  {metrics?.activeDeals || 0}
+                </p>
+                <p className="text-xs text-gray-400">Active Deals</p>
+                <div className="flex items-center justify-center mt-1">
+                  <span className="text-xs text-amber-500">+8.9%</span>
+                </div>
+              </div>
+            </NativeCard>
+          </div>
+
+          {/* Quick Actions */}
+          <NativeCard>
+            <h3 className="font-semibold text-white mb-4">Quick Actions</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <Button 
+                className="native-button-secondary justify-start"
+                onClick={() => navigate('/leads')}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Lead
+              </Button>
+              <Button 
+                className="native-button-secondary justify-start"
+                onClick={() => navigate('/properties')}
+              >
+                <Building className="w-4 h-4 mr-2" />
+                Add Property
+              </Button>
+              <Button 
+                className="native-button-secondary justify-start"
+                onClick={() => navigate('/deals')}
+              >
+                <HandCoins className="w-4 h-4 mr-2" />
+                New Deal
+              </Button>
+              <Button 
+                className="native-button-secondary justify-start"
+                onClick={() => navigate('/tasks')}
+              >
+                <Target className="w-4 h-4 mr-2" />
+                Add Task
+              </Button>
+            </div>
+          </NativeCard>
+
+          {/* Recent Activity */}
+          <NativeCard>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-white">Recent Activity</h3>
+              <Button variant="ghost" size="sm" className="text-blue-400">
+                View All
+              </Button>
+            </div>
+            
+            <div className="space-y-0">
+              {recentLeads?.slice(0, 3).map((lead) => (
+                <NativeListItem
+                  key={lead.id}
+                  title={`${lead.firstName} ${lead.lastName}`}
+                  subtitle={`New lead • Score: ${lead.score}/100`}
+                  avatar={`https://api.dicebear.com/7.x/avataaars/svg?seed=${lead.firstName}`}
+                  avatarFallback={`${lead.firstName?.charAt(0)}${lead.lastName?.charAt(0)}`}
+                  badge={{
+                    text: lead.status?.charAt(0).toUpperCase() + lead.status?.slice(1),
+                    variant: lead.score >= 90 ? "success" : lead.score >= 70 ? "warning" : "default"
+                  }}
+                  onClick={() => navigate(`/leads/${lead.id}`)}
+                />
+              ))}
+            </div>
+          </NativeCard>
+
+          {/* AI Insights */}
+          {insights?.insights && insights.insights.length > 0 && (
+            <NativeCard>
+              <div className="flex items-center mb-4">
+                <Zap className="w-5 h-5 text-blue-400 mr-2" />
+                <h3 className="font-semibold text-white">AI Insights</h3>
+              </div>
+              
+              <div className="space-y-3">
+                {insights.insights.slice(0, 3).map((insight, index) => (
+                  <div key={index} className="flex items-start p-3 bg-gray-800/50 rounded-lg">
+                    <div className="w-6 h-6 bg-blue-500/20 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                      <span className="text-xs text-blue-400 font-medium">{index + 1}</span>
+                    </div>
+                    <p className="text-sm text-gray-300 flex-1">{insight}</p>
+                  </div>
+                ))}
+              </div>
+            </NativeCard>
+          )}
+        </div>
+      </div>
+      
+      <NativeBottomTabs />
+      <AIChat />
+    </div>
+  );
+}

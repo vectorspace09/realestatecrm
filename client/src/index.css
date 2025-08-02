@@ -185,6 +185,16 @@
   @apply text-sm text-gray-400;
 }
 
+/* Hide scrollbars for carousels */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Native Touch Interactions */
 .touch-feedback {
   @apply transition-all duration-150 active:scale-[0.96] active:opacity-80;

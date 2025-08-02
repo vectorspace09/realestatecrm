@@ -1,4 +1,4 @@
-import { Home, Users, Building, HandCoins, Settings, MessageCircle, Menu } from "lucide-react";
+import { Home, Users, Building, HandCoins, CheckSquare, Zap, Puzzle, Settings, Menu } from "lucide-react";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { MobileMenuTrigger } from "@/components/ui/mobile-menu";
@@ -7,7 +7,7 @@ const tabs = [
   { id: "/", icon: Home, label: "Home" },
   { id: "/leads", icon: Users, label: "Leads" },
   { id: "/properties", icon: Building, label: "Properties" },
-  { id: "/deals", icon: HandCoins, label: "Deals" },
+  { id: "/tasks", icon: CheckSquare, label: "Tasks" },
   { type: "menu", icon: Menu, label: "More" },
 ];
 
