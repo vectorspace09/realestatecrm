@@ -114,8 +114,8 @@ export default function AIAssistantPage() {
 
   // Generate insight cards based on current data
   const getInsightCards = (): InsightCard[] => {
-    const hotLeads = leads?.filter((lead: any) => lead.score > 80)?.length || 0;
-    const matchedProperties = properties?.filter((prop: any) => prop.status === 'available')?.length || 0;
+    const hotLeads = Array.isArray(leads) ? leads.filter((lead: any) => lead.score > 80)?.length : 0;
+    const matchedProperties = Array.isArray(properties) ? properties.filter((prop: any) => prop.status === 'available')?.length : 0;
     const conversionRate = analytics?.conversionRate || 0;
     const recentChange = analytics?.conversionRateChange || 0;
     
@@ -216,14 +216,14 @@ export default function AIAssistantPage() {
 
   const getDynamicGreeting = () => {
     const hour = new Date().getHours();
-    const hotLeadsCount = leads?.filter((lead: any) => lead.score > 80)?.length || 0;
+    const hotLeadsCount = Array.isArray(leads) ? leads.filter((lead: any) => lead.score > 80)?.length : 0;
     
     let greeting = "Good ";
     if (hour < 12) greeting += "morning";
     else if (hour < 17) greeting += "afternoon";
     else greeting += "evening";
     
-    greeting += `, ${user?.firstName || 'there'}! 👋`;
+    greeting += `, ${(user as any)?.firstName || 'there'}! 👋`;
     
     if (hotLeadsCount > 0) {
       greeting += `\nI've spotted ${hotLeadsCount} leads trending up today.`;

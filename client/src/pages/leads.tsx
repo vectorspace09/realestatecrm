@@ -51,11 +51,15 @@ export default function Leads() {
   const leadsPerPage = isMobile ? 10 : 20;
 
 
-  // Check URL params for actions
+  // Check URL params for actions and search
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('action') === 'add') {
       setShowAddForm(true);
+    }
+    const searchParam = urlParams.get('search');
+    if (searchParam) {
+      setSearchTerm(searchParam);
     }
   }, []);
 

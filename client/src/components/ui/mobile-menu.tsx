@@ -70,6 +70,15 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     return `${firstName?.charAt(0) || ""}${lastName?.charAt(0) || ""}`.toUpperCase() || "U";
   };
 
+  const handleSearch = () => {
+    if (!searchQuery.trim()) return;
+    
+    // Navigate to search results - you can customize this based on your search implementation
+    const searchUrl = `/leads?search=${encodeURIComponent(searchQuery)}`;
+    window.location.href = searchUrl;
+    onClose();
+  };
+
   const isActive = (href: string) => {
     if (href === "/" && location === "/") return true;
     if (href !== "/" && location.startsWith(href)) return true;
@@ -135,9 +144,23 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   placeholder="Search leads, properties, deals..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && searchQuery.trim()) {
+                      handleSearch();
+                    }
+                  }}
                   className="pl-10 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
                 />
               </div>
+              {searchQuery && (
+                <Button
+                  onClick={handleSearch}
+                  className="w-full mt-2 bg-primary-600 hover:bg-primary-700"
+                  size="sm"
+                >
+                  Search "{searchQuery}"
+                </Button>
+              )}
             </div>
 
             {/* Quick Actions */}
@@ -158,7 +181,13 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         } else if (action.action === 'search') {
                           // Focus search input
                           const searchInput = document.querySelector('input[placeholder*="Search"]') as HTMLInputElement;
-                          searchInput?.focus();
+                          if (searchInput) {
+                            searchInput.focus();
+                          } else {
+                            // If no search input visible, go to leads page with search
+                            window.location.href = '/leads';
+                            onClose();
+                          }
                         } else if (action.action === 'profile') {
                           // Navigate to profile/settings
                           window.location.href = '/settings';
