@@ -168,7 +168,7 @@ export default function NativeLeads() {
       
       <div className="flex-1 overflow-hidden">
         <PullToRefresh onRefresh={handleRefresh}>
-          <div className="space-y-4 p-4 pb-20">
+          <div className="space-y-4 p-4 pb-24">
           {/* Search and Filter */}
           <NativeCard>
             <div className="space-y-4">

@@ -104,7 +104,7 @@ export default function NativeDashboard() {
       />
       
       <div className="app-content">
-        <div className="space-y-6 p-4">
+        <div className="space-y-6 p-4 pb-24">
           {/* AI Priority Dashboard Card */}
           <NativeCard className="bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0">
             <div className="flex items-center justify-between mb-4">

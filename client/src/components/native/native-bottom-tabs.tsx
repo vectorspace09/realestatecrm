@@ -13,8 +13,8 @@ export default function NativeBottomTabs() {
   const [location, navigate] = useLocation();
 
   return (
-    <div className="app-bottom-nav">
-      <div className="flex items-center justify-around py-2 px-4">
+    <div className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 z-50 shadow-lg">
+      <div className="flex items-center justify-around py-2 px-4 pb-safe">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = location === tab.id || (tab.id !== "/" && location.startsWith(tab.id));
@@ -23,13 +23,19 @@ export default function NativeBottomTabs() {
             <button
               key={tab.id}
               onClick={() => navigate(tab.id)}
-              className={`native-tab ${isActive ? 'active' : ''}`}
+              className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg transition-all duration-200 active:scale-95 relative ${
+                isActive 
+                  ? 'text-primary-600 dark:text-primary-400' 
+                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+              }`}
             >
-              <Icon className={`w-6 h-6 ${isActive ? 'text-blue-400' : 'text-gray-500'}`} />
-              <span className={`text-xs mt-1 ${isActive ? 'text-blue-400' : 'text-gray-500'}`}>
+              {isActive && (
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary-600 dark:bg-primary-400 rounded-full" />
+              )}
+              <Icon className={`w-6 h-6 transition-transform duration-200 ${isActive ? 'scale-110' : ''}`} />
+              <span className="text-xs mt-1 font-medium">
                 {tab.label}
               </span>
-              <div className="tab-indicator" />
             </button>
           );
         })}
