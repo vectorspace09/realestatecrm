@@ -102,6 +102,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
 
       const lead = await storage.createLead(leadData);
+      
+      // Generate notification for new lead
+      await NotificationService.onLeadCreated(lead, userId);
+      
       res.json(lead);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -116,7 +120,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { id } = req.params;
       const updates = req.body;
+      const userId = req.user.claims.sub;
+      
+      // Get old lead data for comparison
+      const oldLead = await storage.getLead(id);
       const lead = await storage.updateLead(id, updates);
+      
+      // Check for score changes and generate notifications
+      if (oldLead && lead && updates.score && oldLead.score !== updates.score) {
+        await NotificationService.onLeadScoreChanged(lead, oldLead.score || 0, updates.score, userId);
+      }
+      
       res.json(lead);
     } catch (error) {
       console.error("Error updating lead:", error);
@@ -128,7 +142,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { id } = req.params;
       const { status } = req.body;
+      const userId = req.user.claims.sub;
+      
+      // Get old lead data for comparison
+      const oldLead = await storage.getLead(id);
       const lead = await storage.updateLeadStatus(id, status);
+      
+      // Generate notification for status change
+      if (oldLead && lead && oldLead.status !== status) {
+        await NotificationService.onLeadStatusChanged(lead, oldLead.status || 'new', status, userId);
+      }
+      
       res.json(lead);
     } catch (error) {
       console.error("Error updating lead status:", error);
@@ -198,7 +222,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { id } = req.params;
       const updates = req.body;
+      const userId = req.user.claims.sub;
+      
+      // Get old property data for comparison
+      const oldProperty = await storage.getProperty(id);
       const property = await storage.updateProperty(id, updates);
+      
+      // Generate notification for status change
+      if (oldProperty && property && updates.status && oldProperty.status !== updates.status) {
+        await NotificationService.onPropertyStatusChanged(property, oldProperty.status || 'draft', updates.status, userId);
+      }
+      
       res.json(property);
     } catch (error) {
       console.error("Error updating property:", error);
@@ -210,7 +244,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { id } = req.params;
       const { status } = req.body;
+      const userId = req.user.claims.sub;
+      
+      // Get old property data
+      const oldProperty = await storage.getProperty(id);
       const property = await storage.updatePropertyStatus(id, status);
+      
+      // Generate notification for property status change
+      if (oldProperty && property && oldProperty.status !== status) {
+        await NotificationService.onPropertyStatusChanged(property, oldProperty.status || 'draft', status, userId);
+      }
+      
       res.json(property);
     } catch (error) {
       console.error("Error updating property status:", error);
@@ -251,6 +295,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const deal = await storage.createDeal(validatedData);
+      
+      // Get lead and property info for notification
+      if (deal.leadId && deal.propertyId) {
+        const [lead, property] = await Promise.all([
+          storage.getLead(deal.leadId),
+          storage.getProperty(deal.propertyId)
+        ]);
+        
+        if (lead && property) {
+          const leadName = `${lead.firstName} ${lead.lastName}`;
+          await NotificationService.onDealCreated(deal, leadName, property.title, userId);
+        }
+      }
+      
       res.json(deal);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -265,16 +323,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { id } = req.params;
       const { status } = req.body;
+      const userId = req.user.claims.sub;
       
       // Validate status
-      const validStatuses = ['offer', 'inspection', 'legal', 'payment', 'handover'];
+      const validStatuses = ['offer', 'inspection', 'legal', 'payment', 'handover', 'cancelled'];
       if (!validStatuses.includes(status)) {
         return res.status(400).json({ message: "Invalid deal status" });
       }
       
+      // Get old deal data
+      const oldDeal = await storage.getDeal(id);
       const deal = await storage.updateDealStatus(id, status);
+      
       if (!deal) {
         return res.status(404).json({ message: "Deal not found" });
+      }
+      
+      // Generate notification for deal status change
+      if (oldDeal && deal.leadId && deal.propertyId) {
+        const [lead, property] = await Promise.all([
+          storage.getLead(deal.leadId),
+          storage.getProperty(deal.propertyId)
+        ]);
+        
+        if (lead && property) {
+          const leadName = `${lead.firstName} ${lead.lastName}`;
+          await NotificationService.onDealStatusChanged(
+            deal, 
+            oldDeal.status || 'pending', 
+            status, 
+            leadName, 
+            property.title, 
+            userId
+          );
+        }
       }
       
       res.json(deal);
@@ -341,6 +423,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { id } = req.params;
       const { completed, completedAt } = req.body;
+      const userId = req.user.claims.sub;
       
       const task = await storage.getTask(id);
       if (!task) {
@@ -352,6 +435,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         status: completed ? 'completed' : 'pending',
         completedAt: completed ? completedAt : null
       });
+
+      // Generate notification for task completion
+      if (completed && updatedTask) {
+        await NotificationService.onTaskCompleted(updatedTask, userId);
+      }
 
       res.json(updatedTask);
     } catch (error) {
@@ -464,15 +552,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
       const profile = {
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        email: user.email || '',
-        phone: user.phone || '',
-        bio: user.bio || '',
-        license: user.license || '',
-        brokerage: user.brokerage || '',
-        experience: user.experience || '',
-        specialties: user.specialties || ''
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
+        email: user?.email || '',
+        phone: '',
+        bio: '',
+        license: '',
+        brokerage: '',
+        experience: '',
+        specialties: ''
       };
       res.json(profile);
     } catch (error) {
