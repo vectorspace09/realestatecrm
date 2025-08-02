@@ -7,6 +7,7 @@ import { isUnauthorizedError } from "@/lib/authUtils";
 import { useLocation } from "wouter";
 import NativeHeader from "@/components/native/native-header";
 import NativeBottomTabs from "@/components/native/native-bottom-tabs";
+import AIChat from "@/components/layout/ai-chat";
 import NativeCard from "@/components/native/native-card";
 import NativeListItem from "@/components/native/native-list-item";
 import { Badge } from "@/components/ui/badge";
@@ -300,6 +301,7 @@ export default function NativeDashboard() {
       </div>
       
       <NativeBottomTabs />
+      <AIChat />
     </div>
   );
 }

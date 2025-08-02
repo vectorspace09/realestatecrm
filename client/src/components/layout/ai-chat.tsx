@@ -118,7 +118,7 @@ export default function AIChat() {
 
   if (!isOpen) {
     return (
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 right-6 lg:bottom-6 lg:right-6 md:bottom-24 md:right-6 z-50">
         <Button
           onClick={() => setIsOpen(true)}
           className="w-16 h-16 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
@@ -133,7 +133,7 @@ export default function AIChat() {
   }
 
   return (
-    <div className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${
+    <div className={`fixed bottom-6 right-6 lg:bottom-6 lg:right-6 md:bottom-24 md:right-6 z-50 transition-all duration-300 ${
       isMinimized ? 'w-80 h-16' : 'w-80 h-96'
     }`}>
       <Card className="w-full h-full bg-gray-800 border-gray-700 shadow-xl">
