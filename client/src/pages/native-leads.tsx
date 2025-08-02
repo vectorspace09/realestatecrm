@@ -14,6 +14,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import StatusBadgeSelector, { LEAD_STATUS_OPTIONS } from "@/components/ui/status-badge-selector";
+import LoadingSpinner from "@/components/ui/loading-spinner";
+import PullToRefresh from "@/components/ui/pull-to-refresh";
+import { StaggeredList } from "@/components/ui/mobile-animations";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Search, 
@@ -56,11 +59,15 @@ export default function NativeLeads() {
 
   const queryClient = useQueryClient();
 
-  const { data: leads, isLoading: leadsLoading, error } = useQuery({
+  const { data: leads, isLoading: leadsLoading, error, refetch } = useQuery({
     queryKey: ["/api/leads"],
     staleTime: 2 * 60 * 1000,
     gcTime: 5 * 60 * 1000,
   });
+
+  const handleRefresh = async () => {
+    await refetch();
+  };
 
   // Status update mutation for leads
   const updateLeadStatusMutation = useMutation({
@@ -94,7 +101,7 @@ export default function NativeLeads() {
   };
 
   const getStatusBadge = (status: string) => {
-    const statusMap = {
+    const statusMap: Record<string, { variant: "default" | "success" | "warning", label: string }> = {
       new: { variant: "default" as const, label: "New" },
       contacted: { variant: "default" as const, label: "Contacted" },
       qualified: { variant: "success" as const, label: "Qualified" },
@@ -110,7 +117,7 @@ export default function NativeLeads() {
   const filteredLeads = useMemo(() => {
     if (!leads) return [];
     
-    return leads.filter((lead: any) => {
+    return (leads as any[]).filter((lead: any) => {
       const matchesSearch = !searchTerm || 
         `${lead.firstName} ${lead.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -146,21 +153,22 @@ export default function NativeLeads() {
   }
 
   return (
-    <div className="app-shell">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       <NativeHeader 
         title="Leads" 
         rightButton={
           <button 
-            className="native-nav-button"
+            className="p-2 rounded-lg bg-primary-600 hover:bg-primary-700 transition-colors duration-200 active:scale-95"
             onClick={() => navigate('/leads/new')}
           >
-            <Plus className="w-5 h-5 text-blue-400" />
+            <Plus className="w-5 h-5 text-white" />
           </button>
         }
       />
       
-      <div className="app-content">
-        <div className="space-y-4 p-4">
+      <div className="flex-1 overflow-hidden">
+        <PullToRefresh onRefresh={handleRefresh}>
+          <div className="space-y-4 p-4 pb-20">
           {/* Search and Filter */}
           <NativeCard>
             <div className="space-y-4">
@@ -203,8 +211,9 @@ export default function NativeLeads() {
 
           {/* Leads List */}
           {leadsLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <div className="flex flex-col items-center justify-center py-16">
+              <LoadingSpinner size="lg" />
+              <p className="text-gray-500 dark:text-gray-400 mt-3 text-sm">Loading leads...</p>
             </div>
           ) : filteredLeads.length === 0 ? (
             <NativeCard>
@@ -221,8 +230,8 @@ export default function NativeLeads() {
               </div>
             </NativeCard>
           ) : (
-            <div className="space-y-3">
-              {paginatedLeads.map((lead) => {
+            <StaggeredList staggerDelay={50} className="space-y-3">
+              {paginatedLeads.map((lead: any) => {
                 const scoreBadge = getScoreBadge(lead.score);
                 const statusBadge = getStatusBadge(lead.status);
                 
@@ -231,17 +240,25 @@ export default function NativeLeads() {
                     key={lead.id}
                     withPressEffect
                     onClick={() => navigate(`/leads/${lead.id}`)}
+                    className="hover:border-primary-200 dark:hover:border-primary-700 transition-colors duration-200"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center space-x-3 flex-1 min-w-0">
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                          {getInitials(lead.firstName, lead.lastName)}
+                        <div className="relative">
+                          <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold shadow-md">
+                            {getInitials(lead.firstName, lead.lastName)}
+                          </div>
+                          {lead.score >= 90 && (
+                            <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center">
+                              <Star className="w-2 h-2 text-white fill-current" />
+                            </div>
+                          )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-white text-base truncate">
+                          <h3 className="font-semibold text-gray-900 dark:text-white text-base truncate">
                             {lead.firstName} {lead.lastName}
                           </h3>
-                          <div className="flex items-center space-x-2 mt-1">
+                          <div className="flex items-center space-x-2 mt-1 flex-wrap gap-1">
                             <StatusBadgeSelector
                               currentStatus={lead.status}
                               options={LEAD_STATUS_OPTIONS}
@@ -253,25 +270,25 @@ export default function NativeLeads() {
                               }}
                               size="sm"
                             />
-                            <Badge className={`text-xs px-2 py-1 ${
-                              scoreBadge.variant === 'success' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100' :
-                              scoreBadge.variant === 'warning' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100' :
-                              'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100'
+                            <Badge className={`text-xs px-2 py-1 font-medium ${
+                              scoreBadge.variant === 'success' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300' :
+                              scoreBadge.variant === 'warning' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300' :
+                              'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
                             }`}>
                               <Star className="w-3 h-3 mr-1" />
-                              {lead.score}/100
+                              {lead.score}
                             </Badge>
                           </div>
                         </div>
                       </div>
                       <button
-                        className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
+                        className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95"
                         onClick={(e) => {
                           e.stopPropagation();
                           navigate(`/leads/${lead.id}`);
                         }}
                       >
-                        <Eye className="w-4 h-4 text-gray-400" />
+                        <Eye className="w-4 h-4" />
                       </button>
                     </div>
                     
@@ -317,7 +334,7 @@ export default function NativeLeads() {
                   </NativeCard>
                 );
               })}
-            </div>
+            </StaggeredList>
           )}
 
           {/* Pagination */}
@@ -349,6 +366,7 @@ export default function NativeLeads() {
             </NativeCard>
           )}
         </div>
+        </PullToRefresh>
       </div>
       
       <NativeBottomTabs />

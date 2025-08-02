@@ -13,6 +13,9 @@ import NativeFloatingActionButton from "@/components/native/native-floating-acti
 import NativeStatusBar from "@/components/native/native-status-bar";
 import { Badge } from "@/components/ui/badge";
 import StatusBadgeSelector, { PROPERTY_STATUS_OPTIONS } from "@/components/ui/status-badge-selector";
+import LoadingSpinner from "@/components/ui/loading-spinner";
+import PullToRefresh from "@/components/ui/pull-to-refresh";
+import { StaggeredList } from "@/components/ui/mobile-animations";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Building,
@@ -51,10 +54,14 @@ export default function NativeProperties() {
 
   const queryClient = useQueryClient();
 
-  const { data: properties, isLoading: propertiesLoading } = useQuery({
+  const { data: properties, isLoading: propertiesLoading, refetch } = useQuery({
     queryKey: ["/api/properties"],
     staleTime: 5 * 60 * 1000,
   });
+
+  const handleRefresh = async () => {
+    await refetch();
+  };
 
   // Status update mutation for properties
   const updatePropertyStatusMutation = useMutation({
@@ -81,7 +88,7 @@ export default function NativeProperties() {
   const filteredProperties = useMemo(() => {
     if (!properties) return [];
     
-    return properties.filter((property: any) => {
+    return (properties as any[]).filter((property: any) => {
       const matchesSearch = !searchTerm || 
         property.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         property.address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -98,7 +105,7 @@ export default function NativeProperties() {
   const statusCounts = useMemo(() => {
     if (!properties) return [];
     
-    const counts = properties.reduce((acc: any, property: any) => {
+    const counts = (properties as any[]).reduce((acc: any, property: any) => {
       acc[property.status] = (acc[property.status] || 0) + 1;
       return acc;
     }, {});
@@ -121,7 +128,7 @@ export default function NativeProperties() {
   };
 
   const getStatusBadge = (status: string) => {
-    const statusMap = {
+    const statusMap: Record<string, { variant: "default" | "success" | "warning", label: string }> = {
       available: { variant: "success" as const, label: "Available" },
       under_contract: { variant: "warning" as const, label: "Under Contract" },
       sold: { variant: "default" as const, label: "Sold" },
@@ -144,11 +151,22 @@ export default function NativeProperties() {
   }
 
   return (
-    <div className="app-shell">
-      <NativeHeader title="Properties" />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <NativeHeader 
+        title="Properties"
+        rightButton={
+          <button 
+            className="p-2 rounded-lg bg-primary-600 hover:bg-primary-700 transition-colors duration-200 active:scale-95"
+            onClick={() => navigate('/properties/new')}
+          >
+            <Plus className="w-5 h-5 text-white" />
+          </button>
+        }
+      />
       
-      <div className="app-content">
-        <div className="space-y-4 p-4 pb-24">
+      <div className="flex-1 overflow-hidden">
+        <PullToRefresh onRefresh={handleRefresh}>
+          <div className="space-y-4 p-4 pb-20">
           {/* Status Overview */}
           <NativeStatusBar items={statusCounts} />
 
@@ -197,8 +215,9 @@ export default function NativeProperties() {
 
           {/* Properties List */}
           {propertiesLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <div className="flex flex-col items-center justify-center py-16">
+              <LoadingSpinner size="lg" />
+              <p className="text-gray-500 dark:text-gray-400 mt-3 text-sm">Loading properties...</p>
             </div>
           ) : filteredProperties.length === 0 ? (
             <NativeCard>
@@ -208,8 +227,8 @@ export default function NativeProperties() {
               </div>
             </NativeCard>
           ) : (
-            <div className="space-y-3">
-              {filteredProperties.map((property) => {
+            <StaggeredList staggerDelay={50} className="space-y-3">
+              {filteredProperties.map((property: any) => {
                 const statusBadge = getStatusBadge(property.status);
                 
                 return (
@@ -217,16 +236,31 @@ export default function NativeProperties() {
                     key={property.id}
                     withPressEffect
                     onClick={() => navigate(`/properties/${property.id}`)}
+                    className="hover:border-primary-200 dark:hover:border-primary-700 transition-colors duration-200"
                   >
                     <div className="space-y-4">
                       {/* Property Image */}
                       {property.images && property.images.length > 0 && (
-                        <div className="w-full h-48 bg-gray-800 rounded-xl overflow-hidden">
+                        <div className="relative w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-xl overflow-hidden">
                           <img
                             src={property.images[0]}
                             alt={property.title}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                            loading="lazy"
                           />
+                          <div className="absolute top-3 right-3">
+                            <StatusBadgeSelector
+                              currentStatus={property.status}
+                              options={PROPERTY_STATUS_OPTIONS}
+                              onStatusChange={(newStatus) => {
+                                updatePropertyStatusMutation.mutate({
+                                  propertyId: property.id,
+                                  newStatus
+                                });
+                              }}
+                              size="sm"
+                            />
+                          </div>
                         </div>
                       )}
                       
@@ -234,34 +268,36 @@ export default function NativeProperties() {
                       <div className="space-y-3">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <h3 className="font-semibold text-white text-lg">
+                            <h3 className="font-semibold text-gray-900 dark:text-white text-lg leading-tight">
                               {property.title}
                             </h3>
                             <div className="flex items-center space-x-2 mt-1">
-                              <StatusBadgeSelector
-                                currentStatus={property.status}
-                                options={PROPERTY_STATUS_OPTIONS}
-                                onStatusChange={(newStatus) => {
-                                  updatePropertyStatusMutation.mutate({
-                                    propertyId: property.id,
-                                    newStatus
-                                  });
-                                }}
-                                size="sm"
-                              />
-                              <span className="text-xs text-gray-400 capitalize">
+                              {!property.images?.length && (
+                                <StatusBadgeSelector
+                                  currentStatus={property.status}
+                                  options={PROPERTY_STATUS_OPTIONS}
+                                  onStatusChange={(newStatus) => {
+                                    updatePropertyStatusMutation.mutate({
+                                      propertyId: property.id,
+                                      newStatus
+                                    });
+                                  }}
+                                  size="sm"
+                                />
+                              )}
+                              <span className="text-xs text-gray-500 dark:text-gray-400 capitalize bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
                                 {property.type}
                               </span>
                             </div>
                           </div>
                           <button
-                            className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
+                            className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95"
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/properties/${property.id}`);
                             }}
                           >
-                            <Eye className="w-4 h-4 text-gray-400" />
+                            <Eye className="w-4 h-4" />
                           </button>
                         </div>
                         
@@ -307,15 +343,11 @@ export default function NativeProperties() {
                   </NativeCard>
                 );
               })}
-            </div>
+            </StaggeredList>
           )}
         </div>
+        </PullToRefresh>
       </div>
-      
-      <NativeFloatingActionButton
-        onClick={() => navigate('/properties/new')}
-        label="Add Property"
-      />
       
       <NativeBottomTabs />
     </div>

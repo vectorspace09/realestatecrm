@@ -15,7 +15,12 @@ export default function NativeCard({
 }: NativeCardProps) {
   return (
     <div 
-      className={`native-card ${withPressEffect ? 'touch-feedback' : ''} ${className}`}
+      className={`
+        bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700
+        ${withPressEffect ? 'transform transition-all duration-150 active:scale-[0.98] active:shadow-lg cursor-pointer hover:shadow-md' : ''} 
+        ${onClick ? 'cursor-pointer' : ''}
+        ${className}
+      `}
       onClick={onClick}
     >
       {children}
