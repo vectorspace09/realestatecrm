@@ -5,9 +5,10 @@ PRA Developers CRM is an AI-powered real estate customer relationship management
 **DEMO STATUS: READY FOR CLIENT HANDOVER** 
 - Database fully seeded with realistic demo data (21 leads, 17 properties, 3 deals)
 - All features functional with real data calculations
-- Mobile-optimized responsive design
+- Mobile-optimized responsive design with fixed navigation visibility
 - AI assistant with contextual awareness across all pages
 - Authentication via Replit OpenID Connect
+- React Query-based notification system with real-time updates
 
 # User Preferences
 
@@ -54,6 +55,12 @@ The application uses PostgreSQL as the primary database with the following schem
 - **Property Matching**: Intelligent property-to-lead matching based on preferences and requirements
 - **Message Generation**: AI-powered email and messaging drafts with tone and context awareness
 - **Insights**: Real-time AI analysis for actionable business intelligence
+
+## Notification System
+- **Real-time Updates**: React Query-based notification system with automatic updates every 15-30 seconds
+- **Database-driven**: Persistent notifications stored in PostgreSQL with user targeting
+- **Interactive UI**: Dropdown notification panel with read/unread states and action links
+- **Mobile Optimized**: Native-style notification bell with badge counts and responsive design
 
 # External Dependencies
 

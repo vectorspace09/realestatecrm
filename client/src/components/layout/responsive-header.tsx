@@ -242,8 +242,8 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
 
             {/* Desktop Navigation */}
             {!isMobile && (
-              <nav className="hidden lg:flex items-center space-x-1 ml-8">
-                {navigationItems.slice(0, 5).map((item) => {
+              <nav className="hidden md:flex items-center space-x-1 ml-8">
+                {navigationItems.slice(0, 6).map((item) => {
                   const Icon = item.icon;
                   const active = isActive(item.href);
                   
@@ -266,6 +266,39 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                     </Link>
                   );
                 })}
+                
+                {/* More dropdown for remaining items */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-gray-300 hover:text-white hover:bg-gray-700/50 px-3 py-1.5"
+                    >
+                      <Menu className="w-4 h-4 mr-1.5" />
+                      More
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-gray-800 border-gray-700" align="start">
+                    {navigationItems.slice(6).map((item) => {
+                      const Icon = item.icon;
+                      const active = isActive(item.href);
+                      
+                      return (
+                        <DropdownMenuItem key={item.href} asChild>
+                          <Link href={item.href}>
+                            <div className={`flex items-center space-x-2 w-full ${
+                              active ? 'text-primary-400' : 'text-gray-300 hover:text-white'
+                            }`}>
+                              <Icon className="w-4 h-4" />
+                              <span>{item.label}</span>
+                            </div>
+                          </Link>
+                        </DropdownMenuItem>
+                      );
+                    })}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </nav>
             )}
           </div>
