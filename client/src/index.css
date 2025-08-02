@@ -362,3 +362,34 @@
 .responsive-avatar-lg {
   @apply w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24;
 }
+
+/* Mobile bottom navigation enhancements */
+.mobile-bottom-nav {
+  /* Ensure it stays above mobile browser UI */
+  position: fixed !important;
+  bottom: 0 !important;
+  /* Handle safe area for iOS */
+  padding-bottom: env(safe-area-inset-bottom);
+  /* Prevent bounce scrolling from hiding the nav */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  /* Ensure highest z-index */
+  z-index: 9999 !important;
+}
+
+/* Safe area support for the bottom navigation */
+.safe-area-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom) * 0.5);
+  min-height: calc(4rem + env(safe-area-inset-bottom));
+}
+
+/* Prevent content from going behind mobile nav */
+@media (max-width: 1024px) {
+  body {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+  }
+  
+  main {
+    margin-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+}
