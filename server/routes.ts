@@ -520,7 +520,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/ai/chat", isAuthenticated, async (req: any, res) => {
     try {
       const { message, context } = req.body;
-      const userId = req.user.claims.sub;
+      const userId = req.user?.claims?.sub || req.user?.id;
       
       // Get current user data for context
       const [leads, properties, deals, analytics] = await Promise.all([
@@ -536,13 +536,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         properties, 
         deals,
         analytics,
-        user: await storage.getUser(userId)
+        user: userId ? await storage.getUser(userId) : null
       });
       
       res.json({ response });
     } catch (error) {
       console.error("Error in AI chat:", error);
-      res.status(500).json({ message: "Failed to process AI chat" });
+      res.status(500).json({ 
+        message: "Failed to process AI chat",
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
     }
   });
 
