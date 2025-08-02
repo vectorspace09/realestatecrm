@@ -148,6 +148,22 @@ export const leadPropertyMatches = pgTable("lead_property_matches", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Notifications table
+export const notifications = pgTable("notifications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  type: varchar("type").notNull(), // 'lead_added', 'deal_closed', 'follow_up', 'task_due', etc.
+  title: varchar("title").notNull(),
+  message: text("message").notNull(),
+  isRead: boolean("is_read").default(false),
+  actionUrl: varchar("action_url"), // Optional URL to navigate to
+  entityType: varchar("entity_type"), // 'lead', 'deal', 'property', 'task'
+  entityId: varchar("entity_id"), // ID of the related entity
+  metadata: jsonb("metadata"), // Additional data like user names, amounts, etc.
+  createdAt: timestamp("created_at").defaultNow(),
+  readAt: timestamp("read_at"),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   leads: many(leads),
@@ -155,6 +171,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   deals: many(deals),
   tasks: many(tasks),
   activities: many(activities),
+  notifications: many(notifications),
 }));
 
 export const leadsRelations = relations(leads, ({ one, many }) => ({
@@ -249,6 +266,13 @@ export const leadPropertyMatchesRelations = relations(leadPropertyMatches, ({ on
   }),
 }));
 
+export const notificationsRelations = relations(notifications, ({ one }) => ({
+  user: one(users, {
+    fields: [notifications.userId],
+    references: [users.id],
+  }),
+}));
+
 // Insert schemas
 export const insertLeadSchema = createInsertSchema(leads).omit({
   id: true,
@@ -279,6 +303,12 @@ export const insertActivitySchema = createInsertSchema(activities).omit({
   createdAt: true,
 });
 
+export const insertNotificationSchema = createInsertSchema(notifications).omit({
+  id: true,
+  createdAt: true,
+  readAt: true,
+});
+
 // Types
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
@@ -293,3 +323,5 @@ export type Task = typeof tasks.$inferSelect;
 export type InsertActivity = z.infer<typeof insertActivitySchema>;
 export type Activity = typeof activities.$inferSelect;
 export type LeadPropertyMatch = typeof leadPropertyMatches.$inferSelect;
+export type InsertNotification = z.infer<typeof insertNotificationSchema>;
+export type Notification = typeof notifications.$inferSelect;

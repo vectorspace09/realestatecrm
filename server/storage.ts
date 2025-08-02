@@ -6,6 +6,7 @@ import {
   tasks,
   activities,
   leadPropertyMatches,
+  notifications,
   type User,
   type UpsertUser,
   type InsertLead,
@@ -19,12 +20,15 @@ import {
   type InsertActivity,
   type Activity,
   type LeadPropertyMatch,
+  type InsertNotification,
+  type Notification,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql, ilike, inArray } from "drizzle-orm";
 
 export interface IStorage {
   // User operations (mandatory for Replit Auth)
+  getUsers(): Promise<User[]>;
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
   
@@ -83,6 +87,13 @@ export interface IStorage {
   
   getDetailedAnalytics(userId?: string): Promise<any>;
   
+  // Notification operations
+  getNotifications(userId: string, filters?: { isRead?: boolean; limit?: number }): Promise<Notification[]>;
+  createNotification(notification: InsertNotification): Promise<Notification>;
+  markNotificationAsRead(id: string): Promise<Notification>;
+  markAllNotificationsAsRead(userId: string): Promise<void>;
+  getUnreadNotificationCount(userId: string): Promise<number>;
+  
   // Settings operations
   updateUserProfile(userId: string, profileData: any): Promise<void>;
   getUserNotificationSettings(userId: string): Promise<any>;
@@ -93,6 +104,10 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   // User operations
+  async getUsers(): Promise<User[]> {
+    return await db.select().from(users);
+  }
+
   async getUser(id: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user;
@@ -596,6 +611,59 @@ export class DatabaseStorage implements IStorage {
       topPerformingProperties,
       highValueLeads,
     };
+  }
+
+  // Notification methods
+  async getNotifications(userId: string, filters?: { isRead?: boolean; limit?: number }): Promise<Notification[]> {
+    const conditions = [eq(notifications.userId, userId)];
+    
+    if (filters?.isRead !== undefined) {
+      conditions.push(eq(notifications.isRead, filters.isRead));
+    }
+
+    let query = db.select().from(notifications).where(and(...conditions)).orderBy(desc(notifications.createdAt));
+    
+    if (filters?.limit) {
+      query = query.limit(filters.limit);
+    }
+
+    return await query;
+  }
+
+  async createNotification(notification: InsertNotification): Promise<Notification> {
+    const [result] = await db.insert(notifications).values(notification).returning();
+    return result;
+  }
+
+  async markNotificationAsRead(id: string): Promise<Notification> {
+    const [result] = await db
+      .update(notifications)
+      .set({ 
+        isRead: true,
+        readAt: new Date()
+      })
+      .where(eq(notifications.id, id))
+      .returning();
+    return result;
+  }
+
+  async markAllNotificationsAsRead(userId: string): Promise<void> {
+    await db
+      .update(notifications)
+      .set({ 
+        isRead: true,
+        readAt: new Date()
+      })
+      .where(and(eq(notifications.userId, userId), eq(notifications.isRead, false)));
+  }
+
+  async getUnreadNotificationCount(userId: string): Promise<number> {
+    const result = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(notifications)
+      .where(and(eq(notifications.userId, userId), eq(notifications.isRead, false)));
+    
+    return result[0]?.count || 0;
   }
 
   // Settings methods

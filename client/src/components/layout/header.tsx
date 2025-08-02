@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { Menu, Search, Bell, Moon, Sun, Plus, User, Settings, LogOut } from "lucide-react";
 
 interface HeaderProps {
@@ -94,57 +95,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             </Button>
 
             {/* Notifications */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="relative text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  <Bell className="w-4 h-4" />
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                className="w-80 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700" 
-                align="end"
-              >
-                <DropdownMenuLabel className="text-gray-900 dark:text-white font-semibold">
-                  Notifications
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
-                <div className="max-h-64 overflow-y-auto">
-                  <DropdownMenuItem className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700 flex-col items-start p-4">
-                    <div className="flex items-center space-x-2 w-full">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span className="font-medium">New Lead Added</span>
-                      <span className="text-xs text-gray-400 ml-auto">2 min ago</span>
-                    </div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Sarah Johnson submitted a new inquiry for downtown condos</p>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700 flex-col items-start p-4">
-                    <div className="flex items-center space-x-2 w-full">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="font-medium">Deal Closed</span>
-                      <span className="text-xs text-gray-400 ml-auto">1 hour ago</span>
-                    </div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Michael Chen successfully closed the Skyview property deal</p>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700 flex-col items-start p-4">
-                    <div className="flex items-center space-x-2 w-full">
-                      <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
-                      <span className="font-medium">Follow-up Reminder</span>
-                      <span className="text-xs text-gray-400 ml-auto">3 hours ago</span>
-                    </div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Time to follow up with Emma Davis about property viewing</p>
-                  </DropdownMenuItem>
-                </div>
-                <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
-                <DropdownMenuItem className="text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 hover:bg-gray-50 dark:hover:bg-gray-700 justify-center">
-                  View All Notifications
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <NotificationBell className="relative text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" />
 
             {/* Quick actions - Desktop only */}
             <div className="hidden md:flex items-center space-x-2">

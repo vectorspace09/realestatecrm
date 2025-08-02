@@ -283,6 +283,7 @@ export default function AIAssistant() {
                 <p className="text-sm text-gray-400">Ask questions about your leads, properties, and business insights</p>
               </div>
             </div>
+          </div>
           
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4">

@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { 
   Menu, 
   Search, 
@@ -332,57 +333,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
             </Button>
 
             {/* Notifications */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="relative text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all duration-200 active:scale-95"
-                >
-                  <Bell className="w-4 h-4" />
-                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                className="w-80 bg-gray-800 border-gray-700" 
-                align="end"
-              >
-                <DropdownMenuLabel className="text-white font-semibold">
-                  Notifications
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-gray-700" />
-                <div className="max-h-64 overflow-y-auto">
-                  <DropdownMenuItem className="text-gray-300 hover:text-white hover:bg-gray-700 flex-col items-start p-4">
-                    <div className="flex items-center space-x-2 w-full">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span className="font-medium">New Lead Added</span>
-                      <span className="text-xs text-gray-400 ml-auto">2 min ago</span>
-                    </div>
-                    <p className="text-sm text-gray-400 mt-1">Sarah Johnson submitted a new inquiry for downtown condos</p>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-gray-300 hover:text-white hover:bg-gray-700 flex-col items-start p-4">
-                    <div className="flex items-center space-x-2 w-full">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="font-medium">Deal Closed</span>
-                      <span className="text-xs text-gray-400 ml-auto">1 hour ago</span>
-                    </div>
-                    <p className="text-sm text-gray-400 mt-1">Michael Chen successfully closed the Skyview property deal</p>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-gray-300 hover:text-white hover:bg-gray-700 flex-col items-start p-4">
-                    <div className="flex items-center space-x-2 w-full">
-                      <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
-                      <span className="font-medium">Follow-up Reminder</span>
-                      <span className="text-xs text-gray-400 ml-auto">3 hours ago</span>
-                    </div>
-                    <p className="text-sm text-gray-400 mt-1">Time to follow up with Emma Davis about property viewing</p>
-                  </DropdownMenuItem>
-                </div>
-                <DropdownMenuSeparator className="bg-gray-700" />
-                <DropdownMenuItem className="text-primary-400 hover:text-primary-300 hover:bg-gray-700 justify-center">
-                  View All Notifications
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <NotificationBell />
 
             {/* User Menu */}
             <DropdownMenu>
