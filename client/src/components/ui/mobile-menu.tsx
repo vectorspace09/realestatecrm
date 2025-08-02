@@ -5,6 +5,8 @@ import { useTheme } from "@/hooks/use-theme";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { 
   Menu,
   X,
@@ -21,7 +23,13 @@ import {
   Puzzle,
   LogOut,
   Sun,
-  Moon
+  Moon,
+  Search,
+  Bell,
+  HelpCircle,
+  Download,
+  User,
+  Upload
 } from "lucide-react";
 
 const allNavigationItems = [
@@ -38,6 +46,15 @@ const allNavigationItems = [
   { href: "/settings", icon: Settings, label: "Settings", category: "secondary" },
 ];
 
+const quickActions = [
+  { action: "search", icon: Search, label: "Search", category: "action" },
+  { action: "notifications", icon: Bell, label: "Notifications", category: "action" },
+  { action: "profile", icon: User, label: "Profile", category: "action" },
+  { action: "help", icon: HelpCircle, label: "Help & Support", category: "action" },
+  { action: "export", icon: Download, label: "Export Data", category: "action" },
+  { action: "import", icon: Upload, label: "Import Data", category: "action" },
+];
+
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
@@ -47,6 +64,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const { user } = useAuth();
   const [location] = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const getInitials = (firstName?: string, lastName?: string) => {
     return `${firstName?.charAt(0) || ""}${lastName?.charAt(0) || ""}`.toUpperCase() || "U";
@@ -97,6 +115,66 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   {user?.firstName} {user?.lastName}
                 </p>
                 <p className="text-sm text-gray-400 truncate">{user?.email}</p>
+                <div className="flex items-center mt-2">
+                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100 text-xs">
+                    <Zap className="w-3 h-3 mr-1" />
+                    AI Active
+                  </Badge>
+                </div>
+              </div>
+            </div>
+
+            {/* Search */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+                Quick Search
+              </h3>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Input
+                  placeholder="Search leads, properties, deals..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                />
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+                Quick Actions
+              </h3>
+              <div className="grid grid-cols-2 gap-2">
+                {quickActions.map((action, index) => {
+                  const Icon = action.icon;
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        if (action.action === 'notifications') {
+                          // Handle notifications
+                          console.log('Open notifications');
+                        } else if (action.action === 'search') {
+                          // Focus search input
+                          const searchInput = document.querySelector('input[placeholder*="Search"]') as HTMLInputElement;
+                          searchInput?.focus();
+                        } else if (action.action === 'profile') {
+                          // Navigate to profile/settings
+                          window.location.href = '/settings';
+                          onClose();
+                        } else if (action.action === 'help') {
+                          // Open help
+                          console.log('Open help');
+                        }
+                      }}
+                      className="flex items-center space-x-2 p-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors text-sm"
+                    >
+                      <Icon className="w-4 h-4 flex-shrink-0" />
+                      <span className="truncate">{action.label}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -152,28 +230,53 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               </div>
             </div>
 
-            {/* Theme Toggle */}
+            {/* Theme Toggle & More Settings */}
             <div>
               <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
-                Appearance
+                Preferences
               </h3>
-              <Button
-                variant="ghost"
-                onClick={toggleTheme}
-                className="w-full justify-start text-gray-300 hover:bg-gray-800 hover:text-white"
-              >
-                {theme === "dark" ? (
-                  <>
-                    <Sun className="w-5 h-5 mr-3" />
-                    Switch to Light Mode
-                  </>
-                ) : (
-                  <>
-                    <Moon className="w-5 h-5 mr-3" />
-                    Switch to Dark Mode
-                  </>
-                )}
-              </Button>
+              <div className="space-y-1">
+                <Button
+                  variant="ghost"
+                  onClick={toggleTheme}
+                  className="w-full justify-start text-gray-300 hover:bg-gray-800 hover:text-white"
+                >
+                  {theme === "dark" ? (
+                    <>
+                      <Sun className="w-5 h-5 mr-3" />
+                      Switch to Light Mode
+                    </>
+                  ) : (
+                    <>
+                      <Moon className="w-5 h-5 mr-3" />
+                      Switch to Dark Mode
+                    </>
+                  )}
+                </Button>
+                <button
+                  onClick={() => {
+                    // Handle notifications
+                    console.log('Open notifications panel');
+                  }}
+                  className="w-full flex items-center justify-start p-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors"
+                >
+                  <Bell className="w-5 h-5 mr-3" />
+                  <span>Notifications</span>
+                  <Badge variant="destructive" className="ml-auto text-xs">
+                    3
+                  </Badge>
+                </button>
+                <button
+                  onClick={() => {
+                    // Handle help
+                    console.log('Open help center');
+                  }}
+                  className="w-full flex items-center justify-start p-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors"
+                >
+                  <HelpCircle className="w-5 h-5 mr-3" />
+                  <span>Help & Support</span>
+                </button>
+              </div>
             </div>
           </div>
 
