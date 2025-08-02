@@ -39,7 +39,8 @@ import {
   CheckCircle,
   MessageSquare,
   FileText,
-  PlusCircle
+  PlusCircle,
+  User
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -580,7 +581,12 @@ export default function Dashboard() {
             <Card className="bg-gray-800 border-gray-700">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-lg text-white">Hot Leads</CardTitle>
-                <Button variant="ghost" size="sm" className="text-primary-600">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-primary-600 hover:text-primary-500 transition-colors"
+                  onClick={() => navigate('/leads')}
+                >
                   View All
                 </Button>
               </CardHeader>
@@ -604,12 +610,14 @@ export default function Dashboard() {
                       </div>
                       <Badge 
                         variant="secondary" 
-                        className={
-                          lead.score >= 90 ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100" :
-                          lead.score >= 70 ? "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100" :
-                          "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100"
-                        }
+                        className={`cursor-pointer transition-all duration-200 hover:scale-105 ${
+                          lead.score >= 90 ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100 hover:bg-emerald-200 dark:hover:bg-emerald-800" :
+                          lead.score >= 70 ? "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100 hover:bg-amber-200 dark:hover:bg-amber-800" :
+                          "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-800"
+                        }`}
+                        onClick={() => navigate(`/leads/${lead.id}`)}
                       >
+                        <Star className="w-3 h-3 mr-1" />
                         {lead.score}
                       </Badge>
                     </div>
@@ -626,14 +634,19 @@ export default function Dashboard() {
             <Card className="bg-gray-800 border-gray-700">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-lg text-white">Urgent Tasks</CardTitle>
-                <Button variant="ghost" size="sm" className="text-primary-600">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-primary-600 hover:text-primary-500 transition-colors"
+                  onClick={() => navigate('/tasks')}
+                >
                   View All
                 </Button>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {recentTasks?.filter(task => task.priority === 'high').slice(0, 3).map((task) => (
-                    <div key={task.id} className="flex items-start space-x-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <div key={task.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-200 cursor-pointer group" onClick={() => navigate(`/tasks/${task.id}`)}>
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                         task.type === 'call' ? 'bg-blue-100 dark:bg-blue-900' :
                         task.type === 'meeting' ? 'bg-purple-100 dark:bg-purple-900' :
@@ -654,24 +667,45 @@ export default function Dashboard() {
                         </p>
                       </div>
                       <div className="flex items-center space-x-2">
+                        <Badge 
+                          variant="outline" 
+                          className={`cursor-pointer transition-all duration-200 hover:scale-105 ${
+                            task.priority === 'high' ? 'border-red-500 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20' :
+                            task.priority === 'medium' ? 'border-amber-500 text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20' :
+                            'border-green-500 text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20'
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/tasks/${task.id}`);
+                          }}
+                        >
+                          <Clock className="w-3 h-3 mr-1" />
+                          {task.priority}
+                        </Badge>
                         {task.leadId && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => navigate(`/leads/${task.leadId}`)}
-                            className="h-8 text-xs"
+                          <Badge
+                            variant="secondary"
+                            className="cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-blue-100 dark:hover:bg-blue-900/20"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/leads/${task.leadId}`);
+                            }}
                           >
-                            View Lead
-                          </Button>
+                            <User className="w-3 h-3 mr-1" />
+                            Lead
+                          </Badge>
                         )}
                         <Button
                           variant={task.status === 'completed' ? "secondary" : "default"}
                           size="sm"
-                          onClick={() => handleCompleteTask(task)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCompleteTask(task);
+                          }}
                           disabled={completingTask === task.id}
-                          className="h-8 text-xs"
+                          className="h-8 text-xs transition-all duration-200 hover:scale-105"
                         >
-                          {completingTask === task.id ? "..." : task.status === 'completed' ? "Completed" : "Complete"}
+                          {completingTask === task.id ? "..." : task.status === 'completed' ? <CheckCircle className="w-3 h-3" /> : "Complete"}
                         </Button>
                       </div>
                     </div>
@@ -684,53 +718,84 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            {/* Pipeline Progress */}
+            {/* Recent Deals */}
             <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-lg text-white">Pipeline Progress</CardTitle>
-                <CardDescription>This month's deal progression</CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-lg text-white">Active Deals</CardTitle>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-primary-600 hover:text-primary-500 transition-colors"
+                  onClick={() => navigate('/deals')}
+                >
+                  View All
+                </Button>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Qualified Leads</span>
-                      <span className="text-sm text-gray-400">
-                        {recentLeads?.filter(lead => lead.status === 'qualified').length || 0}
-                      </span>
+                  {recentDeals?.slice(0, 3).map((deal) => (
+                    <div key={deal.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-200 cursor-pointer group" onClick={() => navigate(`/deals/${deal.id}`)}>
+                      <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                        <DollarSign className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-white truncate">
+                          Deal #{deal.id.slice(0, 8)}
+                        </p>
+                        <p className="text-sm text-gray-400">
+                          ${deal.dealValue?.toLocaleString()} • {deal.status === 'under_contract' ? 'Under Contract' : deal.status}
+                        </p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Badge 
+                          variant="outline" 
+                          className={`cursor-pointer transition-all duration-200 hover:scale-105 ${
+                            deal.status === 'under_contract' ? 'border-emerald-500 text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20' :
+                            deal.status === 'offer' ? 'border-blue-500 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20' :
+                            deal.status === 'closed' ? 'border-green-500 text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20' :
+                            'border-amber-500 text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20'
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/deals/${deal.id}`);
+                          }}
+                        >
+                          <TrendingUp className="w-3 h-3 mr-1" />
+                          {deal.status === 'under_contract' ? 'Contract' : deal.status}
+                        </Badge>
+                        {deal.leadId && (
+                          <Badge
+                            variant="secondary"
+                            className="cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-blue-100 dark:hover:bg-blue-900/20"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/leads/${deal.leadId}`);
+                            }}
+                          >
+                            <User className="w-3 h-3 mr-1" />
+                            Lead
+                          </Badge>
+                        )}
+                        {deal.propertyId && (
+                          <Badge
+                            variant="secondary"
+                            className="cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-orange-100 dark:hover:bg-orange-900/20"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/properties/${deal.propertyId}`);
+                            }}
+                          >
+                            <Building className="w-3 h-3 mr-1" />
+                            Property
+                          </Badge>
+                        )}
+                      </div>
                     </div>
-                    <Progress value={75} className="h-2" />
-                  </div>
-                  
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Active Deals</span>
-                      <span className="text-sm text-gray-400">
-                        {recentDeals?.filter(deal => deal.status === 'under_contract').length || 0}
-                      </span>
-                    </div>
-                    <Progress value={60} className="h-2" />
-                  </div>
-                  
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Closing Soon</span>
-                      <span className="text-sm text-gray-400">
-                        {recentDeals?.filter(deal => 
-                          deal.expectedCloseDate && 
-                          new Date(deal.expectedCloseDate) <= new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-                        ).length || 0}
-                      </span>
-                    </div>
-                    <Progress value={45} className="h-2" />
-                  </div>
-                  
-                  <div className="pt-2 border-t border-gray-700">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-white">Monthly Goal</span>
-                      <span className="text-sm font-bold text-primary-600">68%</span>
-                    </div>
-                  </div>
+                  )) || (
+                    <p className="text-gray-400 text-center py-4">
+                      No active deals
+                    </p>
+                  )}
                 </div>
               </CardContent>
             </Card>
