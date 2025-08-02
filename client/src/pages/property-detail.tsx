@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMobile } from "@/hooks/use-mobile";
 import { useEffect } from "react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import DesktopHeader from "@/components/layout/desktop-header";
+import ResponsiveHeader from "@/components/layout/responsive-header";
 import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -103,7 +103,7 @@ export default function PropertyDetail() {
   if (propertyLoading) {
     return (
       <div className="min-h-screen bg-gray-900 flex flex-col">
-        <DesktopHeader />
+        <ResponsiveHeader />
         <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
           <div className="flex items-center justify-center py-12">
             <div className="w-6 h-6 border-2 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
@@ -117,7 +117,7 @@ export default function PropertyDetail() {
   if (!typedProperty) {
     return (
       <div className="min-h-screen bg-gray-900 flex flex-col">
-        <DesktopHeader />
+        <ResponsiveHeader />
         <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
           <div className="text-center py-12">
             <Home className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -141,7 +141,7 @@ export default function PropertyDetail() {
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col">
-      <DesktopHeader />
+      <ResponsiveHeader />
       
       <main className="flex-1 overflow-y-auto pb-20 lg:pb-6">
         {/* Header */}

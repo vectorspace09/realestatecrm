@@ -2,7 +2,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
-import DesktopHeader from "@/components/layout/desktop-header";
+import ResponsiveHeader from "@/components/layout/responsive-header";
 import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
 import AIChat from "@/components/layout/ai-chat";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -298,7 +298,7 @@ export default function Tasks() {
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col">
-      <DesktopHeader />
+      <ResponsiveHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
           {/* Header */}

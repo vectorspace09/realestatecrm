@@ -2,7 +2,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
-import DesktopHeader from "@/components/layout/desktop-header";
+import ResponsiveHeader from "@/components/layout/responsive-header";
 import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -210,7 +210,7 @@ export default function AIAssistant() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <DesktopHeader />
+      <ResponsiveHeader />
       
       <div className="hidden lg:block">
         <main className="p-6 pb-20">

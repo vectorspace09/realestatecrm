@@ -255,3 +255,110 @@
 .safe-right {
   padding-right: env(safe-area-inset-right);
 }
+
+/* Enhanced Header and Navigation Responsive System */
+.responsive-header {
+  @apply sticky top-0 z-50 backdrop-blur-md transition-all duration-300;
+}
+
+.responsive-header.scrolled {
+  @apply shadow-lg shadow-gray-900/20;
+}
+
+/* Mobile Navigation Improvements */
+.mobile-nav-item {
+  @apply flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200;
+}
+
+.mobile-nav-item.active {
+  @apply text-blue-400 border border-blue-500;
+  background: linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2));
+}
+
+.mobile-nav-item:not(.active) {
+  @apply text-gray-300 hover:text-white;
+  background: transparent;
+}
+
+.mobile-nav-item:not(.active):hover {
+  background: rgba(55, 65, 81, 0.5);
+}
+
+/* Responsive Typography */
+.responsive-title {
+  @apply text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold;
+}
+
+.responsive-subtitle {
+  @apply text-sm sm:text-base md:text-lg;
+}
+
+.responsive-body {
+  @apply text-sm sm:text-base;
+}
+
+/* Enhanced Button System */
+.responsive-button {
+  @apply px-3 py-2 sm:px-4 sm:py-2.5 text-sm sm:text-base transition-all duration-200 active:scale-95;
+}
+
+.responsive-button-lg {
+  @apply px-4 py-3 sm:px-6 sm:py-3.5 text-base sm:text-lg transition-all duration-200 active:scale-95;
+}
+
+/* Responsive Grid System */
+.responsive-grid-1 {
+  @apply grid grid-cols-1 gap-4;
+}
+
+.responsive-grid-2 {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6;
+}
+
+.responsive-grid-3 {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6;
+}
+
+.responsive-grid-4 {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6;
+}
+
+/* Card Responsive System */
+.responsive-card {
+  @apply p-4 sm:p-6 lg:p-8 rounded-lg sm:rounded-xl;
+}
+
+.responsive-card-compact {
+  @apply p-3 sm:p-4 lg:p-5 rounded-lg;
+}
+
+/* Spacing System */
+.responsive-padding {
+  @apply px-4 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-6;
+}
+
+.responsive-margin {
+  @apply mx-4 my-3 sm:mx-6 sm:my-4 lg:mx-8 lg:my-6;
+}
+
+/* Form Elements */
+.responsive-input {
+  @apply px-3 py-2 sm:px-4 sm:py-2.5 text-sm sm:text-base;
+}
+
+.responsive-select {
+  @apply h-10 sm:h-11 px-3 sm:px-4 text-sm sm:text-base;
+}
+
+/* Avatar Responsive Sizes */
+.responsive-avatar-sm {
+  @apply w-8 h-8 sm:w-10 sm:h-10;
+}
+
+.responsive-avatar-md {
+  @apply w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16;
+}
+
+.responsive-avatar-lg {
+  @apply w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24;
+}

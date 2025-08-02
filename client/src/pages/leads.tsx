@@ -4,7 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMobile } from "@/hooks/use-mobile";
 import { useEffect, useState, useMemo } from "react";
 import { useLocation } from "wouter";
-import DesktopHeader from "@/components/layout/desktop-header";
+import ResponsiveHeader from "@/components/layout/responsive-header";
 import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -262,7 +262,7 @@ export default function Leads() {
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col">
-      <DesktopHeader />
+      <ResponsiveHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
           {/* Header - Mobile Optimized */}
