@@ -35,6 +35,7 @@ import {
   MessageSquare,
   FileText
 } from "lucide-react";
+import LeadForm from "@/components/forms/lead-form";
 import Pagination from "@/components/ui/pagination";
 
 export default function Leads() {
@@ -590,16 +591,16 @@ export default function Leads() {
       
       {/* Add/Edit Lead Dialog */}
       <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle>{editingLead ? 'Edit Lead' : 'Add New Lead'}</DialogTitle>
+            <DialogTitle>Add New Lead</DialogTitle>
             <DialogDescription>
-              {editingLead ? 'Update lead information and notes' : 'Enter the details for the new lead'}
+              Enter the details for the new lead
             </DialogDescription>
           </DialogHeader>
           
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <LeadForm onSuccess={() => setShowAddForm(false)} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="firstName">First Name *</Label>
                 <Input
@@ -620,7 +621,7 @@ export default function Leads() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="email">Email *</Label>
                 <Input
@@ -641,7 +642,7 @@ export default function Leads() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="source">Lead Source</Label>
                 <Select value={formData.source} onValueChange={(value) => setFormData({ ...formData, source: value })}>
@@ -677,7 +678,7 @@ export default function Leads() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="budget">Budget (Min)</Label>
                 <Input

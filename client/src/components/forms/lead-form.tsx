@@ -61,7 +61,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
         preferredLocations: selectedLocations,
         propertyTypes: selectedTypes,
       };
-      await apiRequest("POST", "/api/leads", leadData);
+      return await apiRequest("POST", "/api/leads", leadData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
@@ -121,7 +121,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {/* Basic Information */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="firstName"
@@ -151,7 +151,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="email"
@@ -181,7 +181,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="source"
@@ -237,7 +237,7 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
         </div>
 
         {/* Budget */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="budget"
@@ -278,15 +278,21 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
         {/* Preferred Locations */}
         <div>
           <FormLabel>Preferred Locations</FormLabel>
-          <div className="flex space-x-2 mt-2">
+          <div className="flex flex-col sm:flex-row gap-2 mt-2">
             <Input
               placeholder="Add a location"
               value={locationInput}
               onChange={(e) => setLocationInput(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addLocation())}
+              className="flex-1"
             />
-            <Button type="button" onClick={addLocation} variant="outline">
-              Add
+            <Button 
+              type="button" 
+              onClick={addLocation} 
+              variant="outline"
+              className="w-full sm:w-auto"
+            >
+              Add Location
             </Button>
           </div>
           {selectedLocations.length > 0 && (
@@ -307,9 +313,9 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
         {/* Property Types */}
         <div>
           <FormLabel>Property Types</FormLabel>
-          <div className="flex space-x-2 mt-2">
+          <div className="flex flex-col sm:flex-row gap-2 mt-2">
             <Select value={typeInput} onValueChange={setTypeInput}>
-              <SelectTrigger>
+              <SelectTrigger className="flex-1">
                 <SelectValue placeholder="Select property type" />
               </SelectTrigger>
               <SelectContent>
@@ -322,8 +328,13 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
                 <SelectItem value="commercial">Commercial</SelectItem>
               </SelectContent>
             </Select>
-            <Button type="button" onClick={addPropertyType} variant="outline">
-              Add
+            <Button 
+              type="button" 
+              onClick={addPropertyType} 
+              variant="outline"
+              className="w-full sm:w-auto"
+            >
+              Add Type
             </Button>
           </div>
           {selectedTypes.length > 0 && (
@@ -362,18 +373,19 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
         />
 
         {/* Submit Button */}
-        <div className="flex justify-end space-x-2">
+        <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
           <Button
             type="button"
             variant="outline"
             onClick={() => onSuccess?.()}
+            className="w-full sm:w-auto order-2 sm:order-1"
           >
             Cancel
           </Button>
           <Button
             type="submit"
             disabled={createLeadMutation.isPending}
-            className="bg-primary-600 hover:bg-primary-700"
+            className="bg-primary-600 hover:bg-primary-700 w-full sm:w-auto order-1 sm:order-2"
           >
             {createLeadMutation.isPending ? "Creating..." : "Create Lead"}
           </Button>
