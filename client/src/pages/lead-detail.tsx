@@ -4,8 +4,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useRoute } from "wouter";
-import Sidebar from "@/components/layout/sidebar";
-import Header from "@/components/layout/header";
+import ResponsiveHeader from "@/components/layout/responsive-header";
+import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
 import AIChat from "@/components/layout/ai-chat";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -381,13 +381,10 @@ export default function LeadDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex">
-      <Sidebar />
+    <div className="min-h-screen bg-gray-900 flex flex-col">
+      <ResponsiveHeader />
       
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header />
-        
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6">
+      <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6 space-y-6">
           {/* Lead Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center space-x-4">
@@ -908,8 +905,8 @@ export default function LeadDetail() {
             </Card>
           )}
         </main>
-      </div>
       
+      <MobileBottomTabs />
       <AIChat />
     </div>
   );
