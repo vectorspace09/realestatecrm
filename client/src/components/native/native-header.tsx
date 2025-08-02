@@ -4,23 +4,27 @@ import { Button } from "@/components/ui/button";
 interface NativeHeaderProps {
   title: string;
   onBack?: () => void;
+  onBackClick?: () => void;
   rightButton?: React.ReactNode;
   showBack?: boolean;
+  showBackButton?: boolean;
 }
 
 export default function NativeHeader({ 
   title, 
   onBack, 
+  onBackClick,
   rightButton, 
-  showBack = false 
+  showBack = false,
+  showBackButton = false
 }: NativeHeaderProps) {
   return (
     <div className="app-header">
       <div className="native-nav-header">
         <div className="w-10 h-10">
-          {showBack && (
+          {(showBack || showBackButton) && (
             <button
-              onClick={onBack}
+              onClick={onBack || onBackClick}
               className="native-nav-button"
             >
               <ArrowLeft className="w-5 h-5 text-white" />

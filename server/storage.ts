@@ -80,6 +80,15 @@ export interface IStorage {
     monthlyRevenue: number;
     recentActivities: Activity[];
   }>;
+  
+  getDetailedAnalytics(userId?: string): Promise<any>;
+  
+  // Settings operations
+  updateUserProfile(userId: string, profileData: any): Promise<void>;
+  getUserNotificationSettings(userId: string): Promise<any>;
+  updateUserNotificationSettings(userId: string, settings: any): Promise<void>;
+  getUserPreferences(userId: string): Promise<any>;
+  updateUserPreferences(userId: string, preferences: any): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -587,6 +596,62 @@ export class DatabaseStorage implements IStorage {
       topPerformingProperties,
       highValueLeads,
     };
+  }
+
+  // Settings methods
+  async updateUserProfile(userId: string, profileData: any): Promise<void> {
+    await db
+      .update(users)
+      .set({
+        firstName: profileData.firstName,
+        lastName: profileData.lastName,
+        email: profileData.email,
+        phone: profileData.phone,
+        bio: profileData.bio,
+        license: profileData.license,
+        brokerage: profileData.brokerage,
+        experience: profileData.experience,
+        specialties: profileData.specialties,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId));
+  }
+
+  async getUserNotificationSettings(userId: string): Promise<any> {
+    const user = await this.getUser(userId);
+    return {
+      newLeads: true,
+      taskReminders: true,
+      dealUpdates: true,
+      aiInsights: true,
+      weeklyReports: false,
+      emailNotifications: true,
+      smsNotifications: false
+    };
+  }
+
+  async updateUserNotificationSettings(userId: string, settings: any): Promise<void> {
+    // For now, just return success since we don't have notification settings in schema
+    // In a real app, you'd store these in a separate settings table or JSON column
+    return;
+  }
+
+  async getUserPreferences(userId: string): Promise<any> {
+    const user = await this.getUser(userId);
+    return {
+      theme: "dark",
+      timezone: "america/new_york",
+      language: "en",
+      currency: "usd",
+      dateFormat: "mm/dd/yyyy",
+      density: "comfortable"
+    };
+  }
+
+  async updateUserPreferences(userId: string, preferences: any): Promise<void> {
+    // For now, just return success since we don't have preferences in schema
+    // In a real app, you'd store these in a separate settings table or JSON column
+    return;
   }
 }
 

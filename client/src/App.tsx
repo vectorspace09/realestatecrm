@@ -28,6 +28,7 @@ const Analytics = lazy(() => import("@/pages/analytics"));
 const Communications = lazy(() => import("@/pages/communications"));
 const Integrations = lazy(() => import("@/pages/integrations"));
 const Settings = lazy(() => import("@/pages/settings"));
+const NativeSettings = lazy(() => import("@/pages/native-settings"));
 
 // Loading component for lazy routes
 import PageSkeleton from "@/components/loading/page-skeleton";
@@ -42,6 +43,7 @@ function Router() {
   const LeadsComponent = isMobile ? NativeLeads : Leads;
   const PropertiesComponent = isMobile ? NativeProperties : Properties;
   const DealsComponent = isMobile ? NativeDeals : Deals;
+  const SettingsComponent = isMobile ? NativeSettings : Settings;
 
   return (
     <Switch>
@@ -61,7 +63,7 @@ function Router() {
           <Route path="/analytics" component={Analytics} />
           <Route path="/communications" component={Communications} />
           <Route path="/integrations" component={Integrations} />
-          <Route path="/settings" component={Settings} />
+          <Route path="/settings" component={SettingsComponent} />
         </Suspense>
       )}
       <Route component={NotFound} />
