@@ -1,12 +1,14 @@
-import { Home, Users, Building, HandCoins, Settings, MessageCircle } from "lucide-react";
+import { Home, Users, Building, HandCoins, Settings, MessageCircle, Menu } from "lucide-react";
 import { useLocation } from "wouter";
+import { useState } from "react";
+import { MobileMenuTrigger } from "@/components/ui/mobile-menu";
 
 const tabs = [
   { id: "/", icon: Home, label: "Home" },
   { id: "/leads", icon: Users, label: "Leads" },
   { id: "/properties", icon: Building, label: "Properties" },
   { id: "/deals", icon: HandCoins, label: "Deals" },
-  { id: "/settings", icon: Settings, label: "Settings" },
+  { type: "menu", icon: Menu, label: "More" },
 ];
 
 export default function NativeBottomTabs() {
@@ -15,8 +17,20 @@ export default function NativeBottomTabs() {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 z-50 shadow-lg">
       <div className="flex items-center justify-around py-2 px-4 pb-safe">
-        {tabs.map((tab) => {
+        {tabs.map((tab, index) => {
           const Icon = tab.icon;
+          
+          if (tab.type === "menu") {
+            return (
+              <div key="menu" className="flex flex-col items-center justify-center py-2 px-1">
+                <MobileMenuTrigger />
+                <span className="text-xs mt-1 font-medium text-gray-500 dark:text-gray-400">
+                  {tab.label}
+                </span>
+              </div>
+            );
+          }
+          
           const isActive = location === tab.id || (tab.id !== "/" && location.startsWith(tab.id));
           
           return (

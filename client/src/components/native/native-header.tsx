@@ -1,5 +1,7 @@
-import { ArrowLeft, MoreHorizontal } from "lucide-react";
+import { ArrowLeft, MoreHorizontal, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import MobileMenu from "@/components/ui/mobile-menu";
 
 interface NativeHeaderProps {
   title: string;
@@ -8,6 +10,7 @@ interface NativeHeaderProps {
   rightButton?: React.ReactNode;
   showBack?: boolean;
   showBackButton?: boolean;
+  showMenu?: boolean;
 }
 
 export default function NativeHeader({ 
@@ -16,32 +19,49 @@ export default function NativeHeader({
   onBackClick,
   rightButton, 
   showBack = false,
-  showBackButton = false
+  showBackButton = false,
+  showMenu = true
 }: NativeHeaderProps) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
-    <div className="app-header">
-      <div className="native-nav-header">
-        <div className="w-10 h-10">
-          {(showBack || showBackButton) && (
-            <button
-              onClick={onBack || onBackClick}
-              className="native-nav-button"
-            >
-              <ArrowLeft className="w-5 h-5 text-white" />
-            </button>
-          )}
-        </div>
-        
-        <h1 className="native-nav-title">{title}</h1>
-        
-        <div className="w-10 h-10">
-          {rightButton || (
-            <button className="native-nav-button">
-              <MoreHorizontal className="w-5 h-5 text-gray-400" />
-            </button>
-          )}
+    <>
+      <div className="app-header">
+        <div className="native-nav-header">
+          <div className="w-10 h-10">
+            {(showBack || showBackButton) ? (
+              <button
+                onClick={onBack || onBackClick}
+                className="native-nav-button"
+              >
+                <ArrowLeft className="w-5 h-5 text-white" />
+              </button>
+            ) : showMenu ? (
+              <button
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="native-nav-button"
+              >
+                <Menu className="w-5 h-5 text-white" />
+              </button>
+            ) : null}
+          </div>
+          
+          <h1 className="native-nav-title">{title}</h1>
+          
+          <div className="w-10 h-10">
+            {rightButton || (
+              <button className="native-nav-button">
+                <MoreHorizontal className="w-5 h-5 text-gray-400" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      
+      <MobileMenu 
+        isOpen={isMobileMenuOpen} 
+        onClose={() => setIsMobileMenuOpen(false)} 
+      />
+    </>
   );
 }

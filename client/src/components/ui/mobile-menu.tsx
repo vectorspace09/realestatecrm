@@ -197,14 +197,12 @@ export function MobileMenuTrigger() {
 
   return (
     <>
-      <Button
-        variant="ghost"
-        size="sm"
+      <button
         onClick={() => setIsMenuOpen(true)}
-        className="lg:hidden text-gray-400 hover:text-white h-10 w-10 p-0"
+        className="flex flex-col items-center justify-center py-1 px-1 rounded-lg transition-all duration-200 active:scale-95 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
       >
-        <Menu className="w-5 h-5" />
-      </Button>
+        <Menu className="w-6 h-6" />
+      </button>
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </>
   );
