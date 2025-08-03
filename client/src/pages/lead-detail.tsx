@@ -361,62 +361,64 @@ export default function LeadDetail() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "new": return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100";
-      case "contacted": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100";
-      case "qualified": return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100";
-      case "proposal": return "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-100";
-      case "negotiation": return "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100";
-      case "won": return "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100";
-      case "lost": return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100";
-      default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100";
+      case "new": return "bg-primary-100 text-primary-800 border-primary-200";
+      case "contacted": return "bg-warning/20 text-warning border-warning/30";
+      case "qualified": return "bg-purple-100 text-purple-800 border-purple-200";
+      case "proposal": return "bg-orange-100 text-orange-800 border-orange-200";
+      case "negotiation": return "bg-amber-100 text-amber-800 border-amber-200";
+      case "won": return "bg-success/20 text-success border-success/30";
+      case "closed": return "bg-success/20 text-success border-success/30";
+      case "lost": return "bg-destructive/20 text-destructive border-destructive/30";
+      default: return "bg-muted text-muted-foreground border-border";
     }
   };
 
   const getScoreColor = (score: number | null | undefined) => {
     const normalizedScore = score || 0;
-    if (normalizedScore >= 90) return "text-emerald-600 dark:text-emerald-400";
-    if (normalizedScore >= 70) return "text-amber-600 dark:text-amber-400";
-    if (normalizedScore >= 50) return "text-orange-600 dark:text-orange-400";
-    return "text-red-600 dark:text-red-400";
+    if (normalizedScore >= 90) return "text-success";
+    if (normalizedScore >= 70) return "text-warning";
+    if (normalizedScore >= 50) return "text-orange-500";
+    return "text-destructive";
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <ResponsiveHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6 space-y-6">
-          {/* Lead Header */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-                {(lead as any)?.firstName?.charAt(0)}{(lead as any)?.lastName?.charAt(0)}
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-white">
-                  {(lead as any)?.firstName} {(lead as any)?.lastName}
-                </h1>
-                <div className="flex items-center space-x-3 mt-2">
-                  <Badge className={getStatusColor((lead as any)?.status)}>
-                    {(lead as any)?.status?.charAt(0).toUpperCase() + (lead as any)?.status?.slice(1)}
-                  </Badge>
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-500" />
-                    <span className={`font-semibold ${getScoreColor((lead as any)?.score)}`}>
-                      {((lead as any)?.score != null && !isNaN((lead as any)?.score)) ? (lead as any)?.score : 0}/100
-                    </span>
+          {/* Lead Header - Professional Design */}
+          <div className="bg-card border border-border rounded-xl p-6 shadow-lg">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-center space-x-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                  {(lead as any)?.firstName?.charAt(0) || 'L'}{(lead as any)?.lastName?.charAt(0) || 'D'}
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-foreground mb-2">
+                    {(lead as any)?.firstName || 'Unknown'} {(lead as any)?.lastName || 'Lead'}
+                  </h1>
+                  <div className="flex items-center space-x-4">
+                    <Badge className={getStatusColor((lead as any)?.status)}>
+                      {(lead as any)?.status?.charAt(0).toUpperCase() + (lead as any)?.status?.slice(1)}
+                    </Badge>
+                    <div className="flex items-center space-x-2">
+                      <Star className="w-5 h-5 text-warning" />
+                      <span className={`font-semibold text-lg ${getScoreColor((lead as any)?.score)}`}>
+                        {((lead as any)?.score != null && !isNaN((lead as any)?.score)) ? (lead as any)?.score : 0}/100
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            
-            <div className="flex items-center space-x-3 mt-4 lg:mt-0">
-              <Dialog open={isActionDialogOpen} onOpenChange={setIsActionDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button variant="outline">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Record Action
-                  </Button>
-                </DialogTrigger>
+              
+              <div className="flex items-center space-x-3 mt-6 lg:mt-0">
+                <Dialog open={isActionDialogOpen} onOpenChange={setIsActionDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="bg-primary hover:bg-primary-600 text-primary-foreground border-0 shadow-lg">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Record Action
+                    </Button>
+                  </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Record New Action</DialogTitle>
@@ -503,13 +505,13 @@ export default function LeadDetail() {
                 </DialogContent>
               </Dialog>
 
-              <Dialog open={isMessageDialogOpen} onOpenChange={setIsMessageDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button className="bg-primary-600 hover:bg-primary-700">
-                    <MessageSquare className="w-4 h-4 mr-2" />
-                    Send Message
-                  </Button>
-                </DialogTrigger>
+                <Dialog open={isMessageDialogOpen} onOpenChange={setIsMessageDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" className="border-border bg-secondary hover:bg-secondary/80 text-secondary-foreground">
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                      Send Message
+                    </Button>
+                  </DialogTrigger>
                 <DialogContent className="sm:max-w-[600px]">
                   <DialogHeader>
                     <DialogTitle>Send Message</DialogTitle>
@@ -652,61 +654,61 @@ export default function LeadDetail() {
             {/* Lead Information */}
             <div className="lg:col-span-1 space-y-6">
               {/* Contact Information */}
-              <Card>
+              <Card className="bg-card border border-border shadow-lg">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <User className="w-5 h-5 mr-2" />
+                  <CardTitle className="flex items-center text-card-foreground">
+                    <User className="w-5 h-5 mr-2 text-primary" />
                     Contact Information
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center space-x-3">
-                    <Mail className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm">{(lead as any)?.email}</span>
+                    <Mail className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-card-foreground">{(lead as any)?.email || 'No email'}</span>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <Phone className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm">{(lead as any)?.phone}</span>
+                    <Phone className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-card-foreground">{(lead as any)?.phone || 'No phone'}</span>
                   </div>
                   {(lead as any)?.location && (
                     <div className="flex items-center space-x-3">
-                      <MapPin className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm">{(lead as any)?.location}</span>
+                      <MapPin className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-card-foreground">{(lead as any)?.location}</span>
                     </div>
                   )}
                 </CardContent>
               </Card>
 
               {/* Lead Details */}
-              <Card>
+              <Card className="bg-card border border-border shadow-lg">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Target className="w-5 h-5 mr-2" />
+                  <CardTitle className="flex items-center text-card-foreground">
+                    <Target className="w-5 h-5 mr-2 text-primary" />
                     Lead Details
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-400">Budget</span>
-                    <span className="font-medium">${(lead as any)?.budget?.toLocaleString()}</span>
+                    <span className="text-sm text-muted-foreground">Budget</span>
+                    <span className="font-medium text-card-foreground">${(lead as any)?.budget?.toLocaleString() || 'Not specified'}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-400">Property Types</span>
+                    <span className="text-sm text-muted-foreground">Property Types</span>
                     <div className="flex flex-wrap gap-1">
                       {(lead as any)?.propertyTypes?.map((type: string, index: number) => (
-                        <Badge key={index} variant="outline" className="text-xs">
+                        <Badge key={index} variant="outline" className="text-xs border-primary/30 text-primary">
                           {type}
                         </Badge>
-                      ))}
+                      )) || <span className="text-card-foreground text-sm">None specified</span>}
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-400">Timeline</span>
-                    <span className="font-medium">{(lead as any)?.timeline}</span>
+                    <span className="text-sm text-muted-foreground">Timeline</span>
+                    <span className="font-medium text-card-foreground">{(lead as any)?.timeline || 'Not specified'}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-400">Source</span>
-                    <span className="font-medium">{(lead as any)?.source}</span>
+                    <span className="text-sm text-muted-foreground">Source</span>
+                    <span className="font-medium text-card-foreground">{(lead as any)?.source || 'Unknown'}</span>
                   </div>
                 </CardContent>
               </Card>

@@ -199,7 +199,7 @@ export default function Dashboard() {
   const overdueTask = pendingTasks.find(task => new Date(task.dueDate) < new Date());
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <ResponsiveHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6 pb-20 lg:pb-6">

@@ -3,26 +3,55 @@
 @tailwind utilities;
 
 :root {
-  --background: hsl(240, 10%, 3.9%);
-  --foreground: hsl(0, 0%, 98%);
-  --muted: hsl(240, 3.7%, 15.9%);
-  --muted-foreground: hsl(240, 5%, 64.9%);
-  --popover: hsl(240, 10%, 3.9%);
-  --popover-foreground: hsl(0, 0%, 98%);
-  --card: hsl(240, 10%, 3.9%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --border: hsl(240, 3.7%, 15.9%);
-  --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(240, 3.7%, 15.9%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --accent: hsl(240, 3.7%, 15.9%);
-  --accent-foreground: hsl(0, 0%, 98%);
-  --destructive: hsl(0, 62.8%, 30.6%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(240, 4.9%, 83.9%);
-  --radius: 0.5rem;
+  /* Modern Professional Color Palette */
+  --background: hsl(220, 13%, 8%);
+  --foreground: hsl(220, 13%, 95%);
+  --muted: hsl(220, 13%, 15%);
+  --muted-foreground: hsl(220, 13%, 65%);
+  --popover: hsl(220, 13%, 10%);
+  --popover-foreground: hsl(220, 13%, 95%);
+  --card: hsl(220, 13%, 10%);
+  --card-foreground: hsl(220, 13%, 95%);
+  --border: hsl(220, 13%, 20%);
+  --input: hsl(220, 13%, 15%);
+  
+  /* Professional Blue Primary */
+  --primary: hsl(212, 100%, 50%);
+  --primary-foreground: hsl(220, 13%, 98%);
+  --primary-50: hsl(214, 100%, 97%);
+  --primary-100: hsl(214, 95%, 93%);
+  --primary-200: hsl(213, 97%, 87%);
+  --primary-300: hsl(212, 96%, 78%);
+  --primary-400: hsl(213, 94%, 68%);
+  --primary-500: hsl(212, 100%, 50%);
+  --primary-600: hsl(212, 100%, 45%);
+  --primary-700: hsl(212, 100%, 40%);
+  --primary-800: hsl(212, 100%, 30%);
+  --primary-900: hsl(212, 84%, 25%);
+  
+  /* Professional Secondary */
+  --secondary: hsl(220, 13%, 18%);
+  --secondary-foreground: hsl(220, 13%, 95%);
+  
+  /* Success Green */
+  --success: hsl(142, 76%, 36%);
+  --success-foreground: hsl(220, 13%, 98%);
+  
+  /* Warning Orange */
+  --warning: hsl(38, 92%, 50%);
+  --warning-foreground: hsl(220, 13%, 98%);
+  
+  /* Accent Colors */
+  --accent: hsl(220, 13%, 18%);
+  --accent-foreground: hsl(220, 13%, 95%);
+  
+  /* Destructive Red */
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(220, 13%, 98%);
+  
+  /* Ring and Radius */
+  --ring: hsl(212, 100%, 50%);
+  --radius: 0.75rem;
 }
 
 @layer base {
@@ -72,6 +101,29 @@
   /* Mobile-friendly card spacing */
   .mobile-card {
     @apply p-4 sm:p-6 rounded-lg;
+  }
+
+  /* Professional card styling */
+  .professional-card {
+    @apply bg-card border border-border shadow-lg rounded-xl;
+  }
+
+  /* Professional button variants */
+  .btn-primary-professional {
+    @apply bg-primary hover:bg-primary-600 text-primary-foreground border-0 shadow-lg;
+  }
+
+  .btn-secondary-professional {
+    @apply border-border bg-secondary hover:bg-secondary/80 text-secondary-foreground;
+  }
+
+  /* Professional color scheme for gradients */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(212, 100%, 50%) 0%, hsl(212, 100%, 45%) 100%);
+  }
+
+  .gradient-card {
+    background: linear-gradient(135deg, hsl(220, 13%, 10%) 0%, hsl(220, 13%, 12%) 100%);
   }
 
   /* Improved mobile touch targets */
