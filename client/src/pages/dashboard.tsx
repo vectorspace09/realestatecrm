@@ -8,6 +8,8 @@ import { useEffect, useState, useMemo } from "react";
 import { useLocation } from "wouter";
 import ResponsiveHeader from "@/components/layout/responsive-header";
 import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
+import CommandBar from "@/components/ai-first/command-bar";
+import ContextualFAB from "@/components/ai-first/contextual-fab";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -202,6 +204,11 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background flex flex-col">
       <ResponsiveHeader />
       
+      {/* Command Bar - AI-First Navigation */}
+      <div className="px-4 lg:px-6 pt-4">
+        <CommandBar />
+      </div>
+
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6 pb-20 lg:pb-6">
         {/* Welcome Header - Mobile Optimized */}
           <div className="flex flex-col space-y-4">
@@ -842,6 +849,7 @@ export default function Dashboard() {
       </main>
       
       <MobileBottomTabs />
+      <ContextualFAB />
     </div>
   );
 }
