@@ -303,14 +303,16 @@ export default function Leads() {
                 </div>
               </div>
               
-              <div className="overflow-x-auto">
-                <KanbanBoard
-                  columns={LEAD_STATUSES}
-                  items={groupedLeads}
-                  onItemMove={handleLeadMove}
-                  isLoading={leadsLoading}
-                  itemType="lead"
-                />
+              <div className="overflow-x-auto pb-4" style={{ minHeight: '600px' }}>
+                <div style={{ minWidth: '1200px' }}>
+                  <KanbanBoard
+                    columns={LEAD_STATUSES}
+                    items={groupedLeads}
+                    onItemMove={handleLeadMove}
+                    isLoading={leadsLoading}
+                    itemType="lead"
+                  />
+                </div>
               </div>
             </div>
           ) : (
