@@ -61,7 +61,10 @@ export default function LeadForm({ onSuccess }: LeadFormProps) {
         preferredLocations: selectedLocations,
         propertyTypes: selectedTypes,
       };
-      return await apiRequest("POST", "/api/leads", leadData);
+      return await apiRequest("/api/leads", {
+        method: "POST",
+        body: leadData
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/leads"] });

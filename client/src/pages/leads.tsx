@@ -73,57 +73,7 @@ export default function Leads() {
     gcTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  const addLeadMutation = useMutation({
-    mutationFn: async (leadData: any) => {
-      const response = await apiRequest("/api/leads", {
-        method: "POST",
-        body: leadData
-      });
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
-      toast({
-        title: "Success",
-        description: "Lead added successfully",
-      });
-      setShowAddForm(false);
-      resetForm();
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: "Failed to add lead: " + error.message,
-        variant: "destructive",
-      });
-    },
-  });
 
-  const updateLeadMutation = useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: any }) => {
-      const response = await apiRequest(`/api/leads/${id}`, {
-        method: "PATCH",
-        body: data
-      });
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
-      toast({
-        title: "Success",
-        description: "Lead updated successfully",
-      });
-      setEditingLead(null);
-      resetForm();
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: "Failed to update lead: " + error.message,
-        variant: "destructive",
-      });
-    },
-  });
 
   // Lead status update mutation for Kanban
   const updateLeadStatusMutation = useMutation({
