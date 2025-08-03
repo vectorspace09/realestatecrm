@@ -80,7 +80,7 @@ export default function AIAssistantPage() {
   // AI Chat mutation
   const chatMutation = useMutation({
     mutationFn: async (userMessage: string) => {
-      return await apiRequest("/api/ai/chat", {
+      const response = await apiRequest("/api/ai/chat", {
         method: "POST",
         body: { 
           message: userMessage, 
@@ -90,22 +90,25 @@ export default function AIAssistantPage() {
           } 
         },
       });
+      return response.json();
     },
-    onSuccess: (response: any) => {
+    onSuccess: (data: any) => {
+      console.log("AI Response received:", data);
       const aiResponse: Message = {
         id: Date.now(),
         type: "ai",
-        content: response.response || "I'm here to help! What would you like to know?",
+        content: data.response || data.message || "I'm here to help! What would you like to know?",
         timestamp: new Date(),
-        actions: generateActionButtons(response.response)
+        actions: generateActionButtons(data.response || data.message || "")
       };
       setMessages(prev => [...prev, aiResponse]);
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error("AI Chat Error:", error);
       const errorResponse: Message = {
         id: Date.now(),
         type: "ai", 
-        content: "I'm experiencing some technical difficulties. Please try again in a moment.",
+        content: `I'm experiencing some technical difficulties. Please try again in a moment. (Error: ${error.message || 'Unknown error'})`,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorResponse]);

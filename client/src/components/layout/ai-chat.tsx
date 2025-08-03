@@ -50,21 +50,23 @@ export default function AIChat() {
         }
       };
       
-      return await apiRequest("/api/ai/chat", {
+      const response = await apiRequest("/api/ai/chat", {
         method: "POST",
         body: { message: userMessage, context },
       });
+      return response.json();
     },
-    onSuccess: (response: any) => {
+    onSuccess: (data: any) => {
       const aiResponse = {
         id: messages.length + 1,
         type: "ai",
-        content: response.response || "I'm here to help! What would you like to know?",
+        content: data.response || "I'm here to help! What would you like to know?",
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiResponse]);
     },
     onError: (error) => {
+      console.error("AI Chat Error:", error);
       const errorResponse = {
         id: messages.length + 1,
         type: "ai", 
