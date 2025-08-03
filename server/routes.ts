@@ -5,6 +5,7 @@ import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertLeadSchema, insertPropertySchema, insertDealSchema, insertTaskSchema, insertNotificationSchema } from "@shared/schema";
 import { scoreLeadWithAI, matchPropertyToLead, generateFollowUpMessage, getAIInsights, generateLeadMessage, generateLeadRecommendations, generateContextualAIResponse, generateNextAction } from "./openai";
 import { NotificationService } from "./notification-service";
+import { ObjectStorageService, ObjectNotFoundError } from "./objectStorage";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -544,7 +545,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error("Error in AI chat:", error);
       res.status(500).json({ 
         message: "Failed to process AI chat",
-        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        error: process.env.NODE_ENV === 'development' ? (error as Error).message : undefined
       });
     }
   });
@@ -706,7 +707,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get AI insights
   app.get("/api/ai/insights", isAuthenticated, async (req, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user?.claims?.sub;
       const analytics = await storage.getDetailedAnalytics(userId);
       
       const insights = [
@@ -778,7 +779,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         response = `Your conversion rate is ${conversionRate}% with ${qualifiedLeads} qualified leads out of ${leads.length} total leads. This indicates ${conversionRate > 20 ? 'strong' : 'moderate'} lead quality.`;
         suggestions = ["Improve lead scoring", "Analyze lead sources", "Optimize follow-up process"];
       } else if (queryLower.includes('today') || queryLower.includes('priority') || queryLower.includes('call')) {
-        const highPriorityLeads = leads.filter(lead => lead.score >= 80 && ['new', 'contacted'].includes(lead.status));
+        const highPriorityLeads = leads.filter(lead => (lead.score || 0) >= 80 && ['new', 'contacted'].includes(lead.status || ''));
         response = `You should prioritize ${highPriorityLeads.length} high-scoring leads today. Focus on warm prospects who haven't been fully qualified yet.`;
         data = { leads: highPriorityLeads };
         suggestions = ["Create call tasks", "Send follow-up emails", "Schedule meetings"];
@@ -796,6 +797,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error processing AI query:", error);
       res.status(500).json({ message: "Failed to process query" });
+    }
+  });
+
+  // Object Storage routes for property images
+  app.get("/public-objects/:filePath(*)", async (req, res) => {
+    const filePath = req.params.filePath;
+    const objectStorageService = new ObjectStorageService();
+    try {
+      const file = await objectStorageService.searchPublicObject(filePath);
+      if (!file) {
+        return res.status(404).json({ error: "File not found" });
+      }
+      objectStorageService.downloadObject(file, res);
+    } catch (error) {
+      console.error("Error searching for public object:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.get("/objects/:objectPath(*)", isAuthenticated, async (req, res) => {
+    const userId = req.user?.claims?.sub;
+    const objectStorageService = new ObjectStorageService();
+    try {
+      const objectFile = await objectStorageService.getObjectEntityFile(req.path);
+      const canAccess = await objectStorageService.canAccessObjectEntity({
+        objectFile,
+        userId: userId,
+      });
+      if (!canAccess) {
+        return res.sendStatus(401);
+      }
+      objectStorageService.downloadObject(objectFile, res);
+    } catch (error) {
+      console.error("Error checking object access:", error);
+      if (error instanceof ObjectNotFoundError) {
+        return res.sendStatus(404);
+      }
+      return res.sendStatus(500);
+    }
+  });
+
+  app.post("/api/objects/upload", isAuthenticated, async (req, res) => {
+    const objectStorageService = new ObjectStorageService();
+    try {
+      const uploadURL = await objectStorageService.getObjectEntityUploadURL();
+      res.json({ uploadURL });
+    } catch (error) {
+      console.error("Error getting upload URL:", error);
+      res.status(500).json({ error: "Failed to get upload URL" });
+    }
+  });
+
+  app.put("/api/property-images", isAuthenticated, async (req, res) => {
+    if (!req.body.imageURL) {
+      return res.status(400).json({ error: "imageURL is required" });
+    }
+
+    const userId = req.user?.claims?.sub;
+
+    try {
+      const objectStorageService = new ObjectStorageService();
+      const objectPath = await objectStorageService.trySetObjectEntityAclPolicy(
+        req.body.imageURL,
+        {
+          owner: userId,
+          visibility: "public", // Property images should be public
+        },
+      );
+
+      res.status(200).json({
+        objectPath: objectPath,
+      });
+    } catch (error) {
+      console.error("Error setting property image:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
   });
 

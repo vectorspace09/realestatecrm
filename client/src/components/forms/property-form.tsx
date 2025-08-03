@@ -11,9 +11,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
+import { ObjectUploader } from "@/components/ObjectUploader";
+import { X, Upload, Image } from "lucide-react";
 import { insertPropertySchema } from "@shared/schema";
 import { z } from "zod";
+import type { UploadResult } from "@uppy/core";
 
 const propertyFormSchema = insertPropertySchema.extend({
   price: z.string().min(1, "Price is required"),
@@ -35,6 +37,7 @@ export default function PropertyForm({ onSuccess }: PropertyFormProps) {
   const queryClient = useQueryClient();
   const [featureInput, setFeatureInput] = useState("");
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   const form = useForm<z.infer<typeof propertyFormSchema>>({
     resolver: zodResolver(propertyFormSchema),
@@ -72,6 +75,7 @@ export default function PropertyForm({ onSuccess }: PropertyFormProps) {
         yearBuilt: data.yearBuilt ? parseInt(data.yearBuilt) : null,
         commission: data.commission ? parseFloat(data.commission) : null,
         features: selectedFeatures,
+        images: uploadedImages,
       };
       await apiRequest("POST", "/api/properties", propertyData);
     },
@@ -424,6 +428,66 @@ export default function PropertyForm({ onSuccess }: PropertyFormProps) {
             </FormItem>
           )}
         />
+
+        {/* Image Upload Section */}
+        <div className="space-y-4">
+          <FormLabel className="flex items-center gap-2">
+            <Image className="w-4 h-4" />
+            Property Images
+          </FormLabel>
+          <div className="flex flex-col gap-4">
+            <ObjectUploader
+              maxNumberOfFiles={5}
+              maxFileSize={10485760}
+              onGetUploadParameters={async () => {
+                const response = await apiRequest("POST", "/api/objects/upload");
+                return {
+                  method: "PUT" as const,
+                  url: response.uploadURL,
+                };
+              }}
+              onComplete={(result) => {
+                const uploadedUrls = result.successful.map(file => file.uploadURL);
+                setUploadedImages(prev => [...prev, ...uploadedUrls]);
+                toast({
+                  title: "Success",
+                  description: `${result.successful.length} image(s) uploaded successfully`,
+                });
+              }}
+              buttonClassName="w-full"
+            >
+              <div className="flex items-center gap-2">
+                <Upload className="w-4 h-4" />
+                Upload Property Images
+              </div>
+            </ObjectUploader>
+            
+            {uploadedImages.length > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {uploadedImages.map((imageUrl, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={imageUrl}
+                      alt={`Property image ${index + 1}`}
+                      className="w-full h-24 object-cover rounded-lg border"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => {
+                        setUploadedImages(prev => prev.filter((_, i) => i !== index));
+                      }}
+                    >
+                      <X className="w-3 h-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Submit Button */}
         <div className="flex justify-end space-x-2">
