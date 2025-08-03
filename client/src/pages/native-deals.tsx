@@ -6,7 +6,6 @@ import { isUnauthorizedError } from "@/lib/authUtils";
 import { useLocation } from "wouter";
 import NativeHeader from "@/components/native/native-header";
 import NativeBottomTabs from "@/components/native/native-bottom-tabs";
-import AIChat from "@/components/layout/ai-chat";
 import NativeCard from "@/components/native/native-card";
 import NativeSearchBar from "@/components/native/native-search-bar";
 import NativeFloatingActionButton from "@/components/native/native-floating-action-button";
@@ -332,7 +331,6 @@ export default function NativeDeals() {
       />
       
       <NativeBottomTabs />
-      <AIChat />
     </div>
   );
 }

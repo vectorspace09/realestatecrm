@@ -8,7 +8,6 @@ import { useLocation } from "wouter";
 import { apiRequest } from "@/lib/queryClient";
 import NativeHeader from "@/components/native/native-header";
 import NativeBottomTabs from "@/components/native/native-bottom-tabs";
-import AIChat from "@/components/layout/ai-chat";
 import NativeCard from "@/components/native/native-card";
 import NativeListItem from "@/components/native/native-list-item";
 import { Input } from "@/components/ui/input";
@@ -371,7 +370,6 @@ export default function NativeLeads() {
       </div>
       
       <NativeBottomTabs />
-      <AIChat />
     </div>
   );
 }

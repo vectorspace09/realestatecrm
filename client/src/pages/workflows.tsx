@@ -3,7 +3,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 import ResponsiveHeader from "@/components/layout/responsive-header";
 import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
-import AIChat from "@/components/layout/ai-chat";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Zap, Clock, Wrench } from "lucide-react";
@@ -224,7 +223,6 @@ export default function WorkflowBuilder() {
         </main>
 
       <MobileBottomTabs />
-      <AIChat />
     </div>
   );
 }

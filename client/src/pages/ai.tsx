@@ -268,58 +268,7 @@ export default function AIAssistantPage() {
       />
       
       <div className="p-4 space-y-4 pb-20">
-        {/* Dynamic Greeting Card */}
-        <Card className="bg-gradient-to-r from-primary-500 to-purple-600 text-white border-0">
-          <CardContent className="p-4">
-            <div className="flex items-start space-x-3">
-              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                <Bot className="w-5 h-5" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium leading-relaxed whitespace-pre-line">
-                  {getDynamicGreeting()}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Quick Insight Cards */}
-        <div className="space-y-3">
-          <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 px-1">
-            Quick Insights
-          </h3>
-          <ScrollArea className="w-full">
-            <div className="flex space-x-3 pb-2">
-              {insightCards.map((card) => {
-                const IconComponent = card.icon;
-                return (
-                  <Card key={card.id} className="flex-shrink-0 w-32 bg-white dark:bg-gray-800">
-                    <CardContent className="p-3">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <div className={`w-6 h-6 ${card.color} rounded-full flex items-center justify-center`}>
-                          <IconComponent className="w-3 h-3 text-white" />
-                        </div>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-xs text-gray-600 dark:text-gray-400">{card.title}</p>
-                        <p className="text-lg font-bold text-gray-900 dark:text-white">{card.value}</p>
-                        {card.change && (
-                          <p className={`text-xs ${card.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
-                            {card.change}
-                          </p>
-                        )}
-                        <Button variant="ghost" size="sm" className="h-6 text-xs p-1 w-full">
-                          {card.action} <ArrowRight className="w-3 h-3 ml-1" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </ScrollArea>
-        </div>
 
         {/* Conversation Area */}
         <Card className="bg-white dark:bg-gray-800">
@@ -360,7 +309,24 @@ export default function AIAssistantPage() {
                                 variant={action.variant || "outline"}
                                 size="sm"
                                 className="h-7 text-xs"
-                                onClick={() => console.log(`Action: ${action.action}`)}
+                                onClick={() => {
+                                  console.log(`Action: ${action.action}`);
+                                  // Handle different actions
+                                  if (action.action === 'show-leads') {
+                                    window.location.href = '/leads';
+                                  } else if (action.action === 'view-properties') {
+                                    window.location.href = '/properties';
+                                  } else if (action.action === 'email-summary') {
+                                    // Create a summary email template
+                                    const subject = 'Real Estate Summary Report';
+                                    const body = encodeURIComponent('Here is your real estate summary...');
+                                    window.open(`mailto:?subject=${subject}&body=${body}`);
+                                  } else if (action.action === 'share-whatsapp') {
+                                    // Share via WhatsApp
+                                    const text = encodeURIComponent('Check out these properties under $800,000');
+                                    window.open(`https://wa.me/?text=${text}`);
+                                  }
+                                }}
                               >
                                 {action.label}
                               </Button>

@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { apiRequest } from "@/lib/queryClient";
 import ResponsiveHeader from "@/components/layout/responsive-header";
 import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
-import AIChat from "@/components/layout/ai-chat";
+
 import KanbanBoard from "@/components/kanban/kanban-board";
 import PropertyForm from "@/components/forms/property-form";
 import { Button } from "@/components/ui/button";
@@ -185,7 +185,7 @@ export default function Properties() {
         </main>
       
       <MobileBottomTabs />
-      <AIChat />
+
     </div>
   );
 }
