@@ -188,10 +188,10 @@ export default function Dashboard() {
   };
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
-        <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-400">Loading...</p>
+        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     </div>;
   }
@@ -213,19 +213,19 @@ export default function Dashboard() {
         {/* Welcome Header - Mobile Optimized */}
           <div className="flex flex-col space-y-4">
             <div className="text-center sm:text-left">
-              <h1 className="mobile-title text-white">
+              <h1 className="ai-title-h1 text-foreground">
                 Welcome back, {(user as any)?.firstName || 'Agent'}!
               </h1>
-              <p className="mobile-subtitle text-gray-400 mt-1">
+              <p className="ai-body text-muted-foreground mt-1">
                 Here's what's happening with your real estate business today.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3">
-              <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100 w-full sm:w-auto justify-center">
+              <Badge variant="secondary" className="bg-success/10 text-success border-success/20 w-full sm:w-auto justify-center">
                 <Zap className="w-3 h-3 mr-1" />
                 AI Insights Ready
               </Badge>
-              <Button className="mobile-button bg-primary-600 hover:bg-primary-700 w-full sm:w-auto">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto">
                 <Target className="w-4 h-4 mr-2" />
                 View Goals
               </Button>
@@ -233,12 +233,12 @@ export default function Dashboard() {
           </div>
 
           {/* AI-Powered Priority Insights - Mobile Optimized */}
-          <Card className="bg-gradient-to-r from-primary-500 to-purple-600 border-0 text-white">
+          <Card className="bg-gradient-to-r from-primary to-primary/80 border-0 text-primary-foreground">
             <CardContent className="mobile-card">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
                 <div className="text-center sm:text-left">
-                  <h2 className="text-lg sm:text-xl font-bold">AI Priority Dashboard</h2>
-                  <p className="text-sm sm:text-base text-primary-100">Your top 3 action items for maximum impact</p>
+                  <h2 className="ai-title-h2 font-bold">AI Priority Dashboard</h2>
+                  <p className="ai-body text-primary-foreground/80">Your top 3 action items for maximum impact</p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto sm:mx-0">
                   <Zap className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -249,12 +249,12 @@ export default function Dashboard() {
                 {/* High Priority Task */}
                 <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center">
-                      <AlertCircle className="w-4 h-4 text-white" />
+                    <div className="w-8 h-8 bg-destructive rounded-full flex items-center justify-center">
+                      <AlertCircle className="w-4 h-4 text-foreground" />
                     </div>
                     <div>
                       <p className="font-medium">Urgent Task</p>
-                      <p className="text-sm text-primary-100">
+                      <p className="text-sm text-primary-foreground/80">
                         {overdueTask ? `${overdueTask.title.substring(0, 30)}...` : 
                          highPriorityTasks[0] ? `${highPriorityTasks[0].title.substring(0, 30)}...` :
                          'No urgent tasks'}
@@ -266,12 +266,12 @@ export default function Dashboard() {
                 {/* Hot Lead */}
                 <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-orange-400 rounded-full flex items-center justify-center">
-                      <Star className="w-4 h-4 text-white" />
+                    <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center">
+                      <Star className="w-4 h-4 text-foreground" />
                     </div>
                     <div>
                       <p className="font-medium">Hot Lead</p>
-                      <p className="text-sm text-primary-100">
+                      <p className="text-sm text-primary-foreground/80">
                         {recentLeads?.find(lead => lead.score >= 90) 
                           ? `${recentLeads.find(lead => lead.score >= 90)?.firstName} ${recentLeads.find(lead => lead.score >= 90)?.lastName}` 
                           : 'No hot leads today'}
@@ -283,12 +283,12 @@ export default function Dashboard() {
                 {/* Deal Progress */}
                 <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-emerald-400 rounded-full flex items-center justify-center">
-                      <TrendingUp className="w-4 h-4 text-white" />
+                    <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center">
+                      <TrendingUp className="w-4 h-4 text-foreground" />
                     </div>
                     <div>
                       <p className="font-medium">Deal Progress</p>
-                      <p className="text-sm text-primary-100">
+                      <p className="text-sm text-primary-foreground/80">
                         {recentDeals?.filter(deal => deal.status === 'under_contract').length || 0} deals closing soon
                       </p>
                     </div>
@@ -300,83 +300,83 @@ export default function Dashboard() {
 
           {/* Key Metrics Grid - Mobile Optimized */}
           <div className="mobile-grid">
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Total Revenue</p>
-                    <p className="text-3xl font-bold text-white">
+                    <p className="text-sm font-medium text-muted-foreground">Total Revenue</p>
+                    <p className="text-3xl font-bold text-foreground">
                       ${parseInt(metrics?.totalRevenue || '0').toLocaleString()}
                     </p>
                     <div className="flex items-center mt-2">
-                      <ArrowUpRight className="w-4 h-4 text-emerald-500 mr-1" />
-                      <span className="text-sm text-emerald-600 dark:text-emerald-400">+23.5%</span>
-                      <span className="text-xs text-gray-500 ml-2">vs last month</span>
+                      <ArrowUpRight className="w-4 h-4 text-success mr-1" />
+                      <span className="text-sm text-success">+23.5%</span>
+                      <span className="text-xs text-muted-foreground ml-2">vs last month</span>
                     </div>
                   </div>
-                  <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center">
-                    <DollarSign className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                  <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center">
+                    <DollarSign className="w-6 h-6 text-success" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Active Leads</p>
-                    <p className="text-3xl font-bold text-white">
+                    <p className="text-sm font-medium text-muted-foreground">Active Leads</p>
+                    <p className="text-3xl font-bold text-foreground">
                       {metrics?.totalLeads || 0}
                     </p>
                     <div className="flex items-center mt-2">
-                      <ArrowUpRight className="w-4 h-4 text-blue-500 mr-1" />
-                      <span className="text-sm text-blue-600 dark:text-blue-400">+12.3%</span>
-                      <span className="text-xs text-gray-500 ml-2">this week</span>
+                      <ArrowUpRight className="w-4 h-4 text-primary mr-1" />
+                      <span className="text-sm text-primary">+12.3%</span>
+                      <span className="text-xs text-muted-foreground ml-2">this week</span>
                     </div>
                   </div>
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                    <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Users className="w-6 h-6 text-primary" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Properties Listed</p>
-                    <p className="text-3xl font-bold text-white">
+                    <p className="text-sm font-medium text-muted-foreground">Properties Listed</p>
+                    <p className="text-3xl font-bold text-foreground">
                       {metrics?.activeProperties || 0}
                     </p>
                     <div className="flex items-center mt-2">
-                      <ArrowDownRight className="w-4 h-4 text-red-500 mr-1" />
-                      <span className="text-sm text-red-600 dark:text-red-400">-5.2%</span>
-                      <span className="text-xs text-gray-500 ml-2">this month</span>
+                      <ArrowDownRight className="w-4 h-4 text-destructive mr-1" />
+                      <span className="text-sm text-destructive">-5.2%</span>
+                      <span className="text-xs text-muted-foreground ml-2">this month</span>
                     </div>
                   </div>
-                  <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                    <Building className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                  <div className="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center">
+                    <Building className="w-6 h-6 text-warning" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Conversion Rate</p>
-                    <p className="text-3xl font-bold text-white">24.5%</p>
+                    <p className="text-sm font-medium text-muted-foreground">Conversion Rate</p>
+                    <p className="text-3xl font-bold text-foreground">24.5%</p>
                     <div className="flex items-center mt-2">
-                      <ArrowUpRight className="w-4 h-4 text-emerald-500 mr-1" />
-                      <span className="text-sm text-emerald-600 dark:text-emerald-400">+8.1%</span>
-                      <span className="text-xs text-gray-500 ml-2">improvement</span>
+                      <ArrowUpRight className="w-4 h-4 text-success mr-1" />
+                      <span className="text-sm text-success">+8.1%</span>
+                      <span className="text-xs text-muted-foreground ml-2">improvement</span>
                     </div>
                   </div>
-                  <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center">
-                    <BarChart3 className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <BarChart3 className="w-6 h-6 text-primary" />
                   </div>
                 </div>
               </CardContent>
@@ -384,21 +384,21 @@ export default function Dashboard() {
           </div>
 
           {/* AI Priority TODOs - Redesigned */}
-          <Card className="bg-gradient-to-br from-gray-800 via-gray-800 to-gray-900 border-0 shadow-2xl ring-1 ring-gray-700">
+          <Card className="bg-gradient-to-br from-card via-card to-card border-0 shadow-2xl ring-1 ring-border">
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                    <AlertTriangle className="w-5 h-5 text-white" />
+                  <div className="w-10 h-10 bg-gradient-to-r from-destructive to-warning rounded-xl flex items-center justify-center shadow-lg">
+                    <AlertTriangle className="w-5 h-5 text-foreground" />
                   </div>
                   <div>
-                    <CardTitle className="text-xl font-bold text-white flex items-center">
+                    <CardTitle className="text-xl font-bold text-foreground flex items-center">
                       Priority Actions
-                      <Badge className="ml-3 bg-red-500 text-white border-0 animate-pulse">
+                      <Badge className="ml-3 bg-destructive text-foreground border-0 animate-pulse">
                         3 urgent
                       </Badge>
                     </CardTitle>
-                    <CardDescription className="text-gray-400 mt-1">
+                    <CardDescription className="text-muted-foreground mt-1">
                       High-impact tasks requiring immediate attention
                     </CardDescription>
                   </div>
@@ -406,7 +406,7 @@ export default function Dashboard() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                  className="border-border text-muted-foreground hover:bg-secondary"
                   onClick={() => navigate('/tasks')}
                 >
                   View All
@@ -415,22 +415,22 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent className="space-y-4">
               {/* High Priority Lead Follow-up */}
-              <div className="group relative overflow-hidden bg-gradient-to-r from-red-900/20 to-red-800/20 rounded-xl border border-red-500/30 hover:border-red-400/50 transition-all duration-300">
-                <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="group relative overflow-hidden bg-gradient-to-r from-destructive/10 to-destructive/5 rounded-xl border border-destructive/30 hover:border-destructive/50 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-destructive/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative p-5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-start space-x-4">
-                      <div className="w-3 h-3 bg-red-500 rounded-full mt-1.5 animate-pulse shadow-lg shadow-red-500/50"></div>
+                      <div className="w-3 h-3 bg-destructive rounded-full mt-1.5 animate-pulse shadow-lg shadow-destructive/50"></div>
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
-                          <h4 className="font-semibold text-white">Follow up with Emily Davis</h4>
-                          <Badge className="bg-red-500 text-white text-xs border-0">Score: 92</Badge>
-                          <Badge className="bg-orange-500 text-white text-xs border-0">Hot Lead</Badge>
+                          <h4 className="font-semibold text-foreground">Follow up with Emily Davis</h4>
+                          <Badge className="bg-destructive text-foreground text-xs border-0">Score: 92</Badge>
+                          <Badge className="bg-orange-500 text-foreground text-xs border-0">Hot Lead</Badge>
                         </div>
-                        <p className="text-sm text-gray-400 mb-3">
+                        <p className="text-sm text-muted-foreground mb-3">
                           Highest scoring lead from website inquiry • Last contact: 2 days ago
                         </p>
-                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                        <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                           <span className="flex items-center">
                             <Clock className="w-3 h-3 mr-1" />
                             Due: Today 2:00 PM
@@ -445,7 +445,7 @@ export default function Dashboard() {
                     <div className="flex items-center space-x-2">
                       <Button
                         size="sm"
-                        className="bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-red-500/25 transition-all duration-200"
+                        className="bg-red-600 hover:bg-red-700 text-foreground shadow-lg hover:shadow-red-500/25 transition-all duration-200"
                         onClick={() => handlePriorityAction('call_high_score_lead')}
                       >
                         <Phone className="w-4 h-4 mr-2" />
@@ -454,7 +454,7 @@ export default function Dashboard() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                        className="border-border text-muted-foreground hover:bg-secondary"
                         onClick={() => navigate('/leads/emily-davis')}
                       >
                         <Eye className="w-4 h-4" />
@@ -473,13 +473,13 @@ export default function Dashboard() {
                       <div className="w-3 h-3 bg-orange-500 rounded-full mt-1.5 animate-pulse shadow-lg shadow-orange-500/50"></div>
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
-                          <h4 className="font-semibold text-white">Close Sunrise Apartments Deal</h4>
-                          <Badge className="bg-orange-500 text-white text-xs border-0">$450K</Badge>
+                          <h4 className="font-semibold text-foreground">Close Sunrise Apartments Deal</h4>
+                          <Badge className="bg-orange-500 text-foreground text-xs border-0">$450K</Badge>
                         </div>
-                        <p className="text-sm text-gray-400 mb-3">
+                        <p className="text-sm text-muted-foreground mb-3">
                           Contract expires in 3 days • Final walkthrough pending
                         </p>
-                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                        <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                           <span className="flex items-center">
                             <Calendar className="w-3 h-3 mr-1" />
                             Deadline: Jan 15
@@ -494,7 +494,7 @@ export default function Dashboard() {
                     <div className="flex items-center space-x-2">
                       <Button
                         size="sm"
-                        className="bg-orange-600 hover:bg-orange-700 text-white shadow-lg hover:shadow-orange-500/25 transition-all duration-200"
+                        className="bg-orange-600 hover:bg-orange-700 text-foreground shadow-lg hover:shadow-orange-500/25 transition-all duration-200"
                         onClick={() => handlePriorityAction('schedule_walkthrough')}
                       >
                         <Calendar className="w-4 h-4 mr-2" />
@@ -503,7 +503,7 @@ export default function Dashboard() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                        className="border-border text-muted-foreground hover:bg-secondary"
                         onClick={() => navigate('/deals')}
                       >
                         <Eye className="w-4 h-4" />
@@ -522,13 +522,13 @@ export default function Dashboard() {
                       <div className="w-3 h-3 bg-blue-500 rounded-full mt-1.5 animate-pulse shadow-lg shadow-blue-500/50"></div>
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
-                          <h4 className="font-semibold text-white">Update Maple Street Photos</h4>
-                          <Badge className="bg-blue-500 text-white text-xs border-0">Photos</Badge>
+                          <h4 className="font-semibold text-foreground">Update Maple Street Photos</h4>
+                          <Badge className="bg-blue-500 text-foreground text-xs border-0">Photos</Badge>
                         </div>
-                        <p className="text-sm text-gray-400 mb-3">
+                        <p className="text-sm text-muted-foreground mb-3">
                           Property photos are 60+ days old • New staging completed
                         </p>
-                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                        <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                           <span className="flex items-center">
                             <Camera className="w-3 h-3 mr-1" />
                             Last updated: Nov 15
@@ -543,7 +543,7 @@ export default function Dashboard() {
                     <div className="flex items-center space-x-2">
                       <Button
                         size="sm"
-                        className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-blue-500/25 transition-all duration-200"
+                        className="bg-blue-600 hover:bg-blue-700 text-foreground shadow-lg hover:shadow-blue-500/25 transition-all duration-200"
                         onClick={() => handlePriorityAction('update_photos')}
                       >
                         <Camera className="w-4 h-4 mr-2" />
@@ -552,7 +552,7 @@ export default function Dashboard() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                        className="border-border text-muted-foreground hover:bg-secondary"
                         onClick={() => navigate('/properties')}
                       >
                         <Eye className="w-4 h-4" />
@@ -563,15 +563,15 @@ export default function Dashboard() {
               </div>
 
               {/* Quick Action Summary */}
-              <div className="mt-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+              <div className="mt-6 p-4 bg-card/50 rounded-lg border border-border">
                 <div className="flex items-center justify-between">
-                  <div className="text-sm text-gray-400">
+                  <div className="text-sm text-muted-foreground">
                     Complete these 3 actions to boost performance by an estimated <span className="text-emerald-400 font-semibold">15-20%</span>
                   </div>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                    className="border-border text-muted-foreground hover:bg-secondary"
                     onClick={() => navigate('/ai')}
                   >
                     <Zap className="w-4 h-4 mr-2" />
@@ -585,13 +585,13 @@ export default function Dashboard() {
           {/* Activity Overview */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Recent Leads */}
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-lg text-white">Hot Leads</CardTitle>
+                <CardTitle className="text-lg text-foreground">Hot Leads</CardTitle>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-primary-600 hover:text-primary-500 transition-colors"
+                  className="text-primary hover:text-primary/80 transition-colors"
                   onClick={() => navigate('/leads')}
                 >
                   View All
@@ -603,24 +603,24 @@ export default function Dashboard() {
                     <div key={lead.id} className="flex items-center space-x-3">
                       <Avatar className="w-10 h-10">
                         <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${lead.firstName}`} />
-                        <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-white text-sm">
+                        <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-foreground text-sm">
                           {getInitials(lead.firstName, lead.lastName)}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-white truncate">
+                        <p className="font-medium text-foreground truncate">
                           {lead.firstName} {lead.lastName}
                         </p>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-muted-foreground">
                           ${lead.budget?.toLocaleString()} budget • {lead.status}
                         </p>
                       </div>
                       <Badge 
                         variant="secondary" 
                         className={`cursor-pointer transition-all duration-200 hover:scale-105 ${
-                          lead.score >= 90 ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100 hover:bg-emerald-200 dark:hover:bg-emerald-800" :
-                          lead.score >= 70 ? "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100 hover:bg-amber-200 dark:hover:bg-amber-800" :
-                          "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-800"
+                          lead.score >= 90 ? "bg-emerald-100 text-emerald-800  " :
+                          lead.score >= 70 ? "bg-amber-100 text-amber-800  " :
+                          "bg-gray-100 text-gray-800   dark:hover:bg-card"
                         }`}
                         onClick={() => navigate(`/leads/${lead.id}`)}
                       >
@@ -629,7 +629,7 @@ export default function Dashboard() {
                       </Badge>
                     </div>
                   )) || (
-                    <p className="text-gray-400 text-center py-4">
+                    <p className="text-muted-foreground text-center py-4">
                       No recent leads
                     </p>
                   )}
@@ -638,13 +638,13 @@ export default function Dashboard() {
             </Card>
 
             {/* Urgent Tasks */}
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-lg text-white">Urgent Tasks</CardTitle>
+                <CardTitle className="text-lg text-foreground">Urgent Tasks</CardTitle>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-primary-600 hover:text-primary-500 transition-colors"
+                  className="text-primary hover:text-primary/80 transition-colors"
                   onClick={() => navigate('/tasks')}
                 >
                   View All
@@ -653,23 +653,23 @@ export default function Dashboard() {
               <CardContent>
                 <div className="space-y-4">
                   {recentTasks?.filter(task => task.priority === 'high').slice(0, 3).map((task) => (
-                    <div key={task.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-200 cursor-pointer group" onClick={() => navigate(`/tasks/${task.id}`)}>
+                    <div key={task.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-card/50 transition-all duration-200 cursor-pointer group" onClick={() => navigate(`/tasks/${task.id}`)}>
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                        task.type === 'call' ? 'bg-blue-100 dark:bg-blue-900' :
-                        task.type === 'meeting' ? 'bg-purple-100 dark:bg-purple-900' :
-                        task.type === 'document' ? 'bg-emerald-100 dark:bg-emerald-900' :
-                        'bg-gray-100 dark:bg-gray-900'
+                        task.type === 'call' ? 'bg-primary/10' :
+                        task.type === 'meeting' ? 'bg-primary/10' :
+                        task.type === 'document' ? 'bg-primary/10' :
+                        'bg-primary/10'
                       }`}>
-                        {task.type === 'call' && <Phone className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
-                        {task.type === 'meeting' && <Calendar className="w-4 h-4 text-purple-600 dark:text-purple-400" />}
-                        {task.type === 'document' && <CheckSquare className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
-                        {!['call', 'meeting', 'document'].includes(task.type) && <Clock className="w-4 h-4 text-gray-400" />}
+                        {task.type === 'call' && <Phone className="w-4 h-4 text-primary" />}
+                        {task.type === 'meeting' && <Calendar className="w-4 h-4 text-primary" />}
+                        {task.type === 'document' && <CheckSquare className="w-4 h-4 text-primary" />}
+                        {!['call', 'meeting', 'document'].includes(task.type) && <Clock className="w-4 h-4 text-muted-foreground" />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-white truncate">
+                        <p className="font-medium text-foreground truncate">
                           {task.title}
                         </p>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-muted-foreground">
                           Due {new Date(task.dueDate).toLocaleDateString()}
                         </p>
                       </div>
@@ -677,9 +677,9 @@ export default function Dashboard() {
                         <Badge 
                           variant="outline" 
                           className={`cursor-pointer transition-all duration-200 hover:scale-105 ${
-                            task.priority === 'high' ? 'border-red-500 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20' :
-                            task.priority === 'medium' ? 'border-amber-500 text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20' :
-                            'border-green-500 text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20'
+                            task.priority === 'high' ? 'border-red-500 text-red-500 hover:bg-red-50 ' :
+                            task.priority === 'medium' ? 'border-amber-500 text-amber-500 hover:bg-amber-50 ' :
+                            'border-green-500 text-green-500 hover:bg-green-50 '
                           }`}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -692,7 +692,7 @@ export default function Dashboard() {
                         {task.leadId && (
                           <Badge
                             variant="secondary"
-                            className="cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-blue-100 dark:hover:bg-blue-900/20"
+                            className="cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-blue-100 "
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/leads/${task.leadId}`);
@@ -717,7 +717,7 @@ export default function Dashboard() {
                       </div>
                     </div>
                   )) || (
-                    <p className="text-gray-400 text-center py-4">
+                    <p className="text-muted-foreground text-center py-4">
                       No urgent tasks
                     </p>
                   )}
@@ -726,13 +726,13 @@ export default function Dashboard() {
             </Card>
 
             {/* Recent Deals */}
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-lg text-white">Active Deals</CardTitle>
+                <CardTitle className="text-lg text-foreground">Active Deals</CardTitle>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-primary-600 hover:text-primary-500 transition-colors"
+                  className="text-primary hover:text-primary/80 transition-colors"
                   onClick={() => navigate('/deals')}
                 >
                   View All
@@ -741,15 +741,15 @@ export default function Dashboard() {
               <CardContent>
                 <div className="space-y-4">
                   {recentDeals?.slice(0, 3).map((deal) => (
-                    <div key={deal.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-200 cursor-pointer group" onClick={() => navigate(`/deals/${deal.id}`)}>
-                      <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                        <DollarSign className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                    <div key={deal.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-card/50 transition-all duration-200 cursor-pointer group" onClick={() => navigate(`/deals/${deal.id}`)}>
+                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <DollarSign className="w-4 h-4 text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-white truncate">
+                        <p className="font-medium text-foreground truncate">
                           Deal #{deal.id.slice(0, 8)}
                         </p>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-muted-foreground">
                           ${deal.dealValue?.toLocaleString()} • {deal.status === 'under_contract' ? 'Under Contract' : deal.status}
                         </p>
                       </div>
@@ -757,10 +757,10 @@ export default function Dashboard() {
                         <Badge 
                           variant="outline" 
                           className={`cursor-pointer transition-all duration-200 hover:scale-105 ${
-                            deal.status === 'under_contract' ? 'border-emerald-500 text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20' :
-                            deal.status === 'offer' ? 'border-blue-500 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20' :
-                            deal.status === 'closed' ? 'border-green-500 text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20' :
-                            'border-amber-500 text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20'
+                            deal.status === 'under_contract' ? 'border-emerald-500 text-emerald-500 hover:bg-emerald-50 ' :
+                            deal.status === 'offer' ? 'border-blue-500 text-blue-500 hover:bg-blue-50 ' :
+                            deal.status === 'closed' ? 'border-green-500 text-green-500 hover:bg-green-50 ' :
+                            'border-amber-500 text-amber-500 hover:bg-amber-50 '
                           }`}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -773,7 +773,7 @@ export default function Dashboard() {
                         {deal.leadId && (
                           <Badge
                             variant="secondary"
-                            className="cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-blue-100 dark:hover:bg-blue-900/20"
+                            className="cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-blue-100 "
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/leads/${deal.leadId}`);
@@ -786,7 +786,7 @@ export default function Dashboard() {
                         {deal.propertyId && (
                           <Badge
                             variant="secondary"
-                            className="cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-orange-100 dark:hover:bg-orange-900/20"
+                            className="cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-orange-100 "
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/properties/${deal.propertyId}`);
@@ -799,7 +799,7 @@ export default function Dashboard() {
                       </div>
                     </div>
                   )) || (
-                    <p className="text-gray-400 text-center py-4">
+                    <p className="text-muted-foreground text-center py-4">
                       No active deals
                     </p>
                   )}
@@ -809,9 +809,9 @@ export default function Dashboard() {
           </div>
 
           {/* Quick Actions */}
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-card border-border">
             <CardHeader>
-              <CardTitle className="text-lg text-white">Quick Actions</CardTitle>
+              <CardTitle className="text-lg text-foreground">Quick Actions</CardTitle>
               <CardDescription>Common tasks to boost your productivity</CardDescription>
             </CardHeader>
             <CardContent>
@@ -819,28 +819,28 @@ export default function Dashboard() {
                 <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/leads?action=add')}>
                   <div className="flex flex-col items-start">
                     <span className="font-medium">Add New Lead</span>
-                    <span className="text-xs text-gray-500 mt-1">Capture potential client</span>
+                    <span className="text-xs text-muted-foreground mt-1">Capture potential client</span>
                   </div>
                 </Button>
                 
                 <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/properties?action=add')}>
                   <div className="flex flex-col items-start">
                     <span className="font-medium">List Property</span>
-                    <span className="text-xs text-gray-500 mt-1">Add new listing</span>
+                    <span className="text-xs text-muted-foreground mt-1">Add new listing</span>
                   </div>
                 </Button>
                 
                 <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/tasks?action=add')}>
                   <div className="flex flex-col items-start">
                     <span className="font-medium">Schedule Task</span>
-                    <span className="text-xs text-gray-500 mt-1">Plan your activities</span>
+                    <span className="text-xs text-muted-foreground mt-1">Plan your activities</span>
                   </div>
                 </Button>
                 
                 <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/ai')}>
                   <div className="flex flex-col items-start">
                     <span className="font-medium">AI Analysis</span>
-                    <span className="text-xs text-gray-500 mt-1">Get insights & recommendations</span>
+                    <span className="text-xs text-muted-foreground mt-1">Get insights & recommendations</span>
                   </div>
                 </Button>
               </div>
