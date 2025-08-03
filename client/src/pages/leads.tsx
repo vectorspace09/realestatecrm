@@ -33,10 +33,13 @@ import {
   TrendingUp,
   User,
   MessageSquare,
-  FileText
+  FileText,
+  LayoutGrid,
+  Table2
 } from "lucide-react";
 import LeadForm from "@/components/forms/lead-form";
 import Pagination from "@/components/ui/pagination";
+import KanbanBoard from "@/components/kanban/kanban-board";
 
 export default function Leads() {
   const { toast } = useToast();
@@ -48,6 +51,7 @@ export default function Leads() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingLead, setEditingLead] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [viewMode, setViewMode] = useState<"table" | "kanban">("table");
   const leadsPerPage = isMobile ? 10 : 20;
 
 
@@ -121,6 +125,31 @@ export default function Leads() {
     },
   });
 
+  // Lead status update mutation for Kanban
+  const updateLeadStatusMutation = useMutation({
+    mutationFn: async ({ leadId, status }: { leadId: string; status: string }) => {
+      const response = await apiRequest(`/api/leads/${leadId}`, {
+        method: "PATCH",
+        body: { status }
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
+      toast({
+        title: "Success",
+        description: "Lead status updated successfully",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: "Failed to update lead status: " + error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -186,6 +215,30 @@ export default function Leads() {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, statusFilter]);
+
+  // Define lead status columns for Kanban
+  const LEAD_STATUSES = [
+    { id: "new", label: "New Leads", color: "blue" },
+    { id: "contacted", label: "Contacted", color: "purple" },
+    { id: "qualified", label: "Qualified", color: "emerald" },
+    { id: "tour", label: "Tour Scheduled", color: "amber" },
+    { id: "offer", label: "Offer Made", color: "orange" },
+    { id: "closed", label: "Closed", color: "green" },
+  ];
+
+  // Group leads by status for Kanban
+  const groupedLeads = useMemo(() => {
+    const grouped: Record<string, any[]> = {};
+    LEAD_STATUSES.forEach(status => {
+      grouped[status.id] = filteredLeads.filter((lead: any) => lead.status === status.id);
+    });
+    return grouped;
+  }, [filteredLeads]);
+
+  // Handle lead status change from Kanban
+  const handleLeadMove = (leadId: string, targetStatus: string) => {
+    updateLeadStatusMutation.mutate({ leadId, status: targetStatus });
+  };
 
   if (isLoading || !isAuthenticated) {
     return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
@@ -263,18 +316,60 @@ export default function Leads() {
                   <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
                     {filteredLeads.length} {filteredLeads.length === 1 ? 'lead' : 'leads'}
                   </Badge>
+                  
+                  {/* View Toggle */}
+                  <div className="flex bg-gray-700 rounded-lg p-1">
+                    <Button
+                      variant={viewMode === "table" ? "default" : "ghost"}
+                      size="sm"
+                      onClick={() => setViewMode("table")}
+                      className="flex-1 text-xs"
+                    >
+                      <Table2 className="w-4 h-4 mr-1" />
+                      Table
+                    </Button>
+                    <Button
+                      variant={viewMode === "kanban" ? "default" : "ghost"}
+                      size="sm"
+                      onClick={() => setViewMode("kanban")}
+                      className="flex-1 text-xs"
+                    >
+                      <LayoutGrid className="w-4 h-4 mr-1" />
+                      Pipeline
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Leads Table */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-lg text-white">All Leads</CardTitle>
-              <CardDescription>Complete list of all leads in your pipeline</CardDescription>
-            </CardHeader>
-            <CardContent>
+          {/* Conditional Content Based on View Mode */}
+          {viewMode === "kanban" ? (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-white">Leads Pipeline</h2>
+                  <p className="text-sm text-gray-400">Drag and drop leads to change their status</p>
+                </div>
+              </div>
+              
+              <div className="overflow-x-auto">
+                <KanbanBoard
+                  columns={LEAD_STATUSES}
+                  items={groupedLeads}
+                  onItemMove={handleLeadMove}
+                  isLoading={leadsLoading}
+                  itemType="lead"
+                />
+              </div>
+            </div>
+          ) : (
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-lg text-white">All Leads</CardTitle>
+                <CardDescription>Complete list of all leads in your pipeline</CardDescription>
+              </CardHeader>
+              <CardContent>
               {leadsLoading ? (
                 <div className="flex items-center justify-center py-12">
                   <div className="w-6 h-6 border-2 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
@@ -520,8 +615,9 @@ export default function Leads() {
                   </div>
                 </div>
               )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
         </main>
       
       {/* Add/Edit Lead Dialog */}
