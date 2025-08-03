@@ -401,7 +401,7 @@ export default function LeadDetail() {
                   <div className="flex items-center space-x-1">
                     <Star className="w-4 h-4 text-yellow-500" />
                     <span className={`font-semibold ${getScoreColor((lead as any)?.score)}`}>
-                      {(lead as any)?.score}/100
+                      {(lead as any)?.score || 0}/100
                     </span>
                   </div>
                 </div>
