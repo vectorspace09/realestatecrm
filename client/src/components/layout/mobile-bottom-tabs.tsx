@@ -12,7 +12,7 @@ const tabItems = [
   { href: "/", icon: Home, label: "Home" },
   { href: "/leads", icon: Users, label: "Leads" },
   { href: "/properties", icon: Building, label: "Properties" },
-  { href: "/deals", icon: DollarSign, label: "Deals" },
+  { href: "/deals", icon: DollarSign, label: "Pipeline" },
   { type: "menu", icon: Menu, label: "More" },
 ];
 
