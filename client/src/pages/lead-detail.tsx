@@ -372,10 +372,11 @@ export default function LeadDetail() {
     }
   };
 
-  const getScoreColor = (score: number) => {
-    if (score >= 90) return "text-emerald-600 dark:text-emerald-400";
-    if (score >= 70) return "text-amber-600 dark:text-amber-400";
-    if (score >= 50) return "text-orange-600 dark:text-orange-400";
+  const getScoreColor = (score: number | null | undefined) => {
+    const normalizedScore = score || 0;
+    if (normalizedScore >= 90) return "text-emerald-600 dark:text-emerald-400";
+    if (normalizedScore >= 70) return "text-amber-600 dark:text-amber-400";
+    if (normalizedScore >= 50) return "text-orange-600 dark:text-orange-400";
     return "text-red-600 dark:text-red-400";
   };
 
@@ -401,7 +402,7 @@ export default function LeadDetail() {
                   <div className="flex items-center space-x-1">
                     <Star className="w-4 h-4 text-yellow-500" />
                     <span className={`font-semibold ${getScoreColor((lead as any)?.score)}`}>
-                      {(lead as any)?.score || 0}/100
+                      {((lead as any)?.score != null && !isNaN((lead as any)?.score)) ? (lead as any)?.score : 0}/100
                     </span>
                   </div>
                 </div>
