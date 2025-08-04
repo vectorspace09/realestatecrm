@@ -75,15 +75,16 @@ export default function LeadDetail() {
 
   const { data: lead, isLoading: leadLoading, error } = useQuery({
     queryKey: [`/api/leads/${leadId}`],
-    retry: false,
+    retry: 1, // Allow one retry to avoid 404 flash
     enabled: !!leadId,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes to reduce flickering
   });
 
-  const { data: activities = [] } = useQuery({
+  const { data: activities = [], refetch: refetchActivities } = useQuery({
     queryKey: ["/api/activities", { leadId }],
     retry: false,
     enabled: !!leadId,
-  }) as { data: Activity[] };
+  }) as { data: Activity[], refetch: () => void };
 
   const { data: tasks = [] } = useQuery({
     queryKey: ["/api/tasks", { leadId }],
@@ -171,14 +172,13 @@ export default function LeadDetail() {
         },
       });
       
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("API response error:", response.status, errorText);
-        throw new Error(`API error: ${response.status} - ${errorText}`);
-      }
-      
       const data = await response.json();
       console.log("AI Next Action Response:", data);
+      
+      if (!response.ok) {
+        console.error("API response error:", response.status, data);
+        throw new Error(`API error: ${response.status} - ${data.message || 'Unknown error'}`);
+      }
       
       if (data.nextAction) {
         // Auto-fill the action form with AI-generated recommendation
@@ -248,7 +248,10 @@ export default function LeadDetail() {
       });
     },
     onSuccess: () => {
+      // Invalidate both general activities and lead-specific activities
       queryClient.invalidateQueries({ queryKey: ["/api/activities"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/activities", { leadId }] });
+      refetchActivities(); // Immediately refetch activities for this lead
       setIsActionDialogOpen(false);
       toast({
         title: "Success",
@@ -281,20 +284,23 @@ export default function LeadDetail() {
       // Record the message as an activity
       await apiRequest("/api/activities", {
         method: "POST",
-        body: JSON.stringify({
+        body: {
           type: "message_sent",
           title: `${data.type.toUpperCase()} sent`,
           description: `${data.subject ? `Subject: ${data.subject}\n` : ""}${data.content}`,
           leadId,
           metadata: { messageType: data.type, subject: data.subject },
-        }),
+        },
       });
       
       // TODO: Integrate with actual email/SMS service
       return { success: true };
     },
     onSuccess: () => {
+      // Invalidate both general activities and lead-specific activities
       queryClient.invalidateQueries({ queryKey: ["/api/activities"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/activities", { leadId }] });
+      refetchActivities(); // Immediately refetch activities for this lead
       setIsMessageDialogOpen(false);
       toast({
         title: "Success",
