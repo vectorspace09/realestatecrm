@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 
 import { useAuth } from "@/hooks/useAuth";
+import type { User } from "@shared/schema";
 import { useMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,7 +23,7 @@ import {
   Search, 
   Bell,
   Plus, 
-  User, 
+  User as UserIcon, 
   Settings, 
   LogOut,
   Home, 
@@ -48,6 +49,14 @@ const navigationItems = [
   { href: "/ai", icon: Zap, label: "AI Assistant" },
   { href: "/communications", icon: MessageSquare, label: "Communications" },
 ];
+
+// Helper function to get user initials
+const getInitials = (firstName: string | null | undefined, lastName: string | null | undefined): string => {
+  if (!firstName && !lastName) return "U";
+  const first = firstName?.[0]?.toUpperCase() || "";
+  const last = lastName?.[0]?.toUpperCase() || "";
+  return first + last;
+};
 
 interface ResponsiveHeaderProps {
   onMenuClick?: () => void;
@@ -138,16 +147,19 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
           <div className="p-6 border-b border-border">
             <div className="flex items-center space-x-3">
               <Avatar className="w-12 h-12">
-                <AvatarImage src={user?.profileImageUrl} />
+                <AvatarImage src={user?.profileImageUrl || undefined} />
                 <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-white">
-                  {getInitials(user?.firstName, user?.lastName)}
+                  {getInitials(user?.firstName || undefined, user?.lastName || undefined)}
                 </AvatarFallback>
               </Avatar>
               <div>
                 <p className="font-medium text-white">
-                  {user?.firstName} {user?.lastName}
+                  {user?.firstName && user?.lastName 
+                    ? `${user.firstName} ${user.lastName}` 
+                    : user?.firstName || user?.lastName || "User"
+                  }
                 </p>
-                <p className="text-sm text-muted-foreground">{user?.email}</p>
+                <p className="text-sm text-muted-foreground">{user?.email || "user@example.com"}</p>
               </div>
             </div>
           </div>
@@ -256,42 +268,41 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                     </Button>
                   </Link>
                 ))}
-              </nav>
-            )}
-          </div>
-
+                
                 {/* More dropdown for remaining items */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-muted-foreground hover:text-white hover:bg-card/50 px-3 py-1.5"
-                    >
-                      <Menu className="w-4 h-4 mr-1.5" />
-                      More
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="bg-card border-border" align="start">
-                    {navigationItems.slice(6).map((item) => {
-                      const Icon = item.icon;
-                      const active = isActive(item.href);
+                {navigationItems.length > 5 && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-muted-foreground hover:text-white hover:bg-card/50 px-3 py-1.5"
+                      >
+                        <Menu className="w-4 h-4 mr-1.5" />
+                        More
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="bg-card border-border" align="start">
+                      {navigationItems.slice(5).map((item) => {
+                        const Icon = item.icon;
+                        const active = isActive(item.href);
 
-                      return (
-                        <DropdownMenuItem key={item.href} asChild>
-                          <Link href={item.href}>
-                            <div className={`flex items-center space-x-2 w-full ${
-                              active ? 'text-primary-400' : 'text-muted-foreground hover:text-white'
-                            }`}>
-                              <Icon className="w-4 h-4" />
-                              <span>{item.label}</span>
-                            </div>
-                          </Link>
-                        </DropdownMenuItem>
-                      );
-                    })}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                        return (
+                          <DropdownMenuItem key={item.href} asChild>
+                            <Link href={item.href}>
+                              <div className={`flex items-center space-x-2 w-full ${
+                                active ? 'text-primary-400' : 'text-muted-foreground hover:text-white'
+                              }`}>
+                                <Icon className="w-4 h-4" />
+                                <span>{item.label}</span>
+                              </div>
+                            </Link>
+                          </DropdownMenuItem>
+                        );
+                      })}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
               </nav>
             )}
           </div>
@@ -352,9 +363,9 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-9 w-9 rounded-full hover:bg-card/50 transition-all duration-200">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={user?.profileImageUrl} alt={user?.firstName} />
+                    <AvatarImage src={user?.profileImageUrl || undefined} alt={user?.firstName || "User"} />
                     <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-white text-sm font-medium">
-                      {getInitials(user?.firstName, user?.lastName)}
+                      {getInitials(user?.firstName || undefined, user?.lastName || undefined)}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
@@ -379,7 +390,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-card" />
                 <DropdownMenuItem className="text-muted-foreground hover:text-white hover:bg-card">
-                  <User className="mr-2 h-4 w-4" />
+                  <UserIcon className="mr-2 h-4 w-4" />
                   <span>Profile</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
