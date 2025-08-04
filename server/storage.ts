@@ -6,6 +6,7 @@ import {
   tasks,
   activities,
   leadPropertyMatches,
+  communications,
   notifications,
   type User,
   type UpsertUser,
@@ -19,6 +20,8 @@ import {
   type Task,
   type InsertActivity,
   type Activity,
+  type InsertCommunication,
+  type Communication,
   type LeadPropertyMatch,
   type InsertNotification,
   type Notification,
@@ -87,6 +90,20 @@ export interface IStorage {
   
   getDetailedAnalytics(userId?: string): Promise<any>;
   
+  // Communication operations
+  getCommunications(filters?: { userId?: string; leadId?: string; type?: string; direction?: string; limit?: number }): Promise<Communication[]>;
+  getCommunication(id: string): Promise<Communication | undefined>;
+  createCommunication(communication: InsertCommunication): Promise<Communication>;
+  updateCommunication(id: string, communication: Partial<InsertCommunication>): Promise<Communication>;
+  deleteCommunication(id: string): Promise<void>;
+  getCommunicationStats(userId?: string): Promise<{
+    totalEmails: number;
+    totalCalls: number;
+    totalSms: number;
+    totalMessages: number;
+    responseRate: number;
+  }>;
+
   // Notification operations
   getNotifications(userId: string, filters?: { isRead?: boolean; limit?: number }): Promise<Notification[]>;
   createNotification(notification: InsertNotification): Promise<Notification>;
@@ -650,6 +667,112 @@ export class DatabaseStorage implements IStorage {
       .where(and(eq(notifications.userId, userId), eq(notifications.isRead, false)));
     
     return result[0]?.count || 0;
+  }
+
+  // Communication methods
+  async getCommunications(filters?: { userId?: string; leadId?: string; type?: string; direction?: string; limit?: number }): Promise<Communication[]> {
+    const conditions = [];
+    
+    if (filters?.userId) {
+      conditions.push(eq(communications.userId, filters.userId));
+    }
+    if (filters?.leadId) {
+      conditions.push(eq(communications.leadId, filters.leadId));
+    }
+    if (filters?.type) {
+      conditions.push(eq(communications.type, filters.type));
+    }
+    if (filters?.direction) {
+      conditions.push(eq(communications.direction, filters.direction));
+    }
+
+    if (conditions.length > 0) {
+      return await db.select().from(communications).where(and(...conditions)).orderBy(desc(communications.createdAt)).limit(filters?.limit || 100);
+    }
+    
+    return await db.select().from(communications).orderBy(desc(communications.createdAt)).limit(filters?.limit || 100);
+  }
+
+  async getCommunication(id: string): Promise<Communication | undefined> {
+    const [communication] = await db.select().from(communications).where(eq(communications.id, id));
+    return communication;
+  }
+
+  async createCommunication(communication: InsertCommunication): Promise<Communication> {
+    const [result] = await db.insert(communications).values(communication).returning();
+    return result;
+  }
+
+  async updateCommunication(id: string, updateData: Partial<InsertCommunication>): Promise<Communication> {
+    const [result] = await db
+      .update(communications)
+      .set({ 
+        ...updateData,
+        updatedAt: new Date()
+      })
+      .where(eq(communications.id, id))
+      .returning();
+    return result;
+  }
+
+  async deleteCommunication(id: string): Promise<void> {
+    await db.delete(communications).where(eq(communications.id, id));
+  }
+
+  async getCommunicationStats(userId?: string): Promise<{
+    totalEmails: number;
+    totalCalls: number;
+    totalSms: number;
+    totalMessages: number;
+    responseRate: number;
+  }> {
+    const conditions = userId ? [eq(communications.userId, userId)] : [];
+    
+    const emailCount = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(communications)
+      .where(and(...conditions, eq(communications.type, 'email')));
+    
+    const callCount = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(communications)
+      .where(and(...conditions, eq(communications.type, 'call')));
+    
+    const smsCount = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(communications)
+      .where(and(...conditions, eq(communications.type, 'sms')));
+    
+    const totalCount = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(communications)
+      .where(and(...conditions));
+
+    const outboundCount = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(communications)
+      .where(and(...conditions, eq(communications.direction, 'outbound')));
+
+    const inboundCount = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(communications)
+      .where(and(...conditions, eq(communications.direction, 'inbound')));
+
+    const totalEmails = emailCount[0]?.count || 0;
+    const totalCalls = callCount[0]?.count || 0;
+    const totalSms = smsCount[0]?.count || 0;
+    const totalMessages = totalCount[0]?.count || 0;
+    const responseRate = outboundCount[0]?.count > 0 
+      ? Math.round((inboundCount[0]?.count || 0) / (outboundCount[0]?.count || 1) * 100) 
+      : 0;
+
+    return {
+      totalEmails,
+      totalCalls,
+      totalSms,
+      totalMessages,
+      responseRate,
+    };
   }
 
   // Settings methods

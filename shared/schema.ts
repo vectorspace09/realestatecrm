@@ -149,6 +149,24 @@ export const leadPropertyMatches = pgTable("lead_property_matches", {
 });
 
 // Notifications table
+// Communications table for storing all communication records
+export const communications = pgTable("communications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  leadId: varchar("lead_id").references(() => leads.id),
+  propertyId: varchar("property_id").references(() => properties.id),
+  dealId: varchar("deal_id").references(() => deals.id),
+  type: varchar("type").notNull(), // 'email', 'sms', 'call', 'whatsapp', 'meeting'
+  direction: varchar("direction").notNull(), // 'inbound', 'outbound'
+  subject: varchar("subject"), // For emails
+  content: text("content").notNull(),
+  status: varchar("status").default("sent"), // 'draft', 'sent', 'delivered', 'failed', 'scheduled'
+  scheduledFor: timestamp("scheduled_for"), // For scheduled communications
+  metadata: jsonb("metadata"), // Additional data like call duration, email opens, etc.
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const notifications = pgTable("notifications", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").references(() => users.id).notNull(),
@@ -172,6 +190,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   tasks: many(tasks),
   activities: many(activities),
   notifications: many(notifications),
+  communications: many(communications),
 }));
 
 export const leadsRelations = relations(leads, ({ one, many }) => ({
@@ -183,6 +202,7 @@ export const leadsRelations = relations(leads, ({ one, many }) => ({
   tasks: many(tasks),
   activities: many(activities),
   propertyMatches: many(leadPropertyMatches),
+  communications: many(communications),
 }));
 
 export const propertiesRelations = relations(properties, ({ one, many }) => ({
@@ -266,6 +286,25 @@ export const leadPropertyMatchesRelations = relations(leadPropertyMatches, ({ on
   }),
 }));
 
+export const communicationsRelations = relations(communications, ({ one }) => ({
+  user: one(users, {
+    fields: [communications.userId],
+    references: [users.id],
+  }),
+  lead: one(leads, {
+    fields: [communications.leadId],
+    references: [leads.id],
+  }),
+  property: one(properties, {
+    fields: [communications.propertyId],
+    references: [properties.id],
+  }),
+  deal: one(deals, {
+    fields: [communications.dealId],
+    references: [deals.id],
+  }),
+}));
+
 export const notificationsRelations = relations(notifications, ({ one }) => ({
   user: one(users, {
     fields: [notifications.userId],
@@ -303,6 +342,12 @@ export const insertActivitySchema = createInsertSchema(activities).omit({
   createdAt: true,
 });
 
+export const insertCommunicationSchema = createInsertSchema(communications).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export const insertNotificationSchema = createInsertSchema(notifications).omit({
   id: true,
   createdAt: true,
@@ -322,6 +367,8 @@ export type InsertTask = z.infer<typeof insertTaskSchema>;
 export type Task = typeof tasks.$inferSelect;
 export type InsertActivity = z.infer<typeof insertActivitySchema>;
 export type Activity = typeof activities.$inferSelect;
+export type InsertCommunication = z.infer<typeof insertCommunicationSchema>;
+export type Communication = typeof communications.$inferSelect;
 export type LeadPropertyMatch = typeof leadPropertyMatches.$inferSelect;
 export type InsertNotification = z.infer<typeof insertNotificationSchema>;
 export type Notification = typeof notifications.$inferSelect;

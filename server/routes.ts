@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
-import { insertLeadSchema, insertPropertySchema, insertDealSchema, insertTaskSchema, insertNotificationSchema } from "@shared/schema";
+import { insertLeadSchema, insertPropertySchema, insertDealSchema, insertTaskSchema, insertNotificationSchema, insertCommunicationSchema } from "@shared/schema";
 import { scoreLeadWithAI, matchPropertyToLead, generateFollowUpMessage, getAIInsights, generateLeadMessage, generateLeadRecommendations, generateContextualAIResponse, generateNextAction } from "./openai";
 import { NotificationService } from "./notification-service";
 import { ObjectStorageService, ObjectNotFoundError } from "./objectStorage";
@@ -676,6 +676,195 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching unread notification count:", error);
       res.status(500).json({ message: "Failed to fetch unread notification count" });
+    }
+  });
+
+  // Communication routes
+  app.get('/api/communications', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { leadId, type, direction, limit = 50 } = req.query;
+      
+      const filters: any = { userId };
+      if (leadId) filters.leadId = leadId;
+      if (type) filters.type = type;
+      if (direction) filters.direction = direction;
+      if (limit) filters.limit = parseInt(limit);
+      
+      const communications = await storage.getCommunications(filters);
+      res.json(communications);
+    } catch (error) {
+      console.error("Error fetching communications:", error);
+      res.status(500).json({ message: "Failed to fetch communications" });
+    }
+  });
+
+  app.post('/api/communications', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const communicationData = {
+        ...req.body,
+        userId
+      };
+      
+      const communication = await storage.createCommunication(communicationData);
+      res.json(communication);
+    } catch (error) {
+      console.error("Error creating communication:", error);
+      res.status(500).json({ message: "Failed to create communication" });
+    }
+  });
+
+  app.get('/api/communications/stats', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const stats = await storage.getCommunicationStats(userId);
+      res.json(stats);
+    } catch (error) {
+      console.error("Error fetching communication stats:", error);
+      res.status(500).json({ message: "Failed to fetch communication stats" });
+    }
+  });
+
+  app.patch('/api/communications/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+      
+      const communication = await storage.updateCommunication(id, updateData);
+      res.json(communication);
+    } catch (error) {
+      console.error("Error updating communication:", error);
+      res.status(500).json({ message: "Failed to update communication" });
+    }
+  });
+
+  app.delete('/api/communications/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteCommunication(id);
+      res.json({ message: "Communication deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting communication:", error);
+      res.status(500).json({ message: "Failed to delete communication" });
+    }
+  });
+
+  // Communication actions (send email, log call, etc.)
+  app.post('/api/communications/send-email', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { leadId, subject, content, generateWithAI } = req.body;
+      
+      let emailContent = content;
+      let emailSubject = subject;
+      
+      // Generate AI email if requested
+      if (generateWithAI && leadId) {
+        const lead = await storage.getLead(leadId);
+        if (lead) {
+          const activities = await storage.getActivities({ leadId });
+          const generatedMessage = await generateLeadMessage(lead, 'email', activities);
+          
+          // Parse subject and content from AI response
+          const lines = generatedMessage.split('\n');
+          const subjectLine = lines.find(line => line.startsWith('Subject:'));
+          if (subjectLine) {
+            emailSubject = subjectLine.replace('Subject:', '').trim();
+            emailContent = lines.slice(lines.indexOf(subjectLine) + 1).join('\n').trim();
+          } else {
+            emailContent = generatedMessage;
+          }
+        }
+      }
+      
+      // Create communication record
+      const communication = await storage.createCommunication({
+        userId,
+        leadId,
+        type: 'email',
+        direction: 'outbound',
+        subject: emailSubject,
+        content: emailContent,
+        status: 'sent',
+        metadata: { 
+          sentAt: new Date().toISOString(),
+          aiGenerated: generateWithAI 
+        }
+      });
+      
+      // In a real app, you would integrate with an email service here
+      // For now, we just log the communication
+      console.log(`Email sent: ${emailSubject} to lead ${leadId}`);
+      
+      res.json({ 
+        success: true, 
+        communication,
+        message: "Email sent and logged successfully" 
+      });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      res.status(500).json({ message: "Failed to send email" });
+    }
+  });
+
+  app.post('/api/communications/log-call', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { leadId, duration, outcome, notes } = req.body;
+      
+      const communication = await storage.createCommunication({
+        userId,
+        leadId,
+        type: 'call',
+        direction: 'outbound',
+        content: notes || 'Phone call completed',
+        status: 'sent',
+        metadata: { 
+          duration: duration,
+          outcome: outcome,
+          calledAt: new Date().toISOString()
+        }
+      });
+      
+      res.json({ 
+        success: true, 
+        communication,
+        message: "Call logged successfully" 
+      });
+    } catch (error) {
+      console.error("Error logging call:", error);
+      res.status(500).json({ message: "Failed to log call" });
+    }
+  });
+
+  app.post('/api/communications/schedule-appointment', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { leadId, appointmentDate, notes } = req.body;
+      
+      const communication = await storage.createCommunication({
+        userId,
+        leadId,
+        type: 'meeting',
+        direction: 'outbound',
+        content: notes || 'Appointment scheduled',
+        status: 'scheduled',
+        scheduledFor: new Date(appointmentDate),
+        metadata: { 
+          scheduledAt: new Date().toISOString(),
+          appointmentType: 'consultation'
+        }
+      });
+      
+      res.json({ 
+        success: true, 
+        communication,
+        message: "Appointment scheduled successfully" 
+      });
+    } catch (error) {
+      console.error("Error scheduling appointment:", error);
+      res.status(500).json({ message: "Failed to schedule appointment" });
     }
   });
 
