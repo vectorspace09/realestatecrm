@@ -29,8 +29,12 @@ import {
   AlertCircle,
   Filter,
   Edit3,
-  Trash2
+  Trash2,
+  Table2,
+  LayoutGrid,
+  Eye
 } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export default function Tasks() {
   const { toast } = useToast();
@@ -39,6 +43,7 @@ export default function Tasks() {
   const [editingTask, setEditingTask] = useState(null);
   const [filterType, setFilterType] = useState("all");
   const [filterPriority, setFilterPriority] = useState("all");
+  const [viewMode, setViewMode] = useState<"table" | "pipeline">("pipeline");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -306,13 +311,37 @@ export default function Tasks() {
               <h1 className="text-2xl font-bold text-white">Task Management</h1>
               <p className="text-muted-foreground">Organize and track your daily activities</p>
             </div>
-            <Button 
-              className="bg-primary-600 hover:bg-primary-700 mt-4 lg:mt-0"
-              onClick={() => setShowAddForm(true)}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add New Task
-            </Button>
+            <div className="flex items-center space-x-4 mt-4 lg:mt-0">
+              {/* View Toggle */}
+              <div className="flex bg-card rounded-lg p-1 border border-border">
+                <Button
+                  variant={viewMode === "table" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setViewMode("table")}
+                  className="px-3 py-1.5"
+                >
+                  <Table2 className="w-4 h-4 mr-1.5" />
+                  Table
+                </Button>
+                <Button
+                  variant={viewMode === "pipeline" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setViewMode("pipeline")}
+                  className="px-3 py-1.5"
+                >
+                  <LayoutGrid className="w-4 h-4 mr-1.5" />
+                  Pipeline
+                </Button>
+              </div>
+              
+              <Button 
+                className="bg-primary-600 hover:bg-primary-700"
+                onClick={() => setShowAddForm(true)}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Task
+              </Button>
+            </div>
           </div>
 
           {/* Filters */}
@@ -362,8 +391,127 @@ export default function Tasks() {
             </CardContent>
           </Card>
 
-          {/* Kanban Board */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Content - Table or Pipeline View */}
+          {viewMode === "table" ? (
+            /* Table View */
+            <Card className="bg-card border-border">
+              <CardContent className="p-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-border">
+                      <TableHead className="text-white">Task</TableHead>
+                      <TableHead className="text-white">Type</TableHead>
+                      <TableHead className="text-white">Priority</TableHead>
+                      <TableHead className="text-white">Status</TableHead>
+                      <TableHead className="text-white">Due Date</TableHead>
+                      <TableHead className="text-white">Linked To</TableHead>
+                      <TableHead className="text-white text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredTasks.map((task) => (
+                      <TableRow key={task.id} className="border-border hover:bg-card/50">
+                        <TableCell>
+                          <div>
+                            <div className="font-medium text-white">{task.title}</div>
+                            {task.description && (
+                              <div className="text-sm text-muted-foreground line-clamp-1">
+                                {task.description}
+                              </div>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={getTypeColor(task.type)}>
+                            <span className="flex items-center space-x-1">
+                              {getTypeIcon(task.type)}
+                              <span className="capitalize">{task.type}</span>
+                            </span>
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={getPriorityColor(task.priority)}>
+                            {task.priority}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Select
+                            value={task.status}
+                            onValueChange={(newStatus) => {
+                              updateTaskMutation.mutate({
+                                id: task.id,
+                                data: { 
+                                  status: newStatus,
+                                  completedAt: newStatus === 'completed' ? new Date().toISOString() : null
+                                }
+                              });
+                            }}
+                          >
+                            <SelectTrigger className="w-32">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="pending">Pending</SelectItem>
+                              <SelectItem value="in_progress">In Progress</SelectItem>
+                              <SelectItem value="completed">Completed</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell>
+                          {task.dueDate ? (
+                            <span className={`text-sm ${isOverdue(task.dueDate) ? 'text-red-600 dark:text-red-400 font-medium' : 'text-muted-foreground'}`}>
+                              {new Date(task.dueDate).toLocaleDateString()}
+                              {isOverdue(task.dueDate) && <AlertCircle className="w-4 h-4 inline ml-1 text-red-500" />}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground">-</span>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {getLinkedEntityName(task) ? (
+                            <div className="flex items-center space-x-1">
+                              {task.leadId && <User className="w-3 h-3 text-muted-foreground" />}
+                              {task.propertyId && <Building className="w-3 h-3 text-muted-foreground" />}
+                              {task.dealId && <DollarSign className="w-3 h-3 text-muted-foreground" />}
+                              <span className="text-sm text-muted-foreground">
+                                {getLinkedEntityName(task)}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground">-</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end space-x-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => startEditTask(task)}
+                              className="h-8 w-8 p-0"
+                            >
+                              <Edit3 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {filteredTasks.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={7} className="text-center py-8">
+                          <div className="text-muted-foreground">
+                            <CheckSquare className="w-8 h-8 mx-auto mb-2" />
+                            <p>No tasks found</p>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          ) : (
+            /* Pipeline View */
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Pending Tasks */}
             <Card 
               className="bg-card border-border"
@@ -689,7 +837,8 @@ export default function Tasks() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+            </div>
+          )}
         </main>
 
       {/* Add Task Dialog */}
