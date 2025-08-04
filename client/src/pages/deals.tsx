@@ -414,13 +414,14 @@ export default function Deals() {
           </div>
 
           {/* Deal Pipeline by Stage - Drag & Drop Kanban */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+          <div className="overflow-x-auto">
+            <div className="flex gap-4 min-w-max lg:grid lg:grid-cols-6 lg:min-w-0">
             {DEAL_STAGES.map((stage) => {
               const stageBorderColor = dragOverColumn === stage.id ? "border-primary border-2" : "border-border";
               return (
                 <Card 
                   key={stage.id} 
-                  className={`bg-card transition-colors ${stageBorderColor}`}
+                  className={`bg-card transition-colors ${stageBorderColor} w-80 lg:w-auto flex-shrink-0`}
                   onDragOver={handleDragOver}
                   onDragEnter={(e) => handleDragEnter(e, stage.id)}
                   onDragLeave={handleDragLeave}
@@ -502,6 +503,7 @@ export default function Deals() {
                 </Card>
               );
             })}
+            </div>
           </div>
 
           {/* Deal Overview Cards */}
