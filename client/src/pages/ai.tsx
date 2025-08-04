@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import NativeHeader from "@/components/native/native-header";
+import ResponsiveHeader from "@/components/layout/responsive-header";
 import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
 import { 
   Bot, 
@@ -55,7 +56,8 @@ interface InsightCard {
 }
 
 export default function AIAssistantPage() {
-  const { user } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
+  const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState("");
   const [isListening, setIsListening] = useState(false);
@@ -260,29 +262,74 @@ export default function AIAssistantPage() {
     }
   }, [user, leads]);
 
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      toast({
+        title: "Unauthorized",
+        description: "You are logged out. Logging in again...",
+        variant: "destructive",
+      });
+      setTimeout(() => {
+        window.location.href = "/api/login";
+      }, 500);
+      return;
+    }
+  }, [isAuthenticated, isLoading, toast]);
+
+  if (isLoading || !isAuthenticated) {
+    return <div className="min-h-screen bg-card flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
+    </div>;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-card">
-      <NativeHeader 
-        title="AI Assistant" 
-        showBack={true}
-        onBack={() => window.history.back()}
-      />
+    <div className="min-h-screen bg-card flex flex-col">
+      <ResponsiveHeader />
       
-      <div className="p-4 space-y-4 pb-20">
-        {/* Mobile Bottom Navigation - placeholder for mobile tabs component */}
-        <div className="lg:hidden"></div>
+      <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
+        {/* AI Insights Cards */}
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-white mb-4">AI Insights</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {insightCards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <Card key={card.id} className="bg-card border-border hover:border-primary-500/50 transition-colors">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">{card.title}</p>
+                        <p className="text-2xl font-bold text-white">{card.value}</p>
+                        {card.change && (
+                          <p className="text-sm text-emerald-400">{card.change}</p>
+                        )}
+                      </div>
+                      <div className={`w-10 h-10 ${card.color} rounded-lg flex items-center justify-center`}>
+                        <Icon className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
 
 
         {/* Conversation Area */}
-        <Card className="bg-white dark:bg-card">
+        <Card className="bg-card border-border mb-6">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-semibold flex items-center space-x-2">
+            <CardTitle className="text-lg font-semibold flex items-center space-x-2 text-white">
               <MessageSquare className="w-5 h-5" />
               <span>Conversation</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <ScrollArea className="h-80 w-full pr-4">
+            <ScrollArea className="h-96 w-full pr-4">
               <div className="space-y-4">
                 {messages.map((msg) => (
                   <div key={msg.id} className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -366,7 +413,7 @@ export default function AIAssistantPage() {
 
         {/* Smart Prompt Chips */}
         <div className="space-y-3">
-          <h3 className="text-sm font-medium text-muted-foreground dark:text-muted-foreground px-1">
+          <h3 className="text-sm font-medium text-muted-foreground px-1">
             Smart Prompts
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -375,7 +422,7 @@ export default function AIAssistantPage() {
                 key={index}
                 variant="outline"
                 size="sm"
-                className="h-8 text-xs"
+                className="h-8 text-xs border-border hover:border-primary-500/50 hover:bg-card/50"
                 onClick={() => handleQuickPrompt(prompt.query)}
               >
                 {prompt.label}
@@ -383,10 +430,10 @@ export default function AIAssistantPage() {
             ))}
           </div>
         </div>
-      </div>
+      </main>
 
       {/* Fixed Input Area */}
-      <div className="fixed bottom-20 lg:bottom-0 left-0 right-0 bg-white dark:bg-card border-t border-border dark:border-border p-4">
+      <div className="fixed bottom-20 lg:bottom-0 left-0 right-0 bg-card border-t border-border p-4 shadow-lg">
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
@@ -402,7 +449,7 @@ export default function AIAssistantPage() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              className="pr-12"
+              className="pr-12 bg-card border-border text-white placeholder-gray-400"
             />
             <Button
               size="icon"
