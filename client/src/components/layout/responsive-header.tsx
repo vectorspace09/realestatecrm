@@ -240,39 +240,25 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
             {/* Desktop Navigation */}
             {!isMobile && (
               <nav className="hidden md:flex items-center space-x-1 ml-8">
-                {/* Desktop Navigation - Hidden on mobile */}
-        <div className="hidden lg:flex items-center space-x-4">
-          {navigationItems.slice(0, 5).map((item) => (
-            <Link key={item.href} href={item.href}>
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`text-sm font-medium transition-all duration-200 hover:bg-secondary/80 active:scale-95 ${
-                  location === item.href 
-                    ? "text-primary bg-primary/10 hover:bg-primary/20" 
-                    : "text-muted-foreground hover:text-white"
-                }`}
-              >
-                <item.icon className="w-4 h-4 mr-1" />
-                {item.label}
-              </Button>
-            </Link>
-          ))}
-        </div>
-
-        {/* Center - Compact Search Bar (Desktop Only) */}
-        <div className="hidden xl:flex flex-1 max-w-md mx-6">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="Search..."
-              className="w-full pl-10 pr-4 py-2 bg-card/50 border-border focus:bg-card transition-colors text-sm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+                {navigationItems.slice(0, 5).map((item) => (
+                  <Link key={item.href} href={item.href}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={`text-sm font-medium transition-all duration-200 hover:bg-secondary/80 active:scale-95 ${
+                        location === item.href 
+                          ? "text-primary bg-primary/10 hover:bg-primary/20" 
+                          : "text-muted-foreground hover:text-white"
+                      }`}
+                    >
+                      <item.icon className="w-4 h-4 mr-1" />
+                      {item.label}
+                    </Button>
+                  </Link>
+                ))}
+              </nav>
+            )}
           </div>
-        </div>
 
                 {/* More dropdown for remaining items */}
                 <DropdownMenu>
