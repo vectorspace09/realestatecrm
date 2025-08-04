@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { useTheme } from "@/hooks/use-theme";
+
 import { useAuth } from "@/hooks/useAuth";
 import { useMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
@@ -20,9 +20,7 @@ import { NotificationBell } from "@/components/notifications/notification-bell";
 import { 
   Menu, 
   Search, 
-  Bell, 
-  Moon, 
-  Sun, 
+  Bell,
   Plus, 
   User, 
   Settings, 
@@ -57,7 +55,6 @@ interface ResponsiveHeaderProps {
 }
 
 export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: ResponsiveHeaderProps) {
-  const { theme, toggleTheme } = useTheme();
   const { user } = useAuth();
   const { isMobile } = useMobile();
   const [location] = useLocation();
@@ -350,20 +347,6 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                 Add Lead
               </Button>
             )}
-
-            {/* Theme Toggle */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleTheme}
-              className="text-muted-foreground hover:text-white hover:bg-card/50 transition-all duration-200 active:scale-95"
-            >
-              {theme === "dark" ? (
-                <Sun className="w-4 h-4" />
-              ) : (
-                <Moon className="w-4 h-4" />
-              )}
-            </Button>
 
             {/* Notifications */}
             <NotificationBell />
