@@ -55,28 +55,28 @@ export default function Dashboard() {
   // Optimize API calls with better caching and mobile-specific limits
   const { isMobile, isTablet } = useMobile();
   
-  const { data: metrics } = useQuery({
+  const { data: metrics = {} } = useQuery({
     queryKey: ["/api/dashboard/metrics"],
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 
-  const { data: insights } = useQuery({
+  const { data: insights = {} } = useQuery({
     queryKey: ["/api/ai/insights"],
     staleTime: 5 * 60 * 1000, // 5 minutes - AI insights don't change frequently
     enabled: !isMobile, // Skip on mobile for performance
   });
 
-  const { data: recentTasks } = useQuery({
+  const { data: recentTasks = [] } = useQuery({
     queryKey: ["/api/tasks", { limit: isMobile ? 3 : 5 }],
     staleTime: 1 * 60 * 1000, // 1 minute
   });
 
-  const { data: recentLeads } = useQuery({
+  const { data: recentLeads = [] } = useQuery({
     queryKey: ["/api/leads", { limit: isMobile ? 2 : 3 }],
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 
-  const { data: recentDeals } = useQuery({
+  const { data: recentDeals = [] } = useQuery({
     queryKey: ["/api/deals", { limit: isMobile ? 2 : 3 }],
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
@@ -117,7 +117,7 @@ export default function Dashboard() {
           method: 'POST',
           body: JSON.stringify({
             type: 'task_completed',
-            description: `Task completed: ${recentTasks?.find(t => t.id === taskId)?.title}`,
+            description: `Task completed: ${recentTasks?.find((t: any) => t.id === taskId)?.title}`,
             timestamp: new Date().toISOString()
           })
         });
@@ -196,9 +196,9 @@ export default function Dashboard() {
     </div>;
   }
 
-  const pendingTasks = recentTasks?.filter(task => task.status === 'pending') || [];
-  const highPriorityTasks = pendingTasks.filter(task => task.priority === 'high');
-  const overdueTask = pendingTasks.find(task => new Date(task.dueDate) < new Date());
+  const pendingTasks = recentTasks?.filter((task: any) => task.status === 'pending') || [];
+  const highPriorityTasks = pendingTasks.filter((task: any) => task.priority === 'high');
+  const overdueTask = pendingTasks.find((task: any) => new Date(task.dueDate) < new Date());
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -234,7 +234,7 @@ export default function Dashboard() {
 
           {/* AI-Powered Priority Insights - Mobile Optimized */}
           <Card className="bg-gradient-to-r from-primary to-primary/80 border-0 text-primary-foreground">
-            <CardContent className="mobile-card">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
                 <div className="text-center sm:text-left">
                   <h2 className="ai-title-h2 font-bold">AI Priority Dashboard</h2>
@@ -272,8 +272,8 @@ export default function Dashboard() {
                     <div>
                       <p className="font-medium">Hot Lead</p>
                       <p className="text-sm text-primary-foreground/80">
-                        {recentLeads?.find(lead => lead.score >= 90) 
-                          ? `${recentLeads.find(lead => lead.score >= 90)?.firstName} ${recentLeads.find(lead => lead.score >= 90)?.lastName}` 
+                        {recentLeads?.find((lead: any) => lead.score >= 90) 
+                          ? `${recentLeads.find((lead: any) => lead.score >= 90)?.firstName} ${recentLeads.find((lead: any) => lead.score >= 90)?.lastName}` 
                           : 'No hot leads today'}
                       </p>
                     </div>
@@ -289,7 +289,7 @@ export default function Dashboard() {
                     <div>
                       <p className="font-medium">Deal Progress</p>
                       <p className="text-sm text-primary-foreground/80">
-                        {recentDeals?.filter(deal => deal.status === 'under_contract').length || 0} deals closing soon
+                        {recentDeals?.filter((deal: any) => deal.status === 'under_contract').length || 0} deals closing soon
                       </p>
                     </div>
                   </div>
@@ -299,14 +299,14 @@ export default function Dashboard() {
           </Card>
 
           {/* Key Metrics Grid - Mobile Optimized */}
-          <div className="mobile-grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Total Revenue</p>
                     <p className="text-3xl font-bold text-foreground">
-                      ${parseInt(metrics?.totalRevenue || '0').toLocaleString()}
+                      ${parseInt((metrics as any)?.totalRevenue || '0').toLocaleString()}
                     </p>
                     <div className="flex items-center mt-2">
                       <ArrowUpRight className="w-4 h-4 text-success mr-1" />
@@ -327,7 +327,7 @@ export default function Dashboard() {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Active Leads</p>
                     <p className="text-3xl font-bold text-foreground">
-                      {metrics?.totalLeads || 0}
+                      {(metrics as any)?.totalLeads || 0}
                     </p>
                     <div className="flex items-center mt-2">
                       <ArrowUpRight className="w-4 h-4 text-primary mr-1" />
@@ -348,7 +348,7 @@ export default function Dashboard() {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Properties Listed</p>
                     <p className="text-3xl font-bold text-foreground">
-                      {metrics?.activeProperties || 0}
+                      {(metrics as any)?.activeProperties || 0}
                     </p>
                     <div className="flex items-center mt-2">
                       <ArrowDownRight className="w-4 h-4 text-destructive mr-1" />
@@ -599,7 +599,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recentLeads?.slice(0, 3).map((lead) => (
+                  {recentLeads?.slice(0, 3).map((lead: any) => (
                     <div key={lead.id} className="flex items-center space-x-3">
                       <Avatar className="w-10 h-10">
                         <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${lead.firstName}`} />
@@ -652,7 +652,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recentTasks?.filter(task => task.priority === 'high').slice(0, 3).map((task) => (
+                  {recentTasks?.filter((task: any) => task.priority === 'high').slice(0, 3).map((task: any) => (
                     <div key={task.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-card/50 transition-all duration-200 cursor-pointer group" onClick={() => navigate(`/tasks/${task.id}`)}>
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                         task.type === 'call' ? 'bg-primary/10' :
@@ -740,7 +740,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recentDeals?.slice(0, 3).map((deal) => (
+                  {recentDeals?.slice(0, 3).map((deal: any) => (
                     <div key={deal.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-card/50 transition-all duration-200 cursor-pointer group" onClick={() => navigate(`/deals/${deal.id}`)}>
                       <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
                         <DollarSign className="w-4 h-4 text-primary" />
