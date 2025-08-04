@@ -22,7 +22,6 @@ import {
   Menu, 
   Search, 
   Bell,
-  Plus, 
   User as UserIcon, 
   Settings, 
   LogOut,
@@ -276,17 +275,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
 
           {/* Right Section */}
           <div className="flex items-center space-x-3">
-            {/* Quick Add Button (Desktop) */}
-            {!isMobile && (
-              <Button 
-                size="sm"
-                onClick={() => window.location.href = '/leads?action=add'}
-                className="bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 text-white shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-200 hover:scale-105"
-              >
-                <Plus className="w-4 h-4 mr-1.5" />
-                Add Lead
-              </Button>
-            )}
+
 
             {/* Notifications */}
             <NotificationBell />

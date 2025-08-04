@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 import { NotificationBell } from "@/components/notifications/notification-bell";
-import { Menu, Search, Bell, Moon, Sun, Plus, User, Settings, LogOut } from "lucide-react";
+import { Menu, Search, Bell, Moon, Sun, User, Settings, LogOut } from "lucide-react";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -97,17 +97,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             {/* Notifications */}
             <NotificationBell className="relative text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground dark:hover:text-muted-foreground" />
 
-            {/* Quick actions - Desktop only */}
-            <div className="hidden md:flex items-center space-x-2">
-              <Button 
-                size="sm"
-                className="bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 text-white"
-                onClick={() => window.location.href = '/leads?action=add'}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Lead
-              </Button>
-            </div>
+
 
             {/* User menu */}
             <DropdownMenu>
