@@ -54,11 +54,15 @@ function Router() {
         <Suspense fallback={<PageLoading />}>
           <Route path="/" component={DashboardComponent} />
           <Route path="/leads" component={LeadsComponent} />
+          <Route path="/leads/new" component={LeadsComponent} />
           <Route path="/leads/:id" component={LeadDetail} />
           <Route path="/properties" component={PropertiesComponent} />
+          <Route path="/properties/new" component={PropertiesComponent} />
           <Route path="/properties/:id" component={PropertyDetail} />
           <Route path="/deals" component={DealsComponent} />
+          <Route path="/deals/new" component={DealsComponent} />
           <Route path="/tasks" component={Tasks} />
+          <Route path="/tasks/new" component={Tasks} />
           <Route path="/ai" component={AI} />
           <Route path="/workflows" component={WorkflowBuilder} />
           <Route path="/analytics" component={Analytics} />

@@ -439,7 +439,7 @@ export class DatabaseStorage implements IStorage {
     recentActivities: Activity[];
   }> {
     // Single optimized query to get all counts at once
-    const [metricsResult] = await db
+    const metricsResult = await db
       .select({
         totalLeads: sql<number>`(SELECT COUNT(*) FROM ${leads})`,
         activeProperties: sql<number>`(SELECT COUNT(*) FROM ${properties} WHERE status = 'available')`,
@@ -454,11 +454,12 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(activities.createdAt))
       .limit(5); // Reduced from 10 for performance
 
+    const metrics = metricsResult[0] || {};
     return {
-      totalLeads: (metricsResult?.totalLeads || 0).toString(),
-      activeProperties: (metricsResult?.activeProperties || 0).toString(),
-      activeDeals: (metricsResult?.activeDeals || 0).toString(),
-      totalRevenue: (metricsResult?.totalRevenue || 0).toString(),
+      totalLeads: (metrics.totalLeads || 0).toString(),
+      activeProperties: (metrics.activeProperties || 0).toString(),
+      activeDeals: (metrics.activeDeals || 0).toString(),
+      totalRevenue: (metrics.totalRevenue || 0).toString(),
       recentActivities,
     };
   }
@@ -488,7 +489,7 @@ export class DatabaseStorage implements IStorage {
     highValueLeads: Lead[];
   }> {
     // Single optimized query for all analytics metrics
-    const [analyticsResult] = await db
+    const analyticsResult = await db
       .select({
         totalLeads: sql<number>`(SELECT COUNT(*) FROM ${leads})`,
         qualifiedLeads: sql<number>`(SELECT COUNT(*) FROM ${leads} WHERE status = 'qualified')`,
@@ -506,24 +507,25 @@ export class DatabaseStorage implements IStorage {
         completedTasks: sql<number>`(SELECT COUNT(*) FROM ${tasks} WHERE status = 'completed')`
       });
 
-    const totalLeads = analyticsResult?.totalLeads || 0;
-    const qualifiedLeads = analyticsResult?.qualifiedLeads || 0;
+    const analytics = analyticsResult[0] || {};
+    const totalLeads = analytics.totalLeads || 0;
+    const qualifiedLeads = analytics.qualifiedLeads || 0;
     const conversionRate = totalLeads > 0 ? Math.round((qualifiedLeads / totalLeads) * 100) : 0;
-    const averageLeadScore = Math.round(analyticsResult?.averageLeadScore || 0);
+    const averageLeadScore = Math.round(analytics.averageLeadScore || 0);
 
-    const totalProperties = analyticsResult?.totalProperties || 0;
-    const soldProperties = analyticsResult?.soldProperties || 0;
-    const activeListings = analyticsResult?.activeListings || 0;
-    const averagePropertyPrice = Math.round(analyticsResult?.averagePropertyPrice || 0);
+    const totalProperties = analytics.totalProperties || 0;
+    const soldProperties = analytics.soldProperties || 0;
+    const activeListings = analytics.activeListings || 0;
+    const averagePropertyPrice = Math.round(analytics.averagePropertyPrice || 0);
 
-    const totalDeals = analyticsResult?.totalDeals || 0;
-    const activePipeline = analyticsResult?.activePipeline || 0;
-    const closedDeals = analyticsResult?.closedDeals || 0;
-    const totalRevenue = analyticsResult?.totalRevenue || 0;
-    const averageDealValue = Math.round(analyticsResult?.averageDealValue || 0);
+    const totalDeals = analytics.totalDeals || 0;
+    const activePipeline = analytics.activePipeline || 0;
+    const closedDeals = analytics.closedDeals || 0;
+    const totalRevenue = analytics.totalRevenue || 0;
+    const averageDealValue = Math.round(analytics.averageDealValue || 0);
 
-    const pendingTasks = analyticsResult?.pendingTasks || 0;
-    const completedTasks = analyticsResult?.completedTasks || 0;
+    const pendingTasks = analytics.pendingTasks || 0;
+    const completedTasks = analytics.completedTasks || 0;
     const taskCompletionRate = pendingTasks + completedTasks > 0 ? 
       Math.round((completedTasks / (pendingTasks + completedTasks)) * 100) : 0;
 

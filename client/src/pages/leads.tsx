@@ -58,14 +58,14 @@ export default function Leads() {
   // Check URL params for actions and search
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('action') === 'add') {
+    if (urlParams.get('action') === 'add' || location === '/leads/new') {
       setShowAddForm(true);
     }
     const searchParam = urlParams.get('search');
     if (searchParam) {
       setSearchTerm(searchParam);
     }
-  }, []);
+  }, [location]);
 
   const { data: leads = [], isLoading: leadsLoading } = useQuery({
     queryKey: ["/api/leads"],
