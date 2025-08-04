@@ -32,6 +32,7 @@ const NativeSettings = lazy(() => import("@/pages/native-settings"));
 
 // Loading component for lazy routes
 import PageSkeleton from "@/components/loading/page-skeleton";
+import { GlobalFAB } from "@/components/global/global-modals";
 const PageLoading = () => <PageSkeleton />;
 
 function Router() {
@@ -78,6 +79,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Router />
+          <GlobalFAB />
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

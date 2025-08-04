@@ -125,17 +125,31 @@
   html {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
   }
 
   /* Better mobile scroll behavior */
   * {
     -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
   }
 
   /* Improve tap targets for mobile */
-  button, a, [role="button"] {
+  button, a, [role="button"], [tabindex] {
     min-height: 44px;
     min-width: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Prevent zoom on input focus for iOS */
+  input, select, textarea {
+    font-size: 16px;
+  }
+
+  @media (max-width: 768px) {
+    input, select, textarea {
+      font-size: 16px !important;
+    }
   }
 
   /* AI-First Typography Hierarchy (Mobile Sizes) */

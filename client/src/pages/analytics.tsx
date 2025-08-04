@@ -59,7 +59,7 @@ export default function Analytics() {
   return (
     <div className="min-h-screen bg-card flex flex-col">
       <ResponsiveHeader />
-      
+
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6 space-y-6">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -190,7 +190,7 @@ export default function Analytics() {
                   {analytics.leadsBySource.map((source, index) => {
                     const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-purple-500', 'bg-amber-500', 'bg-red-500'];
                     const percentage = analytics.totalLeads > 0 ? Math.round((source.count / analytics.totalLeads) * 100) : 0;
-                    
+
                     return (
                       <div key={source.source} className="flex items-center justify-between">
                         <div className="flex items-center">
@@ -313,14 +313,14 @@ export default function Analytics() {
                     <span className="text-xs text-muted-foreground mt-1">Detailed lead analytics and conversion data</span>
                   </div>
                 </Button>
-                
+
                 <Button variant="outline" className="justify-start h-auto p-4">
                   <div className="flex flex-col items-start">
                     <span className="font-medium">Property Market Analysis</span>
                     <span className="text-xs text-muted-foreground mt-1">Market trends and property performance</span>
                   </div>
                 </Button>
-                
+
                 <Button variant="outline" className="justify-start h-auto p-4">
                   <div className="flex flex-col items-start">
                     <span className="font-medium">Revenue & Commission Report</span>

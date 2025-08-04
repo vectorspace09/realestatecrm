@@ -155,7 +155,10 @@ export default function Dashboard() {
 
   const handleCompleteTask = (task: any) => {
     setCompletingTask(task.id);
-    completeTaskMutation.mutate({ taskId: task.id, leadId: task.leadId });
+    completeTaskMutation.mutate({ 
+      taskId: task.id, 
+      leadId: task.leadId || task.lead?.id 
+    });
   };
 
   // Priority action handlers
@@ -707,12 +710,20 @@ export default function Dashboard() {
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleCompleteTask(task);
+                            if (task.status !== 'completed') {
+                              handleCompleteTask(task);
+                            }
                           }}
-                          disabled={completingTask === task.id}
-                          className="h-8 text-xs transition-all duration-200 hover:scale-105"
+                          disabled={completingTask === task.id || task.status === 'completed'}
+                          className="h-8 text-xs transition-all duration-200 hover:scale-105 min-w-[80px]"
                         >
-                          {completingTask === task.id ? "..." : task.status === 'completed' ? <CheckCircle className="w-3 h-3" /> : "Complete"}
+                          {completingTask === task.id ? (
+                            <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                          ) : task.status === 'completed' ? (
+                            <CheckCircle className="w-3 h-3" />
+                          ) : (
+                            "Complete"
+                          )}
                         </Button>
                       </div>
                     </div>

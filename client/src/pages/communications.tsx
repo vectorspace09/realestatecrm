@@ -39,7 +39,7 @@ export default function Communications() {
   return (
     <div className="min-h-screen bg-card flex flex-col">
       <ResponsiveHeader />
-      
+
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6 space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between">
@@ -245,21 +245,21 @@ export default function Communications() {
                     <span className="text-xs text-muted-foreground mt-1">Template-based emails</span>
                   </div>
                 </Button>
-                
+
                 <Button variant="outline" className="justify-start h-auto p-4">
                   <div className="flex flex-col items-start">
                     <span className="font-medium">Schedule Property Showing</span>
                     <span className="text-xs text-muted-foreground mt-1">Book appointments</span>
                   </div>
                 </Button>
-                
+
                 <Button variant="outline" className="justify-start h-auto p-4">
                   <div className="flex flex-col items-start">
                     <span className="font-medium">Send Market Update</span>
                     <span className="text-xs text-muted-foreground mt-1">Automated newsletters</span>
                   </div>
                 </Button>
-                
+
                 <Button variant="outline" className="justify-start h-auto p-4">
                   <div className="flex flex-col items-start">
                     <span className="font-medium">Log Phone Call</span>
@@ -285,7 +285,7 @@ export default function Communications() {
                   </p>
                   <Button variant="outline" size="sm">Use Template</Button>
                 </div>
-                
+
                 <div className="p-4 border border-border dark:border-border rounded-lg">
                   <h4 className="font-medium text-white mb-2">Property Match Found</h4>
                   <p className="text-sm text-muted-foreground mb-3">
@@ -293,7 +293,7 @@ export default function Communications() {
                   </p>
                   <Button variant="outline" size="sm">Use Template</Button>
                 </div>
-                
+
                 <div className="p-4 border border-border dark:border-border rounded-lg">
                   <h4 className="font-medium text-white mb-2">Showing Confirmation</h4>
                   <p className="text-sm text-muted-foreground mb-3">
