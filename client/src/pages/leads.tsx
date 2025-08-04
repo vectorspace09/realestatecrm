@@ -78,11 +78,10 @@ export default function Leads() {
   // Lead status update mutation for Kanban
   const updateLeadStatusMutation = useMutation({
     mutationFn: async ({ leadId, status }: { leadId: string; status: string }) => {
-      const response = await apiRequest(`/api/leads/${leadId}`, {
+      return apiRequest(`/api/leads/${leadId}/status`, {
         method: "PATCH",
         body: { status }
       });
-      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/leads"] });

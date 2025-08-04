@@ -72,7 +72,7 @@ export default function NativeLeads() {
   // Status update mutation for leads
   const updateLeadStatusMutation = useMutation({
     mutationFn: async ({ leadId, newStatus }: { leadId: string; newStatus: string }) => {
-      return apiRequest(`/api/leads/${leadId}`, {
+      return apiRequest(`/api/leads/${leadId}/status`, {
         method: "PATCH",
         body: { status: newStatus }
       });
