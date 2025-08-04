@@ -458,7 +458,7 @@ export class DatabaseStorage implements IStorage {
         revenue: sql<number>`COALESCE(SUM(${deals.commission}), 0)` 
       })
       .from(deals)
-      .where(inArray(deals.status, ["handover", "payment"]));
+      .where(inArray(deals.status, ["closed", "won", "handover", "payment"]));
     
     const recentActivities = await db
       .select()
