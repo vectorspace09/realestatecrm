@@ -448,21 +448,74 @@ export default function PropertyForm({ onSuccess, property }: PropertyFormProps)
               maxNumberOfFiles={5}
               maxFileSize={10485760}
               onGetUploadParameters={async () => {
-                const response = await apiRequest("/api/objects/upload", { method: "POST" });
-                return {
-                  method: "PUT" as const,
-                  url: response.uploadURL,
-                };
+                try {
+                  const response = await apiRequest("/api/objects/upload", { method: "POST" });
+                  if (!response.uploadURL) {
+                    throw new Error("No upload URL returned from server");
+                  }
+                  return {
+                    method: "PUT" as const,
+                    url: response.uploadURL,
+                  };
+                } catch (error) {
+                  console.error("Error getting upload parameters:", error);
+                  if (isUnauthorizedError(error)) {
+                    toast({
+                      title: "Authentication Required",
+                      description: "Please log in to upload images.",
+                      variant: "destructive",
+                    });
+                    setTimeout(() => {
+                      window.location.href = "/api/login";
+                    }, 1000);
+                  } else {
+                    toast({
+                      title: "Upload Error",
+                      description: "Failed to get upload URL. Please check your connection and try again.",
+                      variant: "destructive",
+                    });
+                  }
+                  throw error;
+                }
               }}
-              onComplete={(result) => {
+              onComplete={async (result) => {
                 const uploadedUrls = (result.successful || [])
                   .map(file => file.uploadURL)
                   .filter((url): url is string => Boolean(url));
-                setUploadedImages(prev => [...prev, ...uploadedUrls]);
-                toast({
-                  title: "Success",
-                  description: `${result.successful?.length || 0} image(s) uploaded successfully`,
-                });
+                
+                // Set ACL policy for each uploaded image
+                try {
+                  for (const imageURL of uploadedUrls) {
+                    await apiRequest("/api/property-images", {
+                      method: "PUT",
+                      body: { imageURL }
+                    });
+                  }
+                  
+                  setUploadedImages(prev => [...prev, ...uploadedUrls]);
+                  toast({
+                    title: "Success",
+                    description: `${result.successful?.length || 0} image(s) uploaded successfully`,
+                  });
+                } catch (error) {
+                  console.error("Error setting image permissions:", error);
+                  if (isUnauthorizedError(error)) {
+                    toast({
+                      title: "Authentication Required",
+                      description: "Please log in to complete the upload process.",
+                      variant: "destructive",
+                    });
+                    setTimeout(() => {
+                      window.location.href = "/api/login";
+                    }, 1000);
+                  } else {
+                    toast({
+                      title: "Upload Error",
+                      description: "Images uploaded but failed to set permissions. Please try again.",
+                      variant: "destructive",
+                    });
+                  }
+                }
               }}
               buttonClassName="w-full"
             >
