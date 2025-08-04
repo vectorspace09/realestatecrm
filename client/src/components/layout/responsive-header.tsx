@@ -220,25 +220,25 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
       <div className="container mx-auto px-4 lg:px-6">
         <div className="flex items-center justify-between h-16">
           
-          {/* Left Section */}
-          <div className="flex items-center space-x-4">
+          {/* Logo/Brand - Moved to extreme left */}
+          <Link href="/">
+            <div className="flex items-center space-x-3 cursor-pointer group">
+              <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-purple-600 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+                <Building className="w-5 h-5 text-white" />
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-lg font-bold text-white group-hover:text-primary-400 transition-colors">
+                  PRA Developers
+                </h1>
+                <p className="text-xs text-muted-foreground -mt-1">Real Estate CRM</p>
+              </div>
+            </div>
+          </Link>
+
+          {/* Left Section - Navigation */}
+          <div className="flex items-center space-x-4 ml-8">
             {/* Mobile Menu */}
             {isMobile && showMobileNav && <MobileNavigation />}
-
-            {/* Logo/Brand */}
-            <Link href="/">
-              <div className="flex items-center space-x-3 cursor-pointer group">
-                <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-purple-600 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
-                  <Building className="w-5 h-5 text-white" />
-                </div>
-                <div className="hidden sm:block">
-                  <h1 className="text-lg font-bold text-white group-hover:text-primary-400 transition-colors">
-                    PRA Developers
-                  </h1>
-                  <p className="text-xs text-muted-foreground -mt-1">Real Estate CRM</p>
-                </div>
-              </div>
-            </Link>
 
             {/* Desktop Navigation */}
             {!isMobile && (
