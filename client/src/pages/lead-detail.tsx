@@ -648,6 +648,7 @@ export default function LeadDetail() {
               </Dialog>
             </div>
           </div>
+          </div>
 
           {/* Lead Details and Timeline */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -814,7 +815,7 @@ export default function LeadDetail() {
                                     {activity.title}
                                   </h4>
                                   <time className="text-xs text-muted-foreground">
-                                    {new Date(activity.createdAt).toLocaleDateString()} {new Date(activity.createdAt).toLocaleTimeString()}
+                                    {activity.createdAt ? new Date(activity.createdAt).toLocaleDateString() : 'N/A'} {activity.createdAt ? new Date(activity.createdAt).toLocaleTimeString() : ''}
                                   </time>
                                 </div>
                                 {activity.description && (
