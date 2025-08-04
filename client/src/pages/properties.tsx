@@ -41,7 +41,7 @@ export default function Properties() {
 
   const updatePropertyStatusMutation = useMutation({
     mutationFn: async ({ propertyId, status }: { propertyId: string; status: string }) => {
-      await apiRequest(`/api/properties/${propertyId}/status`, "PATCH", { status });
+      await apiRequest(`/api/properties/${propertyId}/status`, { method: "PATCH", body: { status } });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/properties"] });

@@ -90,7 +90,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           "text-2xl font-bold mb-2",
           property.status === "sold" ? "text-green-600" : "text-primary-600"
         )}>
-          {formatPrice(property.price)}
+          {formatPrice(property.price || 0)}
         </p>
         
         <div className="space-y-1 text-sm text-muted-foreground mb-3">
@@ -101,7 +101,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           </div>
           <div className="flex items-center">
             <MapPin className="w-4 h-4 mr-2" />
-            {property.address}
+            {property.address || "No address"}
           </div>
         </div>
         
@@ -144,7 +144,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
                 Commission: $24K
               </span>
               <span className="text-xs text-muted-foreground">
-                Closed {formatDistanceToNow(new Date(property.updatedAt), { addSuffix: true })}
+                Closed {property.updatedAt ? formatDistanceToNow(new Date(property.updatedAt), { addSuffix: true }) : "recently"}
               </span>
             </div>
           </div>

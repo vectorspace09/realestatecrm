@@ -47,7 +47,7 @@ export default function PropertyForm({ onSuccess, property }: PropertyFormProps)
       address: property?.address || "",
       city: property?.city || "",
       state: property?.state || "",
-      zipCode: property?.zipCode || "",
+      zipCode: property?.zipCode ?? "",
       propertyType: property?.propertyType || "apartment",
       status: property?.status || "available",
       price: property?.price?.toString() || "",
@@ -56,7 +56,7 @@ export default function PropertyForm({ onSuccess, property }: PropertyFormProps)
       squareFeet: property?.squareFeet?.toString() || "",
       lotSize: property?.lotSize?.toString() || "",
       yearBuilt: property?.yearBuilt?.toString() || "",
-      description: property?.description || "",
+      description: property?.description ?? "",
       features: property?.features || [],
       virtualTourUrl: property?.virtualTourUrl || "",
       ownerContact: property?.ownerContact || "",
@@ -81,10 +81,10 @@ export default function PropertyForm({ onSuccess, property }: PropertyFormProps)
       
       if (property) {
         // Update existing property
-        await apiRequest(`/api/properties/${property.id}`, "PUT", propertyData);
+        await apiRequest(`/api/properties/${property.id}`, { method: "PUT", body: propertyData });
       } else {
         // Create new property
-        await apiRequest("/api/properties", "POST", propertyData);
+        await apiRequest("/api/properties", { method: "POST", body: propertyData });
       }
     },
     onSuccess: () => {
@@ -448,18 +448,20 @@ export default function PropertyForm({ onSuccess, property }: PropertyFormProps)
               maxNumberOfFiles={5}
               maxFileSize={10485760}
               onGetUploadParameters={async () => {
-                const response = await apiRequest("/api/objects/upload", "POST");
+                const response = await apiRequest("/api/objects/upload", { method: "POST" });
                 return {
                   method: "PUT" as const,
                   url: response.uploadURL,
                 };
               }}
               onComplete={(result) => {
-                const uploadedUrls = result.successful.map(file => file.uploadURL);
+                const uploadedUrls = (result.successful || [])
+                  .map(file => file.uploadURL)
+                  .filter((url): url is string => Boolean(url));
                 setUploadedImages(prev => [...prev, ...uploadedUrls]);
                 toast({
                   title: "Success",
-                  description: `${result.successful.length} image(s) uploaded successfully`,
+                  description: `${result.successful?.length || 0} image(s) uploaded successfully`,
                 });
               }}
               buttonClassName="w-full"

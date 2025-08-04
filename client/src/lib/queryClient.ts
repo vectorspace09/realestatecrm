@@ -13,7 +13,7 @@ export async function apiRequest(
     method?: string;
     body?: unknown;
   }
-): Promise<Response> {
+): Promise<any> {
   const method = options?.method || "GET";
   const res = await fetch(url, {
     method,
@@ -23,6 +23,13 @@ export async function apiRequest(
   });
 
   await throwIfResNotOk(res);
+  
+  // Return JSON for non-empty responses
+  const contentType = res.headers.get("content-type");
+  if (contentType?.includes("application/json")) {
+    return await res.json();
+  }
+  
   return res;
 }
 
