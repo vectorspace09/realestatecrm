@@ -924,16 +924,7 @@ export default function LeadDetail() {
             </div>
           </div>
 
-          {(lead as any)?.notes && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Notes</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground dark:text-muted-foreground whitespace-pre-wrap">{(lead as any)?.notes}</p>
-              </CardContent>
-            </Card>
-          )}
+          
         </main>
       
       <MobileBottomTabs />
