@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import NativeHeader from "@/components/native/native-header";
+import MobileBottomTabs from "@/components/layout/mobile-bottom-tabs";
 import { 
   Bot, 
   User, 
@@ -268,6 +269,8 @@ export default function AIAssistantPage() {
       />
       
       <div className="p-4 space-y-4 pb-20">
+        {/* Mobile Bottom Navigation - placeholder for mobile tabs component */}
+        <div className="lg:hidden"></div>
 
 
         {/* Conversation Area */}
@@ -383,7 +386,7 @@ export default function AIAssistantPage() {
       </div>
 
       {/* Fixed Input Area */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-card border-t border-border dark:border-border p-4">
+      <div className="fixed bottom-20 lg:bottom-0 left-0 right-0 bg-white dark:bg-card border-t border-border dark:border-border p-4">
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
@@ -412,6 +415,9 @@ export default function AIAssistantPage() {
           </div>
         </div>
       </div>
+      
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomTabs />
     </div>
   );
 }

@@ -878,7 +878,7 @@ export default function Dashboard() {
       </main>
       
       <MobileBottomTabs />
-      <ContextualFAB />
+
     </div>
   );
 }

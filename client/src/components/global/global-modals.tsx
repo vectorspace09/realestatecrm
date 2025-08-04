@@ -99,33 +99,42 @@ export function GlobalFAB() {
       <div className="fixed bottom-20 right-4 z-50 lg:bottom-6">
         {showMenu && (
           <div className="absolute bottom-16 right-0 flex flex-col space-y-3 mb-4">
-            <Button
-              onClick={() => {
-                openModal('lead');
-                setShowMenu(false);
-              }}
-              className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg rounded-full w-12 h-12 p-0"
-            >
-              <Plus className="w-5 h-5" />
-            </Button>
-            <Button
-              onClick={() => {
-                openModal('property');
-                setShowMenu(false);
-              }}
-              className="bg-green-600 hover:bg-green-700 text-white shadow-lg rounded-full w-12 h-12 p-0"
-            >
-              <Plus className="w-5 h-5" />
-            </Button>
-            <Button
-              onClick={() => {
-                openModal('task');
-                setShowMenu(false);
-              }}
-              className="bg-purple-600 hover:bg-purple-700 text-white shadow-lg rounded-full w-12 h-12 p-0"
-            >
-              <Plus className="w-5 h-5" />
-            </Button>
+            <div className="flex items-center space-x-3">
+              <span className="text-sm text-white bg-blue-600 px-3 py-1 rounded-full shadow-lg">Add Lead</span>
+              <Button
+                onClick={() => {
+                  openModal('lead');
+                  setShowMenu(false);
+                }}
+                className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg rounded-full w-12 h-12 p-0"
+              >
+                <Plus className="w-5 h-5" />
+              </Button>
+            </div>
+            <div className="flex items-center space-x-3">
+              <span className="text-sm text-white bg-green-600 px-3 py-1 rounded-full shadow-lg">Add Property</span>
+              <Button
+                onClick={() => {
+                  openModal('property');
+                  setShowMenu(false);
+                }}
+                className="bg-green-600 hover:bg-green-700 text-white shadow-lg rounded-full w-12 h-12 p-0"
+              >
+                <Plus className="w-5 h-5" />
+              </Button>
+            </div>
+            <div className="flex items-center space-x-3">
+              <span className="text-sm text-white bg-purple-600 px-3 py-1 rounded-full shadow-lg">Add Task</span>
+              <Button
+                onClick={() => {
+                  openModal('task');
+                  setShowMenu(false);
+                }}
+                className="bg-purple-600 hover:bg-purple-700 text-white shadow-lg rounded-full w-12 h-12 p-0"
+              >
+                <Plus className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         )}
         
