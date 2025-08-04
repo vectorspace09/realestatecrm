@@ -69,17 +69,17 @@ export default function Dashboard() {
   const { data: recentTasks = [] } = useQuery({
     queryKey: ["/api/tasks", { limit: isMobile ? 3 : 5 }],
     staleTime: 1 * 60 * 1000, // 1 minute
-  });
+  }) as { data: any[] };
 
   const { data: recentLeads = [] } = useQuery({
     queryKey: ["/api/leads", { limit: isMobile ? 2 : 3 }],
     staleTime: 2 * 60 * 1000, // 2 minutes
-  });
+  }) as { data: any[] };
 
   const { data: recentDeals = [] } = useQuery({
     queryKey: ["/api/deals", { limit: isMobile ? 2 : 3 }],
     staleTime: 2 * 60 * 1000, // 2 minutes
-  });
+  }) as { data: any[] };
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -421,19 +421,21 @@ export default function Dashboard() {
               <div className="group relative overflow-hidden bg-gradient-to-r from-destructive/10 to-destructive/5 rounded-xl border border-destructive/30 hover:border-destructive/50 transition-all duration-300">
                 <div className="absolute inset-0 bg-gradient-to-r from-destructive/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative p-5">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-3 h-3 bg-destructive rounded-full mt-1.5 animate-pulse shadow-lg shadow-destructive/50"></div>
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <h4 className="font-semibold text-foreground">Follow up with Emily Davis</h4>
-                          <Badge className="bg-destructive text-foreground text-xs border-0">Score: 92</Badge>
-                          <Badge className="bg-orange-500 text-foreground text-xs border-0">Hot Lead</Badge>
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start space-x-4 flex-1 min-w-0">
+                      <div className="w-3 h-3 bg-destructive rounded-full mt-1.5 animate-pulse shadow-lg shadow-destructive/50 flex-shrink-0"></div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col space-y-2 mb-3">
+                          <div className="flex items-center space-x-2 flex-wrap">
+                            <h4 className="font-semibold text-foreground">Follow up with Emily Davis</h4>
+                            <Badge className="bg-destructive text-foreground text-xs border-0 flex-shrink-0">Score: 92</Badge>
+                            <Badge className="bg-orange-500 text-foreground text-xs border-0 flex-shrink-0">Hot Lead</Badge>
+                          </div>
                         </div>
                         <p className="text-sm text-muted-foreground mb-3">
                           Highest scoring lead from website inquiry • Last contact: 2 days ago
                         </p>
-                        <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                        <div className="flex items-center space-x-4 text-xs text-muted-foreground flex-wrap gap-2">
                           <span className="flex items-center">
                             <Clock className="w-3 h-3 mr-1" />
                             Due: Today 2:00 PM
@@ -445,7 +447,7 @@ export default function Dashboard() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
+                    <div className="flex items-start gap-2 flex-shrink-0 mt-1">
                       <Button
                         size="sm"
                         className="bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-red-500/25 transition-all duration-200 whitespace-nowrap"
@@ -471,18 +473,20 @@ export default function Dashboard() {
               <div className="group relative overflow-hidden bg-gradient-to-r from-orange-900/20 to-amber-800/20 rounded-xl border border-orange-500/30 hover:border-orange-400/50 transition-all duration-300">
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative p-5">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-3 h-3 bg-orange-500 rounded-full mt-1.5 animate-pulse shadow-lg shadow-orange-500/50"></div>
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <h4 className="font-semibold text-foreground">Close Sunrise Apartments Deal</h4>
-                          <Badge className="bg-orange-500 text-foreground text-xs border-0">$450K</Badge>
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start space-x-4 flex-1 min-w-0">
+                      <div className="w-3 h-3 bg-orange-500 rounded-full mt-1.5 animate-pulse shadow-lg shadow-orange-500/50 flex-shrink-0"></div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col space-y-2 mb-3">
+                          <div className="flex items-center space-x-2 flex-wrap">
+                            <h4 className="font-semibold text-foreground">Close Sunrise Apartments Deal</h4>
+                            <Badge className="bg-orange-500 text-foreground text-xs border-0 flex-shrink-0">$450K</Badge>
+                          </div>
                         </div>
                         <p className="text-sm text-muted-foreground mb-3">
                           Contract expires in 3 days • Final walkthrough pending
                         </p>
-                        <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                        <div className="flex items-center space-x-4 text-xs text-muted-foreground flex-wrap gap-2">
                           <span className="flex items-center">
                             <Calendar className="w-3 h-3 mr-1" />
                             Deadline: Jan 15
@@ -494,10 +498,10 @@ export default function Dashboard() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-start gap-2 flex-shrink-0 mt-1">
                       <Button
                         size="sm"
-                        className="bg-orange-600 hover:bg-orange-700 text-foreground shadow-lg hover:shadow-orange-500/25 transition-all duration-200"
+                        className="bg-orange-600 hover:bg-orange-700 text-foreground shadow-lg hover:shadow-orange-500/25 transition-all duration-200 whitespace-nowrap"
                         onClick={() => handlePriorityAction('schedule_walkthrough')}
                       >
                         <Calendar className="w-4 h-4 mr-2" />
@@ -506,7 +510,7 @@ export default function Dashboard() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-border text-muted-foreground hover:bg-secondary"
+                        className="border-border text-muted-foreground hover:bg-secondary p-2"
                         onClick={() => navigate('/deals')}
                       >
                         <Eye className="w-4 h-4" />
@@ -520,18 +524,20 @@ export default function Dashboard() {
               <div className="group relative overflow-hidden bg-gradient-to-r from-blue-900/20 to-indigo-800/20 rounded-xl border border-blue-500/30 hover:border-blue-400/50 transition-all duration-300">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative p-5">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-3 h-3 bg-blue-500 rounded-full mt-1.5 animate-pulse shadow-lg shadow-blue-500/50"></div>
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <h4 className="font-semibold text-foreground">Update Maple Street Photos</h4>
-                          <Badge className="bg-blue-500 text-foreground text-xs border-0">Photos</Badge>
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start space-x-4 flex-1 min-w-0">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full mt-1.5 animate-pulse shadow-lg shadow-blue-500/50 flex-shrink-0"></div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col space-y-2 mb-3">
+                          <div className="flex items-center space-x-2 flex-wrap">
+                            <h4 className="font-semibold text-foreground">Update Maple Street Photos</h4>
+                            <Badge className="bg-blue-500 text-foreground text-xs border-0 flex-shrink-0">Photos</Badge>
+                          </div>
                         </div>
                         <p className="text-sm text-muted-foreground mb-3">
                           Property photos are 60+ days old • New staging completed
                         </p>
-                        <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                        <div className="flex items-center space-x-4 text-xs text-muted-foreground flex-wrap gap-2">
                           <span className="flex items-center">
                             <Camera className="w-3 h-3 mr-1" />
                             Last updated: Nov 15
@@ -543,10 +549,10 @@ export default function Dashboard() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-start gap-2 flex-shrink-0 mt-1">
                       <Button
                         size="sm"
-                        className="bg-blue-600 hover:bg-blue-700 text-foreground shadow-lg hover:shadow-blue-500/25 transition-all duration-200"
+                        className="bg-blue-600 hover:bg-blue-700 text-foreground shadow-lg hover:shadow-blue-500/25 transition-all duration-200 whitespace-nowrap"
                         onClick={() => handlePriorityAction('update_photos')}
                       >
                         <Camera className="w-4 h-4 mr-2" />
@@ -555,7 +561,7 @@ export default function Dashboard() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-border text-muted-foreground hover:bg-secondary"
+                        className="border-border text-muted-foreground hover:bg-secondary p-2"
                         onClick={() => navigate('/properties')}
                       >
                         <Eye className="w-4 h-4" />
@@ -657,7 +663,7 @@ export default function Dashboard() {
                 <div className="space-y-4">
                   {recentTasks?.filter((task: any) => task.priority === 'high').slice(0, 3).map((task: any) => (
                     <div key={task.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-card/50 transition-all duration-200 cursor-pointer group" onClick={() => navigate(`/tasks/${task.id}`)}>
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
                         task.type === 'call' ? 'bg-primary/10' :
                         task.type === 'meeting' ? 'bg-primary/10' :
                         task.type === 'document' ? 'bg-primary/10' :
@@ -676,35 +682,37 @@ export default function Dashboard() {
                           Due {new Date(task.dueDate).toLocaleDateString()}
                         </p>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge 
-                          variant="outline" 
-                          className={`cursor-pointer transition-all duration-200 hover:scale-105 ${
-                            task.priority === 'high' ? 'border-red-500 text-red-500 hover:bg-red-50 ' :
-                            task.priority === 'medium' ? 'border-amber-500 text-amber-500 hover:bg-amber-50 ' :
-                            'border-green-500 text-green-500 hover:bg-green-50 '
-                          }`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/tasks/${task.id}`);
-                          }}
-                        >
-                          <Clock className="w-3 h-3 mr-1" />
-                          {task.priority}
-                        </Badge>
-                        {task.leadId && (
-                          <Badge
-                            variant="secondary"
-                            className="cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-blue-100 "
+                      <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                        <div className="flex items-center gap-2 flex-wrap justify-end">
+                          <Badge 
+                            variant="outline" 
+                            className={`cursor-pointer transition-all duration-200 hover:scale-105 text-xs ${
+                              task.priority === 'high' ? 'border-red-500 text-red-500 hover:bg-red-50 ' :
+                              task.priority === 'medium' ? 'border-amber-500 text-amber-500 hover:bg-amber-50 ' :
+                              'border-green-500 text-green-500 hover:bg-green-50 '
+                            }`}
                             onClick={(e) => {
                               e.stopPropagation();
-                              navigate(`/leads/${task.leadId}`);
+                              navigate(`/tasks/${task.id}`);
                             }}
                           >
-                            <User className="w-3 h-3 mr-1" />
-                            Lead
+                            <Clock className="w-3 h-3 mr-1" />
+                            {task.priority}
                           </Badge>
-                        )}
+                          {task.leadId && (
+                            <Badge
+                              variant="secondary"
+                              className="cursor-pointer transition-all duration-200 hover:scale-105 hover:bg-blue-100 text-xs"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/leads/${task.leadId}`);
+                              }}
+                            >
+                              <User className="w-3 h-3 mr-1" />
+                              Lead
+                            </Badge>
+                          )}
+                        </div>
                         <Button
                           variant={task.status === 'completed' ? "secondary" : "default"}
                           size="sm"
