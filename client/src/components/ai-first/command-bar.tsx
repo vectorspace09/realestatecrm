@@ -176,26 +176,7 @@ export default function CommandBar({ className = "" }: CommandBarProps) {
         </div>
       )}
 
-      {/* Quick Hints */}
-      {!isActive && !query && (
-        <div className="absolute top-full left-0 right-0 mt-2 flex gap-2 overflow-x-auto">
-          {quickActions.slice(0, 3).map((action) => {
-            const Icon = action.icon;
-            return (
-              <Button
-                key={action.id}
-                variant="outline"
-                size="sm"
-                onClick={() => handleActionClick(action)}
-                className="flex items-center gap-2 whitespace-nowrap text-xs border-border hover:border-primary"
-              >
-                <Icon className="w-3 h-3" />
-                {action.label}
-              </Button>
-            );
-          })}
-        </div>
-      )}
+      
     </div>
   );
 }
