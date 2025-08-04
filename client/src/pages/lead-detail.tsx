@@ -161,7 +161,7 @@ export default function LeadDetail() {
       const recentActivities = (activities || []).slice(0, 5);
       const pendingTasks = (tasks || []).filter((t: Task) => t.status === 'pending');
       
-      const response = await apiRequest("/api/ai/generate-next-action", {
+      const data = await apiRequest("/api/ai/generate-next-action", {
         method: "POST",
         body: { 
           lead: leadData,
@@ -172,13 +172,7 @@ export default function LeadDetail() {
         },
       });
       
-      const data = await response.json();
       console.log("AI Next Action Response:", data);
-      
-      if (!response.ok) {
-        console.error("API response error:", response.status, data);
-        throw new Error(`API error: ${response.status} - ${data.message || 'Unknown error'}`);
-      }
       
       if (data.nextAction) {
         // Auto-fill the action form with AI-generated recommendation
