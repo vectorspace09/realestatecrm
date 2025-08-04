@@ -74,7 +74,7 @@ export default function LeadDetail() {
   const [isGeneratingNextAction, setIsGeneratingNextAction] = useState(false);
 
   const { data: lead, isLoading: leadLoading, error } = useQuery({
-    queryKey: ["/api/leads", leadId],
+    queryKey: [`/api/leads/${leadId}`],
     retry: false,
     enabled: !!leadId,
   });
