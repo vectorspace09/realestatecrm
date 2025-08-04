@@ -37,6 +37,7 @@ import {
   LayoutGrid,
   Table2
 } from "lucide-react";
+import { debounce } from "@/utils/performance";
 import LeadForm from "@/components/forms/lead-form";
 import Pagination from "@/components/ui/pagination";
 import KanbanBoard from "@/components/kanban/kanban-board";
@@ -47,12 +48,23 @@ export default function Leads() {
   const { isMobile, isTablet } = useMobile();
   const [location, navigate] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingLead, setEditingLead] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<"table" | "kanban">("table");
   const leadsPerPage = isMobile ? 10 : 20;
+
+  // Debounced search for better performance
+  const debouncedSearch = useMemo(
+    () => debounce((term: string) => setDebouncedSearchTerm(term), 300),
+    []
+  );
+
+  useEffect(() => {
+    debouncedSearch(searchTerm);
+  }, [searchTerm, debouncedSearch]);
 
 
   // Check URL params for actions and search
@@ -68,9 +80,9 @@ export default function Leads() {
   }, [location]);
 
   const { data: leads = [], isLoading: leadsLoading } = useQuery({
-    queryKey: ["/api/leads"],
-    staleTime: 2 * 60 * 1000, // 2 minutes
-    gcTime: 5 * 60 * 1000, // 5 minutes
+    queryKey: ["/api/leads", { search: debouncedSearchTerm, status: statusFilter }],
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 15 * 60 * 1000, // 15 minutes
   }) as { data: any[]; isLoading: boolean };
 
 

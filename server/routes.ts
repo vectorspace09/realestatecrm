@@ -28,6 +28,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/dashboard/metrics', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
+      
+      // Add aggressive cache headers for dashboard metrics
+      res.set({
+        'Cache-Control': 'public, max-age=900, s-maxage=900', // 15 minutes
+        'ETag': `metrics-${userId}-${Date.now()}`,
+      });
+      
       const metrics = await storage.getDashboardMetrics(userId);
       res.json(metrics);
     } catch (error) {
@@ -51,8 +58,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Lead routes
   app.get('/api/leads', isAuthenticated, async (req: any, res) => {
     try {
-      const { status, assignedTo, search } = req.query;
-      const leads = await storage.getLeads({ status, assignedTo, search });
+      const { status, assignedTo, search, limit } = req.query;
+      
+      // Add cache headers for better performance
+      res.set({
+        'Cache-Control': 'public, max-age=300, s-maxage=300', // 5 minutes
+        'ETag': `leads-${Date.now()}`,
+      });
+      
+      const leads = await storage.getLeads({ 
+        status, 
+        assignedTo, 
+        search,
+        limit: limit ? parseInt(limit) : undefined 
+      });
       res.json(leads);
     } catch (error) {
       console.error("Error fetching leads:", error);
@@ -897,6 +916,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/ai/insights", isAuthenticated, async (req, res) => {
     try {
       const userId = (req.user as any)?.claims?.sub;
+      
+      // Add aggressive cache headers for AI insights (expensive to generate)
+      res.set({
+        'Cache-Control': 'public, max-age=1800, s-maxage=1800', // 30 minutes
+        'ETag': `insights-${userId}-${Date.now()}`,
+      });
+      
       const analytics = await storage.getDetailedAnalytics(userId);
       
       const insights = [

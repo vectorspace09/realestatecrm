@@ -20,7 +20,9 @@ export function useNotifications(options?: { isRead?: boolean; limit?: number })
       }
       return response.json() as Promise<Notification[]>;
     },
-    refetchInterval: 30000, // Refetch every 30 seconds for real-time updates
+    refetchInterval: 2 * 60 * 1000, // Refetch every 2 minutes - much less frequent
+    staleTime: 60 * 1000, // 1 minute
+    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 }
 
@@ -35,7 +37,9 @@ export function useUnreadNotificationCount() {
       }
       return response.json() as Promise<{ count: number }>;
     },
-    refetchInterval: 15000, // Refetch every 15 seconds for badge updates
+    refetchInterval: 1 * 60 * 1000, // Refetch every 1 minute - less frequent
+    staleTime: 30 * 1000, // 30 seconds
+    gcTime: 5 * 60 * 1000, // 5 minutes
   });
 }
 

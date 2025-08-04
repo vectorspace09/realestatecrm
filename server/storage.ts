@@ -146,9 +146,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Lead operations
-  async getLeads(filters?: { status?: string; assignedTo?: string; search?: string }): Promise<Lead[]> {
+  async getLeads(filters?: { status?: string; assignedTo?: string; search?: string; limit?: number; offset?: number }): Promise<Lead[]> {
     const conditions = [];
-    if (filters?.status) {
+    if (filters?.status && filters.status !== 'all') {
       conditions.push(eq(leads.status, filters.status));
     }
     if (filters?.assignedTo) {
@@ -160,11 +160,14 @@ export class DatabaseStorage implements IStorage {
       );
     }
     
+    const limit = Math.min(filters?.limit || 50, 100); // Default 50, max 100
+    const offset = filters?.offset || 0;
+    
     if (conditions.length > 0) {
-      return await db.select().from(leads).where(and(...conditions)).orderBy(desc(leads.createdAt)).limit(100);
+      return await db.select().from(leads).where(and(...conditions)).orderBy(desc(leads.createdAt)).limit(limit).offset(offset);
     }
     
-    return await db.select().from(leads).orderBy(desc(leads.createdAt)).limit(100);
+    return await db.select().from(leads).orderBy(desc(leads.createdAt)).limit(limit).offset(offset);
   }
 
   async getLead(id: string): Promise<Lead | undefined> {
@@ -220,12 +223,12 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Property operations
-  async getProperties(filters?: { status?: string; propertyType?: string; search?: string }): Promise<Property[]> {
+  async getProperties(filters?: { status?: string; propertyType?: string; search?: string; limit?: number; offset?: number }): Promise<Property[]> {
     const conditions = [];
-    if (filters?.status) {
+    if (filters?.status && filters.status !== 'all') {
       conditions.push(eq(properties.status, filters.status));
     }
-    if (filters?.propertyType) {
+    if (filters?.propertyType && filters.propertyType !== 'all') {
       conditions.push(eq(properties.propertyType, filters.propertyType));
     }
     if (filters?.search) {
@@ -234,11 +237,14 @@ export class DatabaseStorage implements IStorage {
       );
     }
     
+    const limit = Math.min(filters?.limit || 25, 50); // Default 25, max 50 (properties have more data)
+    const offset = filters?.offset || 0;
+    
     if (conditions.length > 0) {
-      return await db.select().from(properties).where(and(...conditions)).orderBy(desc(properties.createdAt)).limit(100);
+      return await db.select().from(properties).where(and(...conditions)).orderBy(desc(properties.createdAt)).limit(limit).offset(offset);
     }
     
-    return await db.select().from(properties).orderBy(desc(properties.createdAt)).limit(100);
+    return await db.select().from(properties).orderBy(desc(properties.createdAt)).limit(limit).offset(offset);
   }
 
   async getProperty(id: string): Promise<Property | undefined> {

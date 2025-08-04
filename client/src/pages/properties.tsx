@@ -38,8 +38,8 @@ export default function Properties() {
 
   const { data: properties = [], isLoading: propertiesLoading, error } = useQuery({
     queryKey: ["/api/properties", { search, propertyType: typeFilter }],
-    staleTime: 3 * 60 * 1000, // 3 minutes - properties change less frequently
-    gcTime: 10 * 60 * 1000, // 10 minutes
+    staleTime: 10 * 60 * 1000, // 10 minutes - properties change less frequently
+    gcTime: 30 * 60 * 1000, // 30 minutes
   }) as { data: any[]; isLoading: boolean; error: any };
 
   const updatePropertyStatusMutation = useMutation({
