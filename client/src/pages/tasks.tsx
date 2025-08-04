@@ -210,7 +210,7 @@ export default function Tasks() {
     };
 
     if (editingTask) {
-      updateTaskMutation.mutate({ id: editingTask.id, data: submitData });
+      updateTaskMutation.mutate({ id: (editingTask as any).id, data: submitData });
       setEditingTask(null);
       setShowAddForm(false);
       resetForm();
@@ -220,7 +220,7 @@ export default function Tasks() {
   };
 
   const getTypeIcon = (type: string) => {
-    const icons = {
+    const icons: { [key: string]: any } = {
       call: Phone,
       email: Mail,
       meeting: Calendar,
@@ -233,7 +233,7 @@ export default function Tasks() {
   };
 
   const getTypeColor = (type: string) => {
-    const colors = {
+    const colors: { [key: string]: string } = {
       call: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100",
       email: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100",
       meeting: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100",
@@ -245,7 +245,7 @@ export default function Tasks() {
   };
 
   const getPriorityColor = (priority: string) => {
-    const colors = {
+    const colors: { [key: string]: string } = {
       high: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100",
       medium: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100",
       low: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
@@ -270,7 +270,7 @@ export default function Tasks() {
     completed: filteredTasks.filter(task => task.status === 'completed')
   };
 
-  const getLinkedEntityName = (task) => {
+  const getLinkedEntityName = (task: any) => {
     if (task.leadId && leads) {
       const lead = leads.find(l => l.id === task.leadId);
       return lead ? `${lead.firstName} ${lead.lastName}` : null;
