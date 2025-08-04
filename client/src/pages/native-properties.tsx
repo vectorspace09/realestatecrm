@@ -54,10 +54,10 @@ export default function NativeProperties() {
 
   const queryClient = useQueryClient();
 
-  const { data: properties, isLoading: propertiesLoading, refetch } = useQuery({
+  const { data: properties = [], isLoading: propertiesLoading, refetch } = useQuery({
     queryKey: ["/api/properties"],
     staleTime: 5 * 60 * 1000,
-  });
+  }) as { data: any[]; isLoading: boolean; refetch: () => void };
 
   const handleRefresh = async () => {
     await refetch();
@@ -66,7 +66,10 @@ export default function NativeProperties() {
   // Status update mutation for properties
   const updatePropertyStatusMutation = useMutation({
     mutationFn: async ({ propertyId, newStatus }: { propertyId: string; newStatus: string }) => {
-      return apiRequest(`/api/properties/${propertyId}`, "PATCH", { status: newStatus });
+      return apiRequest(`/api/properties/${propertyId}`, {
+        method: "PATCH",
+        body: { status: newStatus }
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/properties"] });

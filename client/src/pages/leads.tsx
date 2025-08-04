@@ -71,7 +71,7 @@ export default function Leads() {
     queryKey: ["/api/leads"],
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 5 * 60 * 1000, // 5 minutes
-  });
+  }) as { data: any[]; isLoading: boolean };
 
 
 

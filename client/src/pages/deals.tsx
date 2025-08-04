@@ -50,19 +50,19 @@ export default function Deals() {
     queryKey: ["/api/deals"],
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 5 * 60 * 1000, // 5 minutes
-  });
+  }) as { data: any[]; isLoading: boolean; error: any };
 
   const { data: leads = [] } = useQuery({
     queryKey: ["/api/leads"],
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 5 * 60 * 1000, // 5 minutes
-  });
+  }) as { data: any[] };
 
   const { data: properties = [] } = useQuery({
     queryKey: ["/api/properties"],
     staleTime: 3 * 60 * 1000, // 3 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
-  });
+  }) as { data: any[] };
 
   // Deal creation mutation
   const createDealMutation = useMutation({

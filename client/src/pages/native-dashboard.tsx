@@ -61,30 +61,30 @@ export default function NativeDashboard() {
     }
   }, [isAuthenticated, isLoading, toast]);
 
-  const { data: metrics } = useQuery({
+  const { data: metrics = {} } = useQuery({
     queryKey: ["/api/dashboard/metrics"],
     staleTime: 5 * 60 * 1000,
-  });
+  }) as { data: any };
 
-  const { data: recentLeads } = useQuery({
+  const { data: recentLeads = [] } = useQuery({
     queryKey: ["/api/leads"],
     staleTime: 2 * 60 * 1000,
-  });
+  }) as { data: any[] };
 
-  const { data: recentDeals } = useQuery({
+  const { data: recentDeals = [] } = useQuery({
     queryKey: ["/api/deals"],
     staleTime: 2 * 60 * 1000,
-  });
+  }) as { data: any[] };
 
-  const { data: recentTasks } = useQuery({
+  const { data: recentTasks = [] } = useQuery({
     queryKey: ["/api/tasks"],
     staleTime: 1 * 60 * 1000,
-  });
+  }) as { data: any[] };
 
-  const { data: insights } = useQuery({
+  const { data: insights = [] } = useQuery({
     queryKey: ["/api/ai/insights"],
     staleTime: 10 * 60 * 1000,
-  });
+  }) as { data: any[] };
 
   if (isLoading || !isAuthenticated) {
     return (
@@ -371,7 +371,7 @@ export default function NativeDashboard() {
           </div>
 
           {/* AI Suggestions Panel */}
-          {insights?.insights && insights.insights.length > 0 && (
+          {insights && Array.isArray(insights) && insights.length > 0 && (
             <div>
               <div className="flex items-center justify-between mb-4 px-1">
                 <h2 className="text-lg font-semibold text-muted-foreground dark:text-white">AI Suggestions</h2>
@@ -385,7 +385,7 @@ export default function NativeDashboard() {
               </div>
               
               <div className="space-y-3">
-                {insights.insights.slice(0, 3).map((insight, index) => (
+                {insights.slice(0, 3).map((insight: any, index: number) => (
                   <NativeCard key={index} className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200 dark:border-blue-800">
                     <div className="flex items-start space-x-3">
                       <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">

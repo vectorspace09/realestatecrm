@@ -61,17 +61,17 @@ export default function AIAssistantPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Get current data for insights
-  const { data: leads } = useQuery({
+  const { data: leads = [] } = useQuery({
     queryKey: ["/api/leads"],
-  });
+  }) as { data: any[] };
 
-  const { data: properties } = useQuery({
+  const { data: properties = [] } = useQuery({
     queryKey: ["/api/properties"],
-  });
+  }) as { data: any[] };
 
-  const { data: deals } = useQuery({
+  const { data: deals = [] } = useQuery({
     queryKey: ["/api/deals"],
-  });
+  }) as { data: any[] };
 
   const { data: analytics } = useQuery({
     queryKey: ["/api/analytics/detailed"],

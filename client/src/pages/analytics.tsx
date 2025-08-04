@@ -13,10 +13,10 @@ export default function Analytics() {
   const { toast } = useToast();
   const { isAuthenticated, isLoading } = useAuth();
 
-  const { data: analytics, isLoading: analyticsLoading } = useQuery({
+  const { data: analytics = {}, isLoading: analyticsLoading } = useQuery({
     queryKey: ["/api/analytics/detailed"],
     retry: false,
-  });
+  }) as { data: any; isLoading: boolean };
 
   // Redirect to login if not authenticated
   useEffect(() => {

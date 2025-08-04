@@ -59,26 +59,26 @@ export default function Tasks() {
     }
   }, []);
 
-  const { data: tasks, isLoading: tasksLoading } = useQuery({
+  const { data: tasks = [], isLoading: tasksLoading } = useQuery({
     queryKey: ["/api/tasks"],
     staleTime: 1 * 60 * 1000, // 1 minute - tasks change frequently
     gcTime: 3 * 60 * 1000, // 3 minutes
-  });
+  }) as { data: any[]; isLoading: boolean };
 
-  const { data: leads } = useQuery({
+  const { data: leads = [] } = useQuery({
     queryKey: ["/api/leads"],
     retry: false,
-  });
+  }) as { data: any[] };
 
-  const { data: properties } = useQuery({
+  const { data: properties = [] } = useQuery({
     queryKey: ["/api/properties"],
     retry: false,
-  });
+  }) as { data: any[] };
 
-  const { data: deals } = useQuery({
+  const { data: deals = [] } = useQuery({
     queryKey: ["/api/deals"],
     retry: false,
-  });
+  }) as { data: any[] };
 
   const updateTaskMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: any }) => {

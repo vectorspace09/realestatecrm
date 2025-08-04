@@ -49,10 +49,10 @@ export default function NativeDeals() {
     }
   }, [isAuthenticated, isLoading, toast]);
 
-  const { data: deals, isLoading: dealsLoading } = useQuery({
+  const { data: deals = [], isLoading: dealsLoading } = useQuery({
     queryKey: ["/api/deals"],
     staleTime: 2 * 60 * 1000,
-  });
+  }) as { data: any[]; isLoading: boolean };
 
   // Filter deals
   const filteredDeals = useMemo(() => {
@@ -106,7 +106,7 @@ export default function NativeDeals() {
   };
 
   const getStatusBadge = (status: string) => {
-    const statusMap = {
+    const statusMap: Record<string, { variant: "default" | "warning" | "success"; label: string; color: string }> = {
       active: { variant: "default" as const, label: "Active", color: "#3B82F6" },
       under_contract: { variant: "warning" as const, label: "Under Contract", color: "#F59E0B" },
       closed: { variant: "success" as const, label: "Closed", color: "#10B981" },
@@ -116,7 +116,7 @@ export default function NativeDeals() {
   };
 
   const getDealProgress = (deal: any) => {
-    const statusProgress = {
+    const statusProgress: Record<string, number> = {
       active: 25,
       under_contract: 75,
       closed: 100,

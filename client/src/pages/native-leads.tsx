@@ -59,11 +59,11 @@ export default function NativeLeads() {
 
   const queryClient = useQueryClient();
 
-  const { data: leads, isLoading: leadsLoading, error, refetch } = useQuery({
+  const { data: leads = [], isLoading: leadsLoading, error, refetch } = useQuery({
     queryKey: ["/api/leads"],
     staleTime: 2 * 60 * 1000,
     gcTime: 5 * 60 * 1000,
-  });
+  }) as { data: any[]; isLoading: boolean; error: any; refetch: () => void };
 
   const handleRefresh = async () => {
     await refetch();
@@ -72,7 +72,10 @@ export default function NativeLeads() {
   // Status update mutation for leads
   const updateLeadStatusMutation = useMutation({
     mutationFn: async ({ leadId, newStatus }: { leadId: string; newStatus: string }) => {
-      return apiRequest(`/api/leads/${leadId}`, "PATCH", { status: newStatus });
+      return apiRequest(`/api/leads/${leadId}`, {
+        method: "PATCH",
+        body: { status: newStatus }
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
