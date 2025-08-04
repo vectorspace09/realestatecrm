@@ -339,6 +339,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.patch('/api/deals/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const updates = req.body;
+      const userId = req.user.claims.sub;
+      
+      // Get old deal data for comparison
+      const oldDeal = await storage.getDeal(id);
+      const deal = await storage.updateDeal(id, updates);
+      
+      if (!deal) {
+        return res.status(404).json({ message: "Deal not found" });
+      }
+      
+      // Generate notification for status change if status was updated
+      if (oldDeal && deal.leadId && deal.propertyId && updates.status && oldDeal.status !== updates.status) {
+        const [lead, property] = await Promise.all([
+          storage.getLead(deal.leadId),
+          storage.getProperty(deal.propertyId)
+        ]);
+        
+        if (lead && property) {
+          const leadName = `${lead.firstName} ${lead.lastName}`;
+          await NotificationService.onDealStatusChanged(
+            deal, 
+            oldDeal.status || 'pending', 
+            updates.status, 
+            leadName, 
+            property.title, 
+            userId
+          );
+        }
+      }
+      
+      res.json(deal);
+    } catch (error) {
+      console.error("Error updating deal:", error);
+      res.status(500).json({ message: "Failed to update deal" });
+    }
+  });
+
   app.patch('/api/deals/:id/status', isAuthenticated, async (req: any, res) => {
     try {
       const { id } = req.params;
@@ -383,6 +424,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error updating deal status:", error);
       res.status(500).json({ message: "Failed to update deal status" });
+    }
+  });
+
+  app.delete('/api/deals/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteDeal(id);
+      res.json({ message: "Deal deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting deal:", error);
+      res.status(500).json({ message: "Failed to delete deal" });
     }
   });
 
