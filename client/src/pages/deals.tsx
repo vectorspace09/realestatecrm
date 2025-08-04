@@ -151,7 +151,16 @@ export default function Deals() {
   });
 
   // Drag and drop functionality
-  const { handleDragStart, handleDragOver, handleDrop } = useDragDrop({
+  const { 
+    draggedItem,
+    dragOverColumn,
+    handleDragStart, 
+    handleDragOver, 
+    handleDragEnter,
+    handleDragLeave,
+    handleDrop,
+    handleDragEnd
+  } = useDragDrop({
     onDrop: (deal: Deal, targetStatus: string) => {
       if (deal.status !== targetStatus) {
         updateDealStatusMutation.mutate({ id: deal.id, status: targetStatus });
@@ -468,74 +477,95 @@ export default function Deals() {
             </Card>
           </div>
 
-          {/* Deal Pipeline by Stage */}
+          {/* Deal Pipeline by Stage - Drag & Drop Kanban */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            {DEAL_STAGES.map((stage) => (
-              <Card key={stage.id} className="bg-card border-border">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg text-white">{stage.label}</CardTitle>
-                    <Badge variant="secondary" className="bg-card dark:bg-card text-muted-foreground dark:text-muted-foreground">
-                      {activeDealsByStage[stage.id]?.length || 0}
-                    </Badge>
-                  </div>
-                  <Progress value={stage.progress} className="h-2" />
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {activeDealsByStage[stage.id]?.length > 0 ? (
-                    activeDealsByStage[stage.id].map((deal: Deal) => (
-                      <div key={deal.id} className="p-4 border border-border dark:border-border rounded-lg hover:shadow-md transition-shadow">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-white truncate">
-                              Deal #{deal.id.slice(-6)}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              ${Number(deal.dealValue).toLocaleString()}
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-2 text-sm text-muted-foreground">
-                          <div className="flex items-center">
-                            <User className="w-4 h-4 mr-2" />
-                            Lead ID: {deal.leadId.slice(-6)}
-                          </div>
-                          <div className="flex items-center">
-                            <Home className="w-4 h-4 mr-2" />
-                            Property ID: {deal.propertyId.slice(-6)}
-                          </div>
-                          {deal.expectedCloseDate && (
-                            <div className="flex items-center">
-                              <Calendar className="w-4 h-4 mr-2" />
-                              Close: {deal.expectedCloseDate ? new Date(deal.expectedCloseDate).toLocaleDateString() : "TBD"}
-                            </div>
-                          )}
-                        </div>
-                        
-                        <Separator className="my-3" />
-                        
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-muted-foreground">
-                            Created: {deal.createdAt ? new Date(deal.createdAt).toLocaleDateString() : "Unknown"}
-                          </span>
-                          <Button size="sm" variant="outline" className="text-xs">
-                            View Details
-                          </Button>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-8">
-                      <div className="w-12 h-12 bg-card dark:bg-card rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <FileText className="w-6 h-6 text-muted-foreground" />
-                      </div>
-                      <p className="text-sm text-muted-foreground">No deals in this stage</p>
+            {DEAL_STAGES.map((stage) => {
+              const stageBorderColor = dragOverColumn === stage.id ? "border-primary border-2" : "border-border";
+              return (
+                <Card 
+                  key={stage.id} 
+                  className={`bg-card transition-colors ${stageBorderColor}`}
+                  onDragOver={handleDragOver}
+                  onDragEnter={(e) => handleDragEnter(e, stage.id)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, stage.id)}
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg text-white">{stage.label}</CardTitle>
+                      <Badge variant="secondary" className="bg-card dark:bg-card text-muted-foreground dark:text-muted-foreground">
+                        {activeDealsByStage[stage.id]?.length || 0}
+                      </Badge>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+                    <Progress value={stage.progress} className="h-2" />
+                  </CardHeader>
+                  <CardContent className="space-y-4" style={{ minHeight: '300px' }}>
+                    {activeDealsByStage[stage.id]?.length > 0 ? (
+                      activeDealsByStage[stage.id].map((deal: Deal) => {
+                        const isDragged = draggedItem?.id === deal.id;
+                        return (
+                          <div 
+                            key={deal.id} 
+                            className={`p-4 border border-border dark:border-border rounded-lg hover:shadow-md transition-all cursor-move ${
+                              isDragged ? 'opacity-50 scale-95' : 'opacity-100'
+                            }`}
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, deal)}
+                            onDragEnd={handleDragEnd}
+                          >
+                            <div className="flex items-start justify-between mb-3">
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-white truncate">
+                                  Deal #{deal.id.slice(-6)}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                  ${Number(deal.dealValue).toLocaleString()}
+                                </p>
+                              </div>
+                            </div>
+                            
+                            <div className="space-y-2 text-sm text-muted-foreground">
+                              <div className="flex items-center">
+                                <User className="w-4 h-4 mr-2" />
+                                Lead ID: {deal.leadId.slice(-6)}
+                              </div>
+                              <div className="flex items-center">
+                                <Home className="w-4 h-4 mr-2" />
+                                Property ID: {deal.propertyId.slice(-6)}
+                              </div>
+                              {deal.expectedCloseDate && (
+                                <div className="flex items-center">
+                                  <Calendar className="w-4 h-4 mr-2" />
+                                  Close: {deal.expectedCloseDate ? new Date(deal.expectedCloseDate).toLocaleDateString() : "TBD"}
+                                </div>
+                              )}
+                            </div>
+                            
+                            <Separator className="my-3" />
+                            
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs text-muted-foreground">
+                                Created: {deal.createdAt ? new Date(deal.createdAt).toLocaleDateString() : "Unknown"}
+                              </span>
+                              <Button size="sm" variant="outline" className="text-xs">
+                                View Details
+                              </Button>
+                            </div>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div className="text-center py-8">
+                        <div className="w-12 h-12 bg-card dark:bg-card rounded-lg flex items-center justify-center mx-auto mb-3">
+                          <FileText className="w-6 h-6 text-muted-foreground" />
+                        </div>
+                        <p className="text-sm text-muted-foreground">No deals in this stage</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
 
           {/* Recent Deals Table */}
