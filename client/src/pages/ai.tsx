@@ -63,6 +63,19 @@ export default function AIAssistantPage() {
   const [isListening, setIsListening] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Get query parameter from URL
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('query');
+    if (query && query.trim()) {
+      setMessage(query);
+      // Auto-send the query if it exists
+      setTimeout(() => {
+        handleSendMessage(query);
+      }, 500);
+    }
+  }, []);
+
   // Get current data for insights
   const { data: leads = [] } = useQuery({
     queryKey: ["/api/leads"],
@@ -188,19 +201,20 @@ export default function AIAssistantPage() {
     return actions;
   };
 
-  const handleSendMessage = () => {
-    if (!message.trim()) return;
+  const handleSendMessage = (customMessage?: string) => {
+    const messageToSend = customMessage || message;
+    if (!messageToSend.trim()) return;
     
     const userMessage: Message = {
       id: Date.now(),
       type: "user",
-      content: message,
+      content: messageToSend,
       timestamp: new Date()
     };
     
     setMessages(prev => [...prev, userMessage]);
-    chatMutation.mutate(message);
-    setMessage("");
+    chatMutation.mutate(messageToSend);
+    if (!customMessage) setMessage("");
   };
 
   const handleQuickPrompt = (query: string) => {

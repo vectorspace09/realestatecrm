@@ -97,6 +97,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
   const handleSearch = () => {
     if (searchQuery.trim()) {
       window.location.href = `/ai?query=${encodeURIComponent(searchQuery)}`;
+      setSearchQuery(""); // Clear search after navigation
     }
   };
 
@@ -335,7 +336,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
 
         {/* Search Bar Row - Mobile */}
         {isMobile && (
-          <div className="pb-3">
+          <div className="pb-3" style={{ zIndex: 60 }}>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="w-4 h-4 text-muted-foreground" />
@@ -363,7 +364,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
 
         {/* Search Bar Row - Desktop */}
         {!isMobile && (
-          <div className="border-t border-border/30 px-4 lg:px-6 py-3">
+          <div className="border-t border-border/30 px-4 lg:px-6 py-3" style={{ zIndex: 60 }}>
             <div className="max-w-md mx-auto">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
