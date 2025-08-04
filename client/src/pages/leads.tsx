@@ -382,7 +382,7 @@ export default function Leads() {
                                     </Badge>
                                     <Badge className={`${getScoreBadge(lead.score)} text-xs px-2 py-1`}>
                                       <Star className="w-3 h-3 mr-1" />
-                                      {lead.score}/100
+                                      {isNaN(lead.score) || lead.score == null ? 0 : lead.score}/100
                                     </Badge>
                                   </div>
                                 </div>
@@ -518,7 +518,7 @@ export default function Leads() {
                           <TableCell>
                             <div className="flex items-center space-x-2">
                               <Badge className={getScoreBadge(lead.score)}>
-                                {lead.score || 0}
+                                {isNaN(lead.score) || lead.score == null ? 0 : lead.score}/100
                               </Badge>
                               {lead.score >= 90 && <Star className="w-4 h-4 text-amber-500" />}
                             </div>

@@ -212,26 +212,28 @@ export default function Dashboard() {
         <CommandBar />
       </div>
 
-      <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-8 pb-20 lg:pb-6">
-        {/* Welcome Header - Fixed Layout */}
+      <main className="flex-1 overflow-y-auto p-4 lg:p-8 xl:p-10 space-y-6 lg:space-y-8 pb-20 lg:pb-6 max-w-7xl mx-auto w-full">
+        {/* Welcome Header - Optimized Desktop Layout */}
           <div className="space-y-6">
-            <div className="text-center sm:text-left">
-              <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-                Welcome back, {(user as any)?.firstName || 'Agent'}!
-              </h1>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Here's what's happening with your real estate business today.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <Badge variant="secondary" className="bg-success/10 text-success border-success/20 text-center py-2">
-                <Zap className="w-4 h-4 mr-2" />
-                AI Insights Ready
-              </Badge>
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground py-2 px-4">
-                <Target className="w-4 h-4 mr-2" />
-                View Goals
-              </Button>
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+              <div className="text-center sm:text-left">
+                <h1 className="text-3xl lg:text-4xl font-bold text-foreground mb-2">
+                  Welcome back, {(user as any)?.firstName || 'Agent'}!
+                </h1>
+                <p className="text-base lg:text-lg text-muted-foreground">
+                  Here's what's happening with your real estate business today.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-4 lg:mt-0">
+                <Badge variant="secondary" className="bg-success/10 text-success border-success/20 text-center py-2 px-4">
+                  <Zap className="w-4 h-4 mr-2" />
+                  AI Insights Ready
+                </Badge>
+                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground py-2 px-6">
+                  <Target className="w-4 h-4 mr-2" />
+                  View Goals
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -301,8 +303,8 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Key Metrics Grid - Fixed Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Key Metrics Grid - Optimized Desktop Layout */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6">
             <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
@@ -627,14 +629,14 @@ export default function Dashboard() {
                       <Badge 
                         variant="secondary" 
                         className={`cursor-pointer transition-all duration-200 hover:scale-105 ${
-                          lead.score >= 90 ? "bg-emerald-100 text-emerald-800  " :
-                          lead.score >= 70 ? "bg-amber-100 text-amber-800  " :
-                          "bg-card text-muted-foreground   dark:hover:bg-card"
+                          (lead.score || 0) >= 90 ? "bg-emerald-100 text-emerald-800" :
+                          (lead.score || 0) >= 70 ? "bg-amber-100 text-amber-800" :
+                          "bg-card text-muted-foreground dark:hover:bg-card"
                         }`}
                         onClick={() => navigate(`/leads/${lead.id}`)}
                       >
                         <Star className="w-3 h-3 mr-1" />
-                        {lead.score}
+                        {isNaN(lead.score) || lead.score == null ? 0 : lead.score}
                       </Badge>
                     </div>
                   )) || (

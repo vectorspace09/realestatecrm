@@ -65,7 +65,7 @@ export default function LeadCard({ lead }: LeadCardProps) {
       <div className="space-y-2 text-sm">
         <div className="flex items-center text-muted-foreground">
           <DollarSign className="w-4 h-4 mr-2" />
-          {formatBudget(lead.budget, lead.budgetMax)}
+          {formatBudget(lead.budget || undefined, lead.budgetMax || undefined)}
         </div>
         
         {lead.preferredLocations && lead.preferredLocations.length > 0 && (
@@ -78,7 +78,7 @@ export default function LeadCard({ lead }: LeadCardProps) {
         
         <div className="flex items-center text-muted-foreground">
           <Clock className="w-4 h-4 mr-2" />
-          Added {formatDistanceToNow(new Date(lead.createdAt), { addSuffix: true })}
+          Added {formatDistanceToNow(new Date(lead.createdAt || new Date()), { addSuffix: true })}
         </div>
       </div>
       
