@@ -78,10 +78,10 @@ export interface IStorage {
   
   // Dashboard/Analytics operations
   getDashboardMetrics(userId?: string): Promise<{
-    totalLeads: number;
-    activeProperties: number;
-    activeDeals: number;
-    monthlyRevenue: number;
+    totalLeads: string;
+    activeProperties: string;
+    activeDeals: string;
+    totalRevenue: string;
     recentActivities: Activity[];
   }>;
   
@@ -516,18 +516,18 @@ export class DatabaseStorage implements IStorage {
     const soldProperties = allProperties.filter(prop => prop.status === 'sold').length;
     const activeListings = allProperties.filter(prop => prop.status === 'available').length;
     const averagePropertyPrice = allProperties.length > 0 ?
-      Math.round(allProperties.reduce((sum, prop) => sum + (prop.price || 0), 0) / allProperties.length) : 0;
+      Math.round(allProperties.reduce((sum, prop) => sum + (Number(prop.price) || 0), 0) / allProperties.length) : 0;
 
     const totalDeals = allDeals.length;
     const activePipeline = allDeals.filter(deal => 
-      ['offer', 'inspection', 'legal', 'payment'].includes(deal.status)
+      ['offer', 'inspection', 'legal', 'payment'].includes(deal.status || '')
     ).length;
     const closedDeals = allDeals.filter(deal => deal.status === 'handover').length;
     const totalRevenue = allDeals
-      .filter(deal => ['handover', 'payment'].includes(deal.status))
-      .reduce((sum, deal) => sum + (deal.commission || 0), 0);
+      .filter(deal => ['handover', 'payment'].includes(deal.status || ''))
+      .reduce((sum, deal) => sum + (Number(deal.commission) || 0), 0);
     const averageDealValue = allDeals.length > 0 ?
-      Math.round(allDeals.reduce((sum, deal) => sum + (deal.dealValue || 0), 0) / allDeals.length) : 0;
+      Math.round(allDeals.reduce((sum, deal) => sum + (Number(deal.dealValue) || 0), 0) / allDeals.length) : 0;
 
     const pendingTasks = allTasks.filter(task => task.status === 'pending').length;
     const completedTasks = allTasks.filter(task => task.status === 'completed').length;
@@ -547,12 +547,12 @@ export class DatabaseStorage implements IStorage {
 
     // Deal status analysis
     const dealStatusData = allDeals.reduce((acc, deal) => {
-      const status = deal.status;
+      const status = deal.status || 'unknown';
       if (!acc[status]) {
         acc[status] = { count: 0, value: 0 };
       }
       acc[status].count += 1;
-      acc[status].value += deal.dealValue || 0;
+      acc[status].value += Number(deal.dealValue) || 0;
       return acc;
     }, {} as Record<string, { count: number; value: number }>);
     const dealsByStatus = Object.entries(dealStatusData).map(([status, data]) => ({
@@ -578,8 +578,8 @@ export class DatabaseStorage implements IStorage {
 
     // Top performing properties (highest price, available/sold)
     const topPerformingProperties = allProperties
-      .filter(prop => ['available', 'sold'].includes(prop.status))
-      .sort((a, b) => (b.price || 0) - (a.price || 0))
+      .filter(prop => ['available', 'sold'].includes(prop.status || ''))
+      .sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0))
       .slice(0, 5);
 
     // High value leads (score > 75)
@@ -624,7 +624,7 @@ export class DatabaseStorage implements IStorage {
     let query = db.select().from(notifications).where(and(...conditions)).orderBy(desc(notifications.createdAt));
     
     if (filters?.limit) {
-      query = query.limit(filters.limit);
+      return await query.limit(filters.limit);
     }
 
     return await query;
@@ -674,12 +674,6 @@ export class DatabaseStorage implements IStorage {
         firstName: profileData.firstName,
         lastName: profileData.lastName,
         email: profileData.email,
-        phone: profileData.phone,
-        bio: profileData.bio,
-        license: profileData.license,
-        brokerage: profileData.brokerage,
-        experience: profileData.experience,
-        specialties: profileData.specialties,
         updatedAt: new Date()
       })
       .where(eq(users.id, userId));

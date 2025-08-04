@@ -100,6 +100,12 @@ export default function Leads() {
     },
   });
 
+  // Handle edit lead
+  const handleEdit = (lead: any) => {
+    setEditingLead(lead);
+    setShowAddForm(true);
+  };
+
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
