@@ -395,16 +395,25 @@ export default function LeadDetail() {
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold text-foreground mb-2">
-                    {(lead as any)?.firstName || 'Unknown'} {(lead as any)?.lastName || 'Lead'}
+                    {(lead as any)?.firstName && (lead as any)?.lastName 
+                      ? `${(lead as any)?.firstName} ${(lead as any)?.lastName}`
+                      : (lead as any)?.firstName || (lead as any)?.lastName || 'Unknown Lead'
+                    }
                   </h1>
                   <div className="flex items-center space-x-4">
                     <Badge className={getStatusColor((lead as any)?.status)}>
-                      {(lead as any)?.status?.charAt(0).toUpperCase() + (lead as any)?.status?.slice(1)}
+                      {(lead as any)?.status 
+                        ? (lead as any)?.status?.charAt(0).toUpperCase() + (lead as any)?.status?.slice(1)
+                        : 'New'
+                      }
                     </Badge>
                     <div className="flex items-center space-x-2">
                       <Star className="w-5 h-5 text-warning" />
                       <span className={`font-semibold text-lg ${getScoreColor((lead as any)?.score)}`}>
-                        {((lead as any)?.score != null && !isNaN((lead as any)?.score)) ? (lead as any)?.score : 0}/100
+                        {(lead as any)?.score != null && !isNaN(Number((lead as any)?.score)) 
+                          ? Math.round(Number((lead as any)?.score)) 
+                          : 0
+                        }/100
                       </span>
                     </div>
                   </div>

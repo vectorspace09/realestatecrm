@@ -279,7 +279,10 @@ export default function NativeLeads() {
                               'bg-card text-muted-foreground dark:bg-card dark:text-muted-foreground'
                             }`}>
                               <Star className="w-3 h-3 mr-1" />
-                              {isNaN(lead.score) || lead.score == null ? 0 : lead.score}
+                              {lead.score != null && !isNaN(Number(lead.score)) 
+                                ? Math.round(Number(lead.score)) 
+                                : 0
+                              }
                             </Badge>
                           </div>
                         </div>

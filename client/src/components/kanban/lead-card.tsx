@@ -50,7 +50,10 @@ export default function LeadCard({ lead }: LeadCardProps) {
           </Avatar>
           <div>
             <h4 className="font-medium text-white">
-              {lead.firstName} {lead.lastName}
+              {lead.firstName && lead.lastName 
+                ? `${lead.firstName} ${lead.lastName}`
+                : lead.firstName || lead.lastName || 'Unknown Lead'
+              }
             </h4>
             <p className="text-sm text-muted-foreground">
               {lead.email}
@@ -58,7 +61,10 @@ export default function LeadCard({ lead }: LeadCardProps) {
           </div>
         </div>
         <Badge className={cn("text-xs font-medium", getScoreColor(lead.score || 0))}>
-          {getScoreLabel(lead.score || 0)}
+          {lead.score != null && !isNaN(Number(lead.score)) 
+            ? getScoreLabel(Math.round(Number(lead.score)))
+            : getScoreLabel(0)
+          }
         </Badge>
       </div>
       
