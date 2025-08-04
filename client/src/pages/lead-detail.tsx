@@ -171,7 +171,14 @@ export default function LeadDetail() {
         },
       });
       
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("API response error:", response.status, errorText);
+        throw new Error(`API error: ${response.status} - ${errorText}`);
+      }
+      
       const data = await response.json();
+      console.log("AI Next Action Response:", data);
       
       if (data.nextAction) {
         // Auto-fill the action form with AI-generated recommendation
@@ -191,7 +198,7 @@ export default function LeadDetail() {
       console.error("Error generating next action:", error);
       toast({
         title: "Error",
-        description: "Failed to generate next action. Please try again.",
+        description: `Failed to generate next action: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
     } finally {

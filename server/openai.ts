@@ -431,7 +431,7 @@ export async function generateNextAction(
     };
 
     // Customize based on score
-    const baseAction = actionRecommendations[status] || actionRecommendations['new'];
+    const baseAction = actionRecommendations[status as keyof typeof actionRecommendations] || actionRecommendations['new'];
     
     if (currentScore >= 80) {
       baseAction.title = `🔥 HIGH PRIORITY: ${baseAction.title}`;
@@ -538,7 +538,7 @@ export async function generateLeadRecommendations(
       ]
     };
     
-    return defaultRecommendations[status] || defaultRecommendations['new'];
+    return defaultRecommendations[status as keyof typeof defaultRecommendations] || defaultRecommendations['new'];
   }
   const activityContext = recentActivities.length > 0 
     ? `Recent activities: ${recentActivities.map(a => `${a.type}: ${a.title} (${new Date(a.createdAt).toLocaleDateString()})`).join(', ')}`
