@@ -32,6 +32,7 @@ const DEAL_STAGES = [
   { id: "legal", label: "Legal Review", progress: 60, color: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100", borderColor: "border-purple-200 dark:border-purple-800" },
   { id: "payment", label: "Payment", progress: 80, color: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100", borderColor: "border-amber-200 dark:border-amber-800" },
   { id: "handover", label: "Handover", progress: 100, color: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100", borderColor: "border-emerald-200 dark:border-emerald-800" },
+  { id: "closed", label: "Closed", progress: 100, color: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100", borderColor: "border-green-200 dark:border-green-800" },
 ];
 
 function getDealStageInfo(status: string) {
