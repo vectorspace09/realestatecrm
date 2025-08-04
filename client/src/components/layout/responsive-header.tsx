@@ -249,10 +249,10 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
             {/* Mobile Menu */}
             {isMobile && showMobileNav && <MobileNavigation />}
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - All items in single row */}
             {!isMobile && (
-              <nav className="hidden md:flex items-center space-x-1 ml-8">
-                {navigationItems.slice(0, 5).map((item) => (
+              <nav className="hidden lg:flex items-center space-x-1 ml-8 flex-1">
+                {navigationItems.map((item) => (
                   <Link key={item.href} href={item.href}>
                     <Button
                       variant="ghost"
@@ -268,81 +268,14 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                     </Button>
                   </Link>
                 ))}
-                
-                {/* More dropdown for remaining items */}
-                {navigationItems.length > 5 && (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-muted-foreground hover:text-white hover:bg-card/50 px-3 py-1.5"
-                      >
-                        <Menu className="w-4 h-4 mr-1.5" />
-                        More
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="bg-card border-border" align="start">
-                      {navigationItems.slice(5).map((item) => {
-                        const Icon = item.icon;
-                        const active = isActive(item.href);
-
-                        return (
-                          <DropdownMenuItem key={item.href} asChild>
-                            <Link href={item.href}>
-                              <div className={`flex items-center space-x-2 w-full ${
-                                active ? 'text-primary-400' : 'text-muted-foreground hover:text-white'
-                              }`}>
-                                <Icon className="w-4 h-4" />
-                                <span>{item.label}</span>
-                              </div>
-                            </Link>
-                          </DropdownMenuItem>
-                        );
-                      })}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                )}
               </nav>
             )}
           </div>
 
-          {/* Center Section - Search (Desktop) */}
-          {!isMobile && (
-            <div className="flex-1 max-w-md mx-8">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="w-4 h-4 text-muted-foreground" />
-                </div>
-                <Input
-                  type="text"
-                  placeholder="Ask AI or search leads, properties..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="w-full pl-10 pr-16 py-2 bg-card/50 border-border text-white placeholder-gray-400 focus:bg-card focus:border-primary-500 transition-all duration-200"
-                />
-                <button
-                  onClick={handleSearch}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  <Badge className="bg-gradient-to-r from-primary-500 to-purple-600 text-white text-xs font-medium cursor-pointer hover:shadow-lg transition-all duration-200">
-                    <Zap className="w-3 h-3 mr-1" />
-                    AI
-                  </Badge>
-                </button>
-              </div>
-            </div>
-          )}
+
 
           {/* Right Section */}
           <div className="flex items-center space-x-3">
-            {/* AI Status Badge */}
-            <Badge className="hidden sm:flex bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 transition-all duration-200">
-              <Zap className="w-3 h-3 mr-1" />
-              AI Active
-            </Badge>
-
             {/* Quick Add Button (Desktop) */}
             {!isMobile && (
               <Button 
@@ -413,7 +346,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
           </div>
         </div>
 
-        {/* Mobile Search Bar */}
+        {/* Search Bar Row - Mobile */}
         {isMobile && (
           <div className="pb-3">
             <div className="relative">
@@ -437,6 +370,36 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                   AI
                 </Badge>
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* Search Bar Row - Desktop */}
+        {!isMobile && (
+          <div className="border-t border-border/30 px-4 lg:px-6 py-3">
+            <div className="max-w-md mx-auto">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="w-4 h-4 text-muted-foreground" />
+                </div>
+                <Input
+                  type="text"
+                  placeholder="Ask AI or search leads, properties..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                  className="w-full pl-10 pr-16 py-2 bg-card/50 border-border text-white placeholder-gray-400 focus:bg-card focus:border-primary-500 transition-all duration-200"
+                />
+                <button
+                  onClick={handleSearch}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                >
+                  <Badge className="bg-gradient-to-r from-primary-500 to-purple-600 text-white text-xs font-medium cursor-pointer hover:shadow-lg transition-all duration-200">
+                    <Zap className="w-3 h-3 mr-1" />
+                    AI
+                  </Badge>
+                </button>
+              </div>
             </div>
           </div>
         )}

@@ -2,7 +2,6 @@ import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { useTheme } from "@/hooks/use-theme";
 import { 
   Home, 
@@ -17,7 +16,8 @@ import {
   Workflow,
   LogOut,
   Sun,
-  Moon
+  Moon,
+  Plus
 } from "lucide-react";
 
 const navigationItems = {
@@ -79,34 +79,33 @@ export default function DesktopHeader() {
 
   return (
     <header className="bg-white dark:bg-card border-b border-border px-6 py-3">
-      <div className="flex items-start justify-between">
-        {/* Brand */}
+      <div className="flex items-center justify-between">
+        {/* Left Side - Brand */}
         <div className="flex items-center">
           <div>
-            <h1 className="text-xl font-bold text-white">PRA Developers</h1>
+            <h1 className="text-xl font-bold text-foreground dark:text-white">PRA Developers</h1>
             <p className="text-sm text-muted-foreground">Real Estate CRM</p>
           </div>
         </div>
 
-        {/* Navigation - Two Rows */}
-        <nav className="hidden lg:block">
-          {/* Primary Navigation */}
-          <div className="flex items-center space-x-2 mb-2">
-            {navigationItems.primary.map((item) => renderNavItem(item))}
-          </div>
-          {/* Secondary Navigation */}
-          <div className="flex items-center space-x-2">
-            {navigationItems.secondary.map((item) => renderNavItem(item))}
-          </div>
+        {/* Center - Navigation in single row */}
+        <nav className="hidden lg:flex items-center space-x-2">
+          {/* All navigation items in one row */}
+          {navigationItems.primary.map((item) => renderNavItem(item))}
+          {navigationItems.secondary.map((item) => renderNavItem(item))}
         </nav>
 
-        {/* Right Side - Theme Toggle, AI Status, User */}
-        <div className="flex items-center space-x-4">
-          {/* AI Status Badge */}
-          <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
-            <Zap className="w-3 h-3 mr-1" />
-            AI Active
-          </Badge>
+        {/* Right Side - Actions and User */}
+        <div className="flex items-center space-x-3">
+          {/* Add Lead Button */}
+          <Button
+            size="sm"
+            onClick={() => window.location.href = '/leads?action=add'}
+            className="bg-primary hover:bg-primary/90 text-white"
+          >
+            <Plus className="w-4 h-4 mr-1.5" />
+            Add Lead
+          </Button>
 
           {/* Theme Toggle */}
           <Button
@@ -128,7 +127,7 @@ export default function DesktopHeader() {
           {/* User Avatar and Info */}
           <div className="flex items-center space-x-3">
             <div className="text-right hidden sm:block">
-              <p className="text-sm font-medium text-white">
+              <p className="text-sm font-medium text-foreground dark:text-white">
                 {user?.firstName} {user?.lastName}
               </p>
               <p className="text-xs text-muted-foreground">
