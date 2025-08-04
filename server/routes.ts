@@ -480,6 +480,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post('/api/activities', isAuthenticated, async (req: any, res) => {
+    try {
+      const { type, title, description, leadId, propertyId, dealId, metadata } = req.body;
+      const userId = req.user.claims.sub;
+      
+      const activityData = {
+        type,
+        title,
+        description,
+        leadId: leadId || null,
+        propertyId: propertyId || null,
+        dealId: dealId || null,
+        userId,
+        metadata: metadata || null,
+      };
+      
+      const activity = await storage.createActivity(activityData);
+      res.json(activity);
+    } catch (error) {
+      console.error("Error creating activity:", error);
+      res.status(500).json({ message: "Failed to create activity" });
+    }
+  });
+
   // AI routes
   app.post('/api/ai/score-lead', isAuthenticated, async (req: any, res) => {
     try {
