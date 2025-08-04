@@ -129,7 +129,6 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
               </div>
               <div>
                 <h1 className="text-lg font-bold text-white">PRA Developers</h1>
-                <p className="text-xs text-muted-foreground">Real Estate CRM</p>
               </div>
             </div>
             <Button
@@ -238,7 +237,6 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                 <h1 className="text-lg font-bold text-white group-hover:text-primary-400 transition-colors">
                   PRA Developers
                 </h1>
-                <p className="text-xs text-muted-foreground -mt-1">Real Estate CRM</p>
               </div>
             </div>
           </Link>

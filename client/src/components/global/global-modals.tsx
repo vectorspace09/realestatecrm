@@ -6,6 +6,7 @@ import { Plus, X } from 'lucide-react';
 import LeadForm from '@/components/forms/lead-form';
 import PropertyForm from '@/components/forms/property-form';
 import TaskForm from '@/components/forms/task-form';
+import DealForm from '@/components/forms/deal-form';
 
 interface GlobalModalsProps {
   isOpen: boolean;
@@ -38,17 +39,7 @@ export function GlobalModals({ isOpen, type, onClose }: GlobalModalsProps) {
       case 'task':
         return <TaskForm onSuccess={onClose} />;
       case 'deal':
-        // Redirect to deals page with create parameter to automatically open dialog
-        setTimeout(() => {
-          window.location.href = '/deals?action=create';
-          onClose();
-        }, 100);
-        return (
-          <div className="p-4 text-center">
-            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Opening deal creation...</p>
-          </div>
-        );
+        return <DealForm onSuccess={onClose} />;
       default:
         return null;
     }
