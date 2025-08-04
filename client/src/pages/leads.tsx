@@ -53,7 +53,7 @@ export default function Leads() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingLead, setEditingLead] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<"table" | "kanban">("table");
+  const [viewMode, setViewMode] = useState<"table" | "kanban">("kanban");
   const leadsPerPage = isMobile ? 10 : 20;
 
   // Debounced search for better performance

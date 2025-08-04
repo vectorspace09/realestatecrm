@@ -10,7 +10,11 @@ PRA Developers CRM is an AI-powered real estate customer relationship management
 - Previous demo ready with 21 leads, 17 properties, 3 deals
 - All core functionality operational and being redesigned for AI-native UX
 
-**RECENT CHANGES (January 2025)**
+**RECENT CHANGES (August 2025)**
+- Set pipeline (kanban) view as default for leads page instead of table view
+- Completely redesigned AI assistant with improved performance and modern interface
+- Fixed AI response.json errors that were causing chat failures
+- Added quick action buttons and business stats to AI assistant
 - Fixed critical NaN display bugs in lead names and scores
 - Completed comprehensive professional color scheme redesign
 - Started implementation of AI-First CRM Redesign Plan
