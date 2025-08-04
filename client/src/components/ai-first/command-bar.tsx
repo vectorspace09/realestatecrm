@@ -175,8 +175,6 @@ export default function CommandBar({ className = "" }: CommandBarProps) {
           )}
         </div>
       )}
-
-      
     </div>
   );
 }
