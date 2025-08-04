@@ -1,15 +1,19 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Bed, Bath, Maximize, MapPin, Eye } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Bed, Bath, Maximize, MapPin, Eye, Edit } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 import type { Property } from "@shared/schema";
+import PropertyForm from "@/components/forms/property-form";
+import { useState } from "react";
 
 interface PropertyCardProps {
   property: Property;
 }
 
 export default function PropertyCard({ property }: PropertyCardProps) {
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const formatPrice = (price: string | number) => {
     const numPrice = typeof price === "string" ? parseFloat(price) : price;
     if (numPrice >= 1000000) {
@@ -110,9 +114,27 @@ export default function PropertyCard({ property }: PropertyCardProps) {
               2 Tours
             </Badge>
           </div>
-          <Button variant="ghost" size="sm" className="p-1 h-auto">
-            <Eye className="w-4 h-4" />
-          </Button>
+          <div className="flex space-x-1">
+            <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="p-1 h-auto">
+                  <Edit className="w-4 h-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Edit Property</DialogTitle>
+                </DialogHeader>
+                <PropertyForm 
+                  property={property} 
+                  onSuccess={() => setIsEditOpen(false)} 
+                />
+              </DialogContent>
+            </Dialog>
+            <Button variant="ghost" size="sm" className="p-1 h-auto">
+              <Eye className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
         
         {property.status === "sold" && (

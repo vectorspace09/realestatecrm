@@ -13,7 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Badge } from "@/components/ui/badge";
 import { ObjectUploader } from "@/components/ObjectUploader";
 import { X, Upload, Image } from "lucide-react";
-import { insertPropertySchema } from "@shared/schema";
+import { insertPropertySchema, type Property } from "@shared/schema";
 import { z } from "zod";
 import type { UploadResult } from "@uppy/core";
 
@@ -30,40 +30,41 @@ const propertyFormSchema = insertPropertySchema.extend({
 
 interface PropertyFormProps {
   onSuccess?: () => void;
+  property?: Property;
 }
 
-export default function PropertyForm({ onSuccess }: PropertyFormProps) {
+export default function PropertyForm({ onSuccess, property }: PropertyFormProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [featureInput, setFeatureInput] = useState("");
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
-  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>(property?.features || []);
+  const [uploadedImages, setUploadedImages] = useState<string[]>(property?.images || []);
 
   const form = useForm<z.infer<typeof propertyFormSchema>>({
     resolver: zodResolver(propertyFormSchema),
     defaultValues: {
-      title: "",
-      address: "",
-      city: "",
-      state: "",
-      zipCode: "",
-      propertyType: "apartment",
-      status: "available",
-      price: "",
-      bedrooms: "",
-      bathrooms: "",
-      squareFeet: "",
-      lotSize: "",
-      yearBuilt: "",
-      description: "",
-      features: [],
-      virtualTourUrl: "",
-      ownerContact: "",
-      commission: "",
+      title: property?.title || "",
+      address: property?.address || "",
+      city: property?.city || "",
+      state: property?.state || "",
+      zipCode: property?.zipCode || "",
+      propertyType: property?.propertyType || "apartment",
+      status: property?.status || "available",
+      price: property?.price?.toString() || "",
+      bedrooms: property?.bedrooms?.toString() || "",
+      bathrooms: property?.bathrooms?.toString() || "",
+      squareFeet: property?.squareFeet?.toString() || "",
+      lotSize: property?.lotSize?.toString() || "",
+      yearBuilt: property?.yearBuilt?.toString() || "",
+      description: property?.description || "",
+      features: property?.features || [],
+      virtualTourUrl: property?.virtualTourUrl || "",
+      ownerContact: property?.ownerContact || "",
+      commission: property?.commission?.toString() || "",
     },
   });
 
-  const createPropertyMutation = useMutation({
+  const savePropertyMutation = useMutation({
     mutationFn: async (data: z.infer<typeof propertyFormSchema>) => {
       const propertyData = {
         ...data,
@@ -77,13 +78,20 @@ export default function PropertyForm({ onSuccess }: PropertyFormProps) {
         features: selectedFeatures,
         images: uploadedImages,
       };
-      await apiRequest("POST", "/api/properties", propertyData);
+      
+      if (property) {
+        // Update existing property
+        await apiRequest(`/api/properties/${property.id}`, "PUT", propertyData);
+      } else {
+        // Create new property
+        await apiRequest("/api/properties", "POST", propertyData);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/properties"] });
       toast({
         title: "Success",
-        description: "Property created successfully",
+        description: property ? "Property updated successfully" : "Property created successfully",
       });
       onSuccess?.();
     },
@@ -101,14 +109,14 @@ export default function PropertyForm({ onSuccess }: PropertyFormProps) {
       }
       toast({
         title: "Error",
-        description: "Failed to create property",
+        description: property ? "Failed to update property" : "Failed to create property",
         variant: "destructive",
       });
     },
   });
 
   const onSubmit = (data: z.infer<typeof propertyFormSchema>) => {
-    createPropertyMutation.mutate(data);
+    savePropertyMutation.mutate(data);
   };
 
   const addFeature = () => {
@@ -440,7 +448,7 @@ export default function PropertyForm({ onSuccess }: PropertyFormProps) {
               maxNumberOfFiles={5}
               maxFileSize={10485760}
               onGetUploadParameters={async () => {
-                const response = await apiRequest("POST", "/api/objects/upload");
+                const response = await apiRequest("/api/objects/upload", "POST");
                 return {
                   method: "PUT" as const,
                   url: response.uploadURL,
@@ -500,10 +508,13 @@ export default function PropertyForm({ onSuccess }: PropertyFormProps) {
           </Button>
           <Button
             type="submit"
-            disabled={createPropertyMutation.isPending}
+            disabled={savePropertyMutation.isPending}
             className="bg-primary-600 hover:bg-primary-700"
           >
-            {createPropertyMutation.isPending ? "Creating..." : "Create Property"}
+            {savePropertyMutation.isPending 
+              ? (property ? "Updating..." : "Creating...") 
+              : (property ? "Update Property" : "Create Property")
+            }
           </Button>
         </div>
       </form>
