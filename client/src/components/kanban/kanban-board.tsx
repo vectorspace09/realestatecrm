@@ -36,23 +36,23 @@ export default function KanbanBoard({
     return (
       <div className="flex gap-6 overflow-x-auto pb-6">
         {columns.map((column) => (
-          <div key={column.id} className="flex-shrink-0 w-80 bg-gray-800 rounded-xl border border-gray-700">
-            <div className="p-4 border-b border-gray-700">
+          <div key={column.id} className="flex-shrink-0 w-80 bg-card rounded-xl border border-border">
+            <div className="p-4 border-b border-border">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
-                  <div className="h-4 w-20 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                  <div className="h-5 w-6 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="w-3 h-3 bg-card dark:bg-card rounded-full animate-pulse"></div>
+                  <div className="h-4 w-20 bg-card dark:bg-card rounded animate-pulse"></div>
+                  <div className="h-5 w-6 bg-card dark:bg-card rounded animate-pulse"></div>
                 </div>
               </div>
             </div>
             <div className="p-4 space-y-3 min-h-96">
               {[...Array(3)].map((_, index) => (
-                <div key={index} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                <div key={index} className="bg-gray-50 dark:bg-card rounded-lg p-4 border border-border dark:border-border">
                   <div className="space-y-3 animate-pulse">
-                    <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded"></div>
-                    <div className="h-3 bg-gray-200 dark:bg-gray-600 rounded w-3/4"></div>
-                    <div className="h-3 bg-gray-200 dark:bg-gray-600 rounded w-1/2"></div>
+                    <div className="h-4 bg-card dark:bg-card rounded"></div>
+                    <div className="h-3 bg-card dark:bg-card rounded w-3/4"></div>
+                    <div className="h-3 bg-card dark:bg-card rounded w-1/2"></div>
                   </div>
                 </div>
               ))}

@@ -7,7 +7,7 @@ interface SkeletonProps {
 export function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("animate-pulse rounded-md bg-gray-200 dark:bg-gray-700", className)}
+      className={cn("animate-pulse rounded-md bg-card dark:bg-card", className)}
       {...props}
     />
   );
@@ -16,7 +16,7 @@ export function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivEl
 // Specific skeleton components for different content types
 export function CardSkeleton() {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+    <div className="bg-white dark:bg-card rounded-xl p-4 shadow-sm border border-border dark:border-border">
       <div className="animate-pulse">
         <div className="flex items-start space-x-3 mb-3">
           <Skeleton className="h-12 w-12 rounded-full" />

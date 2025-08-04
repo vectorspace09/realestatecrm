@@ -92,7 +92,7 @@ export default function NativeDashboard() {
         <div className="app-content flex items-center justify-center">
           <div className="text-center">
             <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading...</p>
+            <p className="text-muted-foreground">Loading...</p>
           </div>
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function NativeDashboard() {
   const closingDeals = recentDeals?.filter(deal => deal.status === 'under_contract').length || 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-card flex flex-col">
       <NativeHeader 
         title={`Hi, ${(user as any)?.firstName || 'Agent'}!`} 
         rightButton={
@@ -124,7 +124,7 @@ export default function NativeDashboard() {
         <div className="space-y-6 p-4 pb-24">
           {/* Quick Actions Carousel */}
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 px-1">Quick Actions</h2>
+            <h2 className="text-lg font-semibold text-muted-foreground dark:text-white mb-4 px-1">Quick Actions</h2>
             <div className="flex overflow-x-auto space-x-3 pb-2 px-1 scrollbar-hide">
               {[
                 { icon: UserPlus, label: "Add Lead", action: () => navigate('/leads/new'), color: "from-blue-500 to-blue-600" },
@@ -149,7 +149,7 @@ export default function NativeDashboard() {
 
           {/* Today's Focus - Swipeable Cards */}
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 px-1">Today's Focus</h2>
+            <h2 className="text-lg font-semibold text-muted-foreground dark:text-white mb-4 px-1">Today's Focus</h2>
             <div className="flex overflow-x-auto space-x-4 pb-2 px-1 scrollbar-hide">
               <NativeCard className="flex-shrink-0 w-64 bg-gradient-to-br from-red-500 to-red-600 text-white border-0">
                 <div className="flex items-center justify-between">
@@ -216,7 +216,7 @@ export default function NativeDashboard() {
           {/* Hot Leads List */}
           <div>
             <div className="flex items-center justify-between mb-4 px-1">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Hot Leads</h2>
+              <h2 className="text-lg font-semibold text-muted-foreground dark:text-white">Hot Leads</h2>
               <button 
                 onClick={() => navigate('/leads')}
                 className="text-primary-600 dark:text-primary-400 text-sm font-medium flex items-center space-x-1"
@@ -238,11 +238,11 @@ export default function NativeDashboard() {
                           </span>
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-semibold text-gray-900 dark:text-white">
+                          <h3 className="font-semibold text-muted-foreground dark:text-white">
                             {lead.firstName} {lead.lastName}
                           </h3>
                           <div className="flex items-center space-x-2">
-                            <span className="text-sm text-gray-500 dark:text-gray-400">{lead.email}</span>
+                            <span className="text-sm text-muted-foreground dark:text-muted-foreground">{lead.email}</span>
                             <Badge 
                               variant={lead.score >= 90 ? "destructive" : "secondary"}
                               className="text-xs"
@@ -253,7 +253,7 @@ export default function NativeDashboard() {
                         </div>
                       </div>
                       
-                      <div className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                      <div className="text-sm text-muted-foreground dark:text-muted-foreground mb-3">
                         Budget: ${lead.budget?.toLocaleString() || 'Not specified'} • 
                         Looking for: {lead.propertyType || 'Any property'}
                       </div>
@@ -277,7 +277,7 @@ export default function NativeDashboard() {
                     </button>
                     <button 
                       onClick={() => navigate(`/leads/${lead.id}`)}
-                      className="flex-1 flex items-center justify-center space-x-2 py-2 px-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium transition-colors"
+                      className="flex-1 flex items-center justify-center space-x-2 py-2 px-3 bg-card hover:bg-card text-white rounded-lg text-sm font-medium transition-colors"
                     >
                       <FileText className="w-4 h-4" />
                       <span>View</span>
@@ -288,9 +288,9 @@ export default function NativeDashboard() {
               
               {(!recentLeads || recentLeads.filter(lead => lead.score >= 80).length === 0) && (
                 <NativeCard className="p-6 text-center">
-                  <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <p className="text-gray-500 dark:text-gray-400 mb-2">No hot leads yet</p>
-                  <p className="text-sm text-gray-400">Add leads to see high-priority prospects here</p>
+                  <Users className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+                  <p className="text-muted-foreground dark:text-muted-foreground mb-2">No hot leads yet</p>
+                  <p className="text-sm text-muted-foreground">Add leads to see high-priority prospects here</p>
                 </NativeCard>
               )}
             </div>
@@ -299,7 +299,7 @@ export default function NativeDashboard() {
           {/* Upcoming Tasks */}
           <div>
             <div className="flex items-center justify-between mb-4 px-1">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Today's Tasks</h2>
+              <h2 className="text-lg font-semibold text-muted-foreground dark:text-white">Today's Tasks</h2>
               <button 
                 onClick={() => navigate('/tasks')}
                 className="text-primary-600 dark:text-primary-400 text-sm font-medium flex items-center space-x-1"
@@ -321,8 +321,8 @@ export default function NativeDashboard() {
                     }`} />
                     
                     <div className="flex-1">
-                      <h3 className="font-medium text-gray-900 dark:text-white mb-1">{task.title}</h3>
-                      <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+                      <h3 className="font-medium text-muted-foreground dark:text-white mb-1">{task.title}</h3>
+                      <div className="flex items-center space-x-2 text-sm text-muted-foreground dark:text-muted-foreground">
                         <Clock className="w-4 h-4" />
                         <span>{new Date(task.dueDate).toLocaleTimeString('en-US', { 
                           hour: '2-digit', 
@@ -349,7 +349,7 @@ export default function NativeDashboard() {
                       </button>
                       <button
                         onClick={() => navigate(`/tasks/${task.id}`)}
-                        className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                        className="p-2 text-muted-foreground dark:text-muted-foreground hover:bg-card dark:hover:bg-card rounded-lg transition-colors"
                       >
                         <ChevronRight className="w-5 h-5" />
                       </button>
@@ -362,9 +362,9 @@ export default function NativeDashboard() {
                 new Date(task.dueDate).toDateString() === new Date().toDateString()
               ).length === 0) && (
                 <NativeCard className="p-6 text-center">
-                  <CheckSquare className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <p className="text-gray-500 dark:text-gray-400 mb-2">No tasks for today</p>
-                  <p className="text-sm text-gray-400">You're all caught up!</p>
+                  <CheckSquare className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+                  <p className="text-muted-foreground dark:text-muted-foreground mb-2">No tasks for today</p>
+                  <p className="text-sm text-muted-foreground">You're all caught up!</p>
                 </NativeCard>
               )}
             </div>
@@ -374,7 +374,7 @@ export default function NativeDashboard() {
           {insights?.insights && insights.insights.length > 0 && (
             <div>
               <div className="flex items-center justify-between mb-4 px-1">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">AI Suggestions</h2>
+                <h2 className="text-lg font-semibold text-muted-foreground dark:text-white">AI Suggestions</h2>
                 <button 
                   onClick={() => navigate('/ai')}
                   className="text-primary-600 dark:text-primary-400 text-sm font-medium flex items-center space-x-1"
@@ -393,7 +393,7 @@ export default function NativeDashboard() {
                       </div>
                       
                       <div className="flex-1">
-                        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                        <p className="text-sm text-muted-foreground dark:text-muted-foreground leading-relaxed mb-3">
                           {insight}
                         </p>
                         
@@ -408,7 +408,7 @@ export default function NativeDashboard() {
                               </button>
                               <button 
                                 onClick={() => navigate('/ai')}
-                                className="px-3 py-1.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-blue-600 dark:text-blue-400 text-xs rounded-full font-medium border border-blue-200 dark:border-blue-800 transition-colors"
+                                className="px-3 py-1.5 bg-white dark:bg-card hover:bg-gray-50 dark:hover:bg-card text-blue-600 dark:text-blue-400 text-xs rounded-full font-medium border border-blue-200 dark:border-blue-800 transition-colors"
                               >
                                 Ask AI
                               </button>
@@ -424,7 +424,7 @@ export default function NativeDashboard() {
                               </button>
                               <button 
                                 onClick={() => navigate('/ai')}
-                                className="px-3 py-1.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-emerald-600 dark:text-emerald-400 text-xs rounded-full font-medium border border-emerald-200 dark:border-emerald-800 transition-colors"
+                                className="px-3 py-1.5 bg-white dark:bg-card hover:bg-gray-50 dark:hover:bg-card text-emerald-600 dark:text-emerald-400 text-xs rounded-full font-medium border border-emerald-200 dark:border-emerald-800 transition-colors"
                               >
                                 Get Help
                               </button>
@@ -440,7 +440,7 @@ export default function NativeDashboard() {
                               </button>
                               <button 
                                 onClick={() => navigate('/ai')}
-                                className="px-3 py-1.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-purple-600 dark:text-purple-400 text-xs rounded-full font-medium border border-purple-200 dark:border-purple-800 transition-colors"
+                                className="px-3 py-1.5 bg-white dark:bg-card hover:bg-gray-50 dark:hover:bg-card text-purple-600 dark:text-purple-400 text-xs rounded-full font-medium border border-purple-200 dark:border-purple-800 transition-colors"
                               >
                                 Learn More
                               </button>
@@ -466,7 +466,7 @@ export default function NativeDashboard() {
                 <p className="text-2xl font-bold text-white">
                   ${parseInt(metrics?.totalRevenue || '0').toLocaleString()}
                 </p>
-                <p className="text-xs text-gray-400">Total Revenue</p>
+                <p className="text-xs text-muted-foreground">Total Revenue</p>
                 <div className="flex items-center justify-center mt-1">
                   <span className="text-xs text-emerald-500">+23.5%</span>
                 </div>
@@ -479,7 +479,7 @@ export default function NativeDashboard() {
                 <p className="text-2xl font-bold text-white">
                   {metrics?.totalLeads || 0}
                 </p>
-                <p className="text-xs text-gray-400">Active Leads</p>
+                <p className="text-xs text-muted-foreground">Active Leads</p>
                 <div className="flex items-center justify-center mt-1">
                   <span className="text-xs text-blue-500">+12.3%</span>
                 </div>
@@ -492,7 +492,7 @@ export default function NativeDashboard() {
                 <p className="text-2xl font-bold text-white">
                   {metrics?.activeProperties || 0}
                 </p>
-                <p className="text-xs text-gray-400">Properties</p>
+                <p className="text-xs text-muted-foreground">Properties</p>
                 <div className="flex items-center justify-center mt-1">
                   <span className="text-xs text-purple-500">+5.7%</span>
                 </div>
@@ -505,7 +505,7 @@ export default function NativeDashboard() {
                 <p className="text-2xl font-bold text-white">
                   {metrics?.activeDeals || 0}
                 </p>
-                <p className="text-xs text-gray-400">Active Deals</p>
+                <p className="text-xs text-muted-foreground">Active Deals</p>
                 <div className="flex items-center justify-center mt-1">
                   <span className="text-xs text-amber-500">+8.9%</span>
                 </div>
@@ -585,11 +585,11 @@ export default function NativeDashboard() {
               
               <div className="space-y-3">
                 {insights.insights.slice(0, 3).map((insight, index) => (
-                  <div key={index} className="flex items-start p-3 bg-gray-800/50 rounded-lg">
+                  <div key={index} className="flex items-start p-3 bg-card/50 rounded-lg">
                     <div className="w-6 h-6 bg-blue-500/20 rounded-full flex items-center justify-center mr-3 mt-0.5">
                       <span className="text-xs text-blue-400 font-medium">{index + 1}</span>
                     </div>
-                    <p className="text-sm text-gray-300 flex-1">{insight}</p>
+                    <p className="text-sm text-muted-foreground flex-1">{insight}</p>
                   </div>
                 ))}
               </div>

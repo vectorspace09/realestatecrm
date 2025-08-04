@@ -145,7 +145,7 @@ export default function NativeLeads() {
         <div className="app-content flex items-center justify-center">
           <div className="text-center">
             <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading...</p>
+            <p className="text-muted-foreground">Loading...</p>
           </div>
         </div>
       </div>
@@ -153,7 +153,7 @@ export default function NativeLeads() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-card flex flex-col">
       <NativeHeader 
         title="Leads" 
         rightButton={
@@ -173,7 +173,7 @@ export default function NativeLeads() {
           <NativeCard>
             <div className="space-y-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
                   placeholder="Search leads..."
                   value={searchTerm}
@@ -184,7 +184,7 @@ export default function NativeLeads() {
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <Filter className="w-4 h-4 text-gray-400" />
+                  <Filter className="w-4 h-4 text-muted-foreground" />
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="w-32 h-10">
                       <SelectValue />
@@ -213,13 +213,13 @@ export default function NativeLeads() {
           {leadsLoading ? (
             <div className="flex flex-col items-center justify-center py-16">
               <LoadingSpinner size="lg" />
-              <p className="text-gray-500 dark:text-gray-400 mt-3 text-sm">Loading leads...</p>
+              <p className="text-muted-foreground dark:text-muted-foreground mt-3 text-sm">Loading leads...</p>
             </div>
           ) : filteredLeads.length === 0 ? (
             <NativeCard>
               <div className="text-center py-8">
-                <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-400 mb-4">No leads found</p>
+                <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground mb-4">No leads found</p>
                 <Button 
                   className="native-button-primary"
                   onClick={() => navigate('/leads/new')}
@@ -255,7 +255,7 @@ export default function NativeLeads() {
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 dark:text-white text-base truncate">
+                          <h3 className="font-semibold text-muted-foreground dark:text-white text-base truncate">
                             {lead.firstName} {lead.lastName}
                           </h3>
                           <div className="flex items-center space-x-2 mt-1 flex-wrap gap-1">
@@ -273,7 +273,7 @@ export default function NativeLeads() {
                             <Badge className={`text-xs px-2 py-1 font-medium ${
                               scoreBadge.variant === 'success' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300' :
                               scoreBadge.variant === 'warning' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300' :
-                              'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
+                              'bg-card text-muted-foreground dark:bg-card dark:text-muted-foreground'
                             }`}>
                               <Star className="w-3 h-3 mr-1" />
                               {lead.score}
@@ -282,7 +282,7 @@ export default function NativeLeads() {
                         </div>
                       </div>
                       <button
-                        className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95"
+                        className="p-2 rounded-lg text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground hover:bg-card dark:hover:bg-card transition-all duration-200 active:scale-95"
                         onClick={(e) => {
                           e.stopPropagation();
                           navigate(`/leads/${lead.id}`);
@@ -293,7 +293,7 @@ export default function NativeLeads() {
                     </div>
                     
                     <div className="space-y-2">
-                      <div className="flex items-center space-x-4 text-sm text-gray-400">
+                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                         <div className="flex items-center space-x-1 flex-1 min-w-0">
                           <Mail className="w-3 h-3 flex-shrink-0" />
                           <span className="truncate">{lead.email}</span>
@@ -307,7 +307,7 @@ export default function NativeLeads() {
                       </div>
                       
                       {lead.budget && (
-                        <div className="flex items-center space-x-1 text-sm text-gray-300">
+                        <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                           <DollarSign className="w-3 h-3" />
                           <span>
                             ${lead.budget?.toLocaleString()}
@@ -317,7 +317,7 @@ export default function NativeLeads() {
                       )}
                       
                       {lead.preferredLocations && lead.preferredLocations.length > 0 && (
-                        <div className="flex items-center space-x-1 text-sm text-gray-400">
+                        <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                           <MapPin className="w-3 h-3 flex-shrink-0" />
                           <span className="truncate">
                             {Array.isArray(lead.preferredLocations) 
@@ -350,7 +350,7 @@ export default function NativeLeads() {
                   Previous
                 </Button>
                 
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-muted-foreground">
                   Page {currentPage} of {totalPages}
                 </span>
                 

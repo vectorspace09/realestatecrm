@@ -75,7 +75,7 @@ export default function PropertyDetail() {
       available: { label: "Available", class: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100" },
       pending: { label: "Under Contract", class: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100" },
       sold: { label: "Sold", class: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100" },
-      withdrawn: { label: "Off Market", class: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100" }
+      withdrawn: { label: "Off Market", class: "bg-card text-muted-foreground dark:bg-card dark:text-muted-foreground" }
     };
     return statusMap[status as keyof typeof statusMap] || statusMap.available;
   };
@@ -92,17 +92,17 @@ export default function PropertyDetail() {
   };
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-card flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-400">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     </div>;
   }
 
   if (propertyLoading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex flex-col">
+      <div className="min-h-screen bg-card flex flex-col">
         <ResponsiveHeader />
         <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
           <div className="flex items-center justify-center py-12">
@@ -116,12 +116,12 @@ export default function PropertyDetail() {
 
   if (!typedProperty) {
     return (
-      <div className="min-h-screen bg-gray-900 flex flex-col">
+      <div className="min-h-screen bg-card flex flex-col">
         <ResponsiveHeader />
         <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
           <div className="text-center py-12">
-            <Home className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-400">Property not found</p>
+            <Home className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground">Property not found</p>
             <Button 
               variant="outline" 
               className="mt-4"
@@ -140,19 +140,19 @@ export default function PropertyDetail() {
   const statusBadge = getStatusBadge(typedProperty.status);
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-card flex flex-col">
       <ResponsiveHeader />
       
       <main className="flex-1 overflow-y-auto pb-20 lg:pb-6">
         {/* Header */}
-        <div className="sticky top-0 bg-gray-900/90 backdrop-blur-sm border-b border-gray-700 p-4 lg:p-6 z-10">
+        <div className="sticky top-0 bg-card/90 backdrop-blur-sm border-b border-border p-4 lg:p-6 z-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate("/properties")}
-                className="text-gray-400 hover:text-white"
+                className="text-muted-foreground hover:text-white"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 {isMobile ? "" : "Back to Properties"}
@@ -161,7 +161,7 @@ export default function PropertyDetail() {
                 <h1 className="text-xl lg:text-2xl font-bold text-white truncate">
                   {typedProperty.title}
                 </h1>
-                <p className="text-gray-400 text-sm">{typedProperty.address}</p>
+                <p className="text-muted-foreground text-sm">{typedProperty.address}</p>
               </div>
             </div>
             
@@ -187,7 +187,7 @@ export default function PropertyDetail() {
 
         <div className="p-4 lg:p-6 space-y-6">
           {/* Property Image */}
-          <Card className="bg-gray-800 border-gray-700 overflow-hidden">
+          <Card className="bg-card border-border overflow-hidden">
             <div 
               className="h-64 lg:h-96 bg-cover bg-center relative"
               style={{ backgroundImage: `url(${getPropertyImage(typedProperty.type)})` }}
@@ -224,31 +224,31 @@ export default function PropertyDetail() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Property Details */}
             <div className="lg:col-span-2 space-y-6">
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-card border-border">
                 <CardHeader>
                   <CardTitle className="text-white">Property Details</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-sm text-gray-400">Property Type</p>
+                      <p className="text-sm text-muted-foreground">Property Type</p>
                       <p className="text-white capitalize">{typedProperty.type}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-400">Status</p>
+                      <p className="text-sm text-muted-foreground">Status</p>
                       <Badge className={statusBadge.class}>
                         {statusBadge.label}
                       </Badge>
                     </div>
                     {typedProperty.yearBuilt && (
                       <div>
-                        <p className="text-sm text-gray-400">Year Built</p>
+                        <p className="text-sm text-muted-foreground">Year Built</p>
                         <p className="text-white">{typedProperty.yearBuilt}</p>
                       </div>
                     )}
                     {typedProperty.lotSize && (
                       <div>
-                        <p className="text-sm text-gray-400">Lot Size</p>
+                        <p className="text-sm text-muted-foreground">Lot Size</p>
                         <p className="text-white">{typedProperty.lotSize.toLocaleString()} sqft</p>
                       </div>
                     )}
@@ -256,12 +256,12 @@ export default function PropertyDetail() {
                   
                   {typedProperty.description && (
                     <div>
-                      <p className="text-sm text-gray-400 mb-2">Description</p>
+                      <p className="text-sm text-muted-foreground mb-2">Description</p>
                       <p className="text-white">{typedProperty.description}</p>
                     </div>
                   )}
                   
-                  <div className="flex items-center space-x-2 text-gray-400">
+                  <div className="flex items-center space-x-2 text-muted-foreground">
                     <MapPin className="w-4 h-4" />
                     <span>{typedProperty.address}</span>
                   </div>
@@ -269,14 +269,14 @@ export default function PropertyDetail() {
               </Card>
 
               {typedProperty.features && typedProperty.features.length > 0 && (
-                <Card className="bg-gray-800 border-gray-700">
+                <Card className="bg-card border-border">
                   <CardHeader>
                     <CardTitle className="text-white">Features & Amenities</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {typedProperty.features.map((feature: any, index: number) => (
-                        <div key={index} className="flex items-center space-x-2 text-gray-300">
+                        <div key={index} className="flex items-center space-x-2 text-muted-foreground">
                           <Star className="w-4 h-4 text-amber-500" />
                           <span>{feature}</span>
                         </div>
@@ -289,7 +289,7 @@ export default function PropertyDetail() {
 
             {/* Contact & Actions */}
             <div className="space-y-6">
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-card border-border">
                 <CardHeader>
                   <CardTitle className="text-white">Contact Agent</CardTitle>
                 </CardHeader>
@@ -303,7 +303,7 @@ export default function PropertyDetail() {
                     </Avatar>
                     <div>
                       <p className="font-medium text-white">John Doe</p>
-                      <p className="text-sm text-gray-400">Real Estate Agent</p>
+                      <p className="text-sm text-muted-foreground">Real Estate Agent</p>
                     </div>
                   </div>
                   
@@ -320,7 +320,7 @@ export default function PropertyDetail() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-card border-border">
                 <CardHeader>
                   <CardTitle className="text-white">Quick Actions</CardTitle>
                 </CardHeader>

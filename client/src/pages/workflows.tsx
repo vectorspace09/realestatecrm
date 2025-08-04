@@ -27,16 +27,16 @@ export default function WorkflowBuilder() {
   }, [isAuthenticated, isLoading, toast]);
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-card flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-400">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     </div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-card flex flex-col">
       <ResponsiveHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
@@ -47,7 +47,7 @@ export default function WorkflowBuilder() {
                 <Zap className="w-10 h-10 text-white" />
               </div>
               <h1 className="text-3xl font-bold text-white mb-4">Workflow Builder</h1>
-              <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Automate your real estate workflows with intelligent automation sequences
               </p>
               <Badge variant="secondary" className="mt-4 bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100">
@@ -58,13 +58,13 @@ export default function WorkflowBuilder() {
 
             {/* Coming Soon Features */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-card border-border">
                 <CardHeader>
                   <CardTitle className="text-xl text-white">Lead Nurturing Workflows</CardTitle>
                   <CardDescription>Automated follow-up sequences for different lead types</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-3 text-gray-400">
+                  <ul className="space-y-3 text-muted-foreground">
                     <li className="flex items-start">
                       <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                       <span>Trigger emails based on lead behavior and interests</span>
@@ -81,13 +81,13 @@ export default function WorkflowBuilder() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-card border-border">
                 <CardHeader>
                   <CardTitle className="text-xl text-white">Transaction Management</CardTitle>
                   <CardDescription>Streamline your deal process from offer to closing</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-3 text-gray-400">
+                  <ul className="space-y-3 text-muted-foreground">
                     <li className="flex items-start">
                       <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                       <span>Automated document collection and reminders</span>
@@ -104,13 +104,13 @@ export default function WorkflowBuilder() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-card border-border">
                 <CardHeader>
                   <CardTitle className="text-xl text-white">Marketing Automation</CardTitle>
                   <CardDescription>Automated marketing campaigns and listing promotions</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-3 text-gray-400">
+                  <ul className="space-y-3 text-muted-foreground">
                     <li className="flex items-start">
                       <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                       <span>Social media posting schedules for new listings</span>
@@ -127,13 +127,13 @@ export default function WorkflowBuilder() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-card border-border">
                 <CardHeader>
                   <CardTitle className="text-xl text-white">Client Onboarding</CardTitle>
                   <CardDescription>Welcome sequences for new clients and referrals</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-3 text-gray-400">
+                  <ul className="space-y-3 text-muted-foreground">
                     <li className="flex items-start">
                       <div className="w-2 h-2 bg-amber-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                       <span>Welcome packages and introduction materials</span>
@@ -160,16 +160,16 @@ export default function WorkflowBuilder() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-8">
-                <div className="bg-gray-800 rounded-lg p-8 shadow-inner">
+                <div className="bg-card rounded-lg p-8 shadow-inner">
                   <div className="flex items-center justify-center space-x-4 mb-8">
-                    <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                      <Wrench className="w-8 h-8 text-gray-400" />
+                    <div className="w-16 h-16 bg-card dark:bg-card rounded-lg flex items-center justify-center">
+                      <Wrench className="w-8 h-8 text-muted-foreground" />
                     </div>
                     <div className="text-center">
                       <h3 className="text-lg font-semibold text-white mb-2">
                         Powerful Automation Engine
                       </h3>
-                      <p className="text-gray-400">
+                      <p className="text-muted-foreground">
                         Build sophisticated workflows with triggers, conditions, and actions
                       </p>
                     </div>
@@ -181,7 +181,7 @@ export default function WorkflowBuilder() {
                         <span className="text-blue-600 dark:text-blue-400 font-bold">1</span>
                       </div>
                       <h4 className="font-medium text-white mb-2">Set Triggers</h4>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-muted-foreground">
                         Define what events start your workflows
                       </p>
                     </div>
@@ -191,7 +191,7 @@ export default function WorkflowBuilder() {
                         <span className="text-emerald-600 dark:text-emerald-400 font-bold">2</span>
                       </div>
                       <h4 className="font-medium text-white mb-2">Add Conditions</h4>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-muted-foreground">
                         Create smart logic for different scenarios
                       </p>
                     </div>
@@ -201,7 +201,7 @@ export default function WorkflowBuilder() {
                         <span className="text-purple-600 dark:text-purple-400 font-bold">3</span>
                       </div>
                       <h4 className="font-medium text-white mb-2">Execute Actions</h4>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-muted-foreground">
                         Automate emails, tasks, and updates
                       </p>
                     </div>
@@ -212,7 +212,7 @@ export default function WorkflowBuilder() {
 
             {/* Notification */}
             <div className="text-center mt-12">
-              <p className="text-gray-400 mb-4">
+              <p className="text-muted-foreground mb-4">
                 Get notified when Workflow Builder launches
               </p>
               <Badge variant="outline" className="text-primary-600 border-primary-200">

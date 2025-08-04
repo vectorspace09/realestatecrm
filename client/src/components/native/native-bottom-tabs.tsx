@@ -15,7 +15,7 @@ export default function NativeBottomTabs() {
   const [location, navigate] = useLocation();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 z-50 shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-card/95 backdrop-blur-md border-t border-border dark:border-border z-50 shadow-lg">
       <div className="flex items-center justify-around py-2 px-4 pb-safe">
         {tabs.map((tab, index) => {
           const Icon = tab.icon;
@@ -24,7 +24,7 @@ export default function NativeBottomTabs() {
             return (
               <div key="menu" className="flex flex-col items-center justify-center py-2 px-1">
                 <MobileMenuTrigger />
-                <span className="text-xs mt-1 font-medium text-gray-500 dark:text-gray-400">
+                <span className="text-xs mt-1 font-medium text-muted-foreground dark:text-muted-foreground">
                   {tab.label}
                 </span>
               </div>
@@ -40,7 +40,7 @@ export default function NativeBottomTabs() {
               className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg transition-all duration-200 active:scale-95 relative ${
                 isActive 
                   ? 'text-primary-600 dark:text-primary-400' 
-                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                  : 'text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground'
               }`}
             >
               {isActive && (

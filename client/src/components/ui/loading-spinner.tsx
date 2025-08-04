@@ -17,7 +17,7 @@ export default function LoadingSpinner({
 
   const colorClasses = {
     primary: "border-primary-600 border-t-transparent",
-    secondary: "border-gray-600 border-t-transparent",
+    secondary: "border-border border-t-transparent",
     white: "border-white border-t-transparent"
   };
 

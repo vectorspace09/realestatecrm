@@ -59,14 +59,14 @@ export default function StatusBadgeSelector({
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align="start" 
-        className="w-48 bg-gray-800 border-gray-700 shadow-xl"
+        className="w-48 bg-card border-border shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         {options.map((option) => (
           <DropdownMenuItem
             key={option.value}
             onClick={() => handleStatusChange(option.value)}
-            className="flex items-center justify-between cursor-pointer hover:bg-gray-700 focus:bg-gray-700"
+            className="flex items-center justify-between cursor-pointer hover:bg-card focus:bg-card"
           >
             <div className="flex items-center space-x-2">
               <Badge className={`${option.bgClass} text-xs`}>
@@ -91,14 +91,14 @@ export const LEAD_STATUS_OPTIONS: StatusOption[] = [
   { value: "tour", label: "Tour Scheduled", color: "amber", bgClass: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100" },
   { value: "offer", label: "Offer Made", color: "orange", bgClass: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-100" },
   { value: "closed", label: "Closed", color: "green", bgClass: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100" },
-  { value: "nurturing", label: "Nurturing", color: "gray", bgClass: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100" }
+  { value: "nurturing", label: "Nurturing", color: "gray", bgClass: "bg-card text-muted-foreground dark:bg-card dark:text-muted-foreground" }
 ];
 
 export const PROPERTY_STATUS_OPTIONS: StatusOption[] = [
   { value: "available", label: "Available", color: "emerald", bgClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100" },
   { value: "pending", label: "Under Contract", color: "amber", bgClass: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100" },
   { value: "sold", label: "Sold", color: "green", bgClass: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100" },
-  { value: "withdrawn", label: "Off Market", color: "gray", bgClass: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100" }
+  { value: "withdrawn", label: "Off Market", color: "gray", bgClass: "bg-card text-muted-foreground dark:bg-card dark:text-muted-foreground" }
 ];
 
 export const DEAL_STATUS_OPTIONS: StatusOption[] = [
@@ -111,7 +111,7 @@ export const DEAL_STATUS_OPTIONS: StatusOption[] = [
 ];
 
 export const TASK_STATUS_OPTIONS: StatusOption[] = [
-  { value: "pending", label: "Pending", color: "gray", bgClass: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100" },
+  { value: "pending", label: "Pending", color: "gray", bgClass: "bg-card text-muted-foreground dark:bg-card dark:text-muted-foreground" },
   { value: "in_progress", label: "In Progress", color: "blue", bgClass: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100" },
   { value: "completed", label: "Completed", color: "green", bgClass: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100" },
   { value: "cancelled", label: "Cancelled", color: "red", bgClass: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100" }

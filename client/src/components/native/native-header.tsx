@@ -51,7 +51,7 @@ export default function NativeHeader({
           <div className="w-10 h-10">
             {rightButton || (
               <button className="native-nav-button">
-                <MoreHorizontal className="w-5 h-5 text-gray-400" />
+                <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
               </button>
             )}
           </div>

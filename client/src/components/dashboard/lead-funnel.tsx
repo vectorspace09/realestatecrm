@@ -31,7 +31,7 @@ const funnelData = [
 
 export default function LeadFunnel() {
   return (
-    <Card className="bg-gray-800 border-gray-700">
+    <Card className="bg-card border-border">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -57,7 +57,7 @@ export default function LeadFunnel() {
                 <span className="text-lg font-semibold text-white">
                   {stage.count.toLocaleString()}
                 </span>
-                <span className="text-sm text-gray-400 ml-2">
+                <span className="text-sm text-muted-foreground ml-2">
                   ({stage.percentage}%)
                 </span>
               </div>
@@ -72,7 +72,7 @@ export default function LeadFunnel() {
             
             {index < funnelData.length - 1 && (
               <div className="flex justify-center">
-                <div className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                <div className="text-xs text-muted-foreground bg-card dark:bg-card px-2 py-1 rounded">
                   {Math.round(((funnelData[index + 1].count / stage.count) * 100))}% conversion
                 </div>
               </div>
@@ -80,19 +80,19 @@ export default function LeadFunnel() {
           </div>
         ))}
         
-        <div className="pt-4 border-t border-gray-700">
+        <div className="pt-4 border-t border-border">
           <div className="grid grid-cols-2 gap-4 text-center">
             <div>
               <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
                 9.9%
               </p>
-              <p className="text-sm text-gray-400">Overall Conversion</p>
+              <p className="text-sm text-muted-foreground">Overall Conversion</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                 $245K
               </p>
-              <p className="text-sm text-gray-400">Pipeline Value</p>
+              <p className="text-sm text-muted-foreground">Pipeline Value</p>
             </div>
           </div>
         </div>

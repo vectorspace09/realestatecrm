@@ -27,7 +27,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       case "sold":
         return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
       case "withdrawn":
-        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
+        return "bg-card text-muted-foreground dark:bg-card dark:text-muted-foreground";
       default:
         return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
     }
@@ -62,7 +62,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
 
   return (
     <div className={cn(
-      "bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md transition-all",
+      "bg-gray-50 dark:bg-card rounded-lg border border-border dark:border-border hover:shadow-md transition-all",
       property.status === "sold" && "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800",
       property.status === "withdrawn" && "opacity-75"
     )}>
@@ -89,7 +89,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           {formatPrice(property.price)}
         </p>
         
-        <div className="space-y-1 text-sm text-gray-400 mb-3">
+        <div className="space-y-1 text-sm text-muted-foreground mb-3">
           <div className="flex items-center">
             <Bed className="w-4 h-4 mr-2" />
             {property.bedrooms || 0} bed • {property.bathrooms || 0} bath
@@ -101,7 +101,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           </div>
         </div>
         
-        <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-600">
+        <div className="flex items-center justify-between pt-3 border-t border-border dark:border-border">
           <div className="flex items-center space-x-2">
             <Badge variant="secondary" className="text-xs">
               5 Matches
@@ -121,7 +121,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
               <span className="text-green-600 dark:text-green-400 text-sm font-medium">
                 Commission: $24K
               </span>
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-muted-foreground">
                 Closed {formatDistanceToNow(new Date(property.updatedAt), { addSuffix: true })}
               </span>
             </div>

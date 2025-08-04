@@ -260,7 +260,7 @@ export default function AIAssistantPage() {
   }, [user, leads]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-card">
       <NativeHeader 
         title="AI Assistant" 
         showBack={true}
@@ -271,7 +271,7 @@ export default function AIAssistantPage() {
 
 
         {/* Conversation Area */}
-        <Card className="bg-white dark:bg-gray-800">
+        <Card className="bg-white dark:bg-card">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg font-semibold flex items-center space-x-2">
               <MessageSquare className="w-5 h-5" />
@@ -297,7 +297,7 @@ export default function AIAssistantPage() {
                         <div className={`px-4 py-3 rounded-lg ${
                           msg.type === 'user'
                             ? 'bg-primary-500 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                            : 'bg-card dark:bg-card text-muted-foreground dark:text-white'
                         }`}>
                           <p className="text-sm whitespace-pre-line">{msg.content}</p>
                         </div>
@@ -345,11 +345,11 @@ export default function AIAssistantPage() {
                           <Bot className="w-4 h-4" />
                         </AvatarFallback>
                       </Avatar>
-                      <div className="bg-gray-100 dark:bg-gray-700 px-4 py-3 rounded-lg">
+                      <div className="bg-card dark:bg-card px-4 py-3 rounded-lg">
                         <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                          <div className="w-2 h-2 bg-card rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-card rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                          <div className="w-2 h-2 bg-card rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
                         </div>
                       </div>
                     </div>
@@ -363,7 +363,7 @@ export default function AIAssistantPage() {
 
         {/* Smart Prompt Chips */}
         <div className="space-y-3">
-          <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 px-1">
+          <h3 className="text-sm font-medium text-muted-foreground dark:text-muted-foreground px-1">
             Smart Prompts
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -383,7 +383,7 @@ export default function AIAssistantPage() {
       </div>
 
       {/* Fixed Input Area */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-card border-t border-border dark:border-border p-4">
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"

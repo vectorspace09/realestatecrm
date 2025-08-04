@@ -31,7 +31,7 @@ const colorMap: Record<string, string> = {
   emerald: "bg-emerald-500",
   green: "bg-green-500",
   red: "bg-red-500",
-  gray: "bg-gray-500",
+  gray: "bg-card",
 };
 
 export default function KanbanColumn({
@@ -47,12 +47,12 @@ export default function KanbanColumn({
   onDragEnd,
   draggedItemId,
 }: KanbanColumnProps) {
-  const colorClass = colorMap[column.color] || "bg-gray-500";
+  const colorClass = colorMap[column.color] || "bg-card";
 
   return (
     <div
       className={cn(
-        "flex-shrink-0 w-80 bg-gray-800 rounded-xl border border-gray-700 transition-colors",
+        "flex-shrink-0 w-80 bg-card rounded-xl border border-border transition-colors",
         isDraggedOver && "border-primary-400 bg-primary-50 dark:bg-primary-900/20"
       )}
       onDragOver={onDragOver}
@@ -61,12 +61,12 @@ export default function KanbanColumn({
       onDrop={onDrop}
     >
       {/* Column Header */}
-      <div className="p-4 border-b border-gray-700">
+      <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className={cn("w-3 h-3 rounded-full", colorClass)}></div>
             <h3 className="font-semibold text-white">{column.label}</h3>
-            <Badge variant="secondary" className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+            <Badge variant="secondary" className="bg-card dark:bg-card text-muted-foreground dark:text-muted-foreground">
               {items.length}
             </Badge>
           </div>
@@ -103,10 +103,10 @@ export default function KanbanColumn({
           })
         ) : (
           <div className="text-center py-8">
-            <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
-              <Plus className="w-6 h-6 text-gray-400" />
+            <div className="w-12 h-12 bg-card dark:bg-card rounded-lg flex items-center justify-center mx-auto mb-3">
+              <Plus className="w-6 h-6 text-muted-foreground" />
             </div>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-muted-foreground">
               No {itemType}s in this stage
             </p>
           </div>

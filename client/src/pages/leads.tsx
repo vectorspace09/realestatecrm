@@ -124,7 +124,7 @@ export default function Leads() {
   const getScoreBadge = (score: number) => {
     if (score >= 90) return "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100";
     if (score >= 70) return "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100";
-    return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100";
+    return "bg-card text-muted-foreground dark:bg-card dark:text-muted-foreground";
   };
 
   const getStatusBadge = (status: string) => {
@@ -135,7 +135,7 @@ export default function Leads() {
       tour: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100",
       offer: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-100",
       closed: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100",
-      nurturing: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100"
+      nurturing: "bg-card text-muted-foreground dark:bg-card dark:text-muted-foreground"
     };
     return statusMap[status as keyof typeof statusMap] || statusMap.new;
   };
@@ -191,16 +191,16 @@ export default function Leads() {
   };
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-card flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-400">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     </div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-card flex flex-col">
       <ResponsiveHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6">
@@ -208,7 +208,7 @@ export default function Leads() {
           <div className="flex flex-col space-y-4 mb-6">
             <div className="text-center sm:text-left">
               <h1 className="mobile-title text-white">Leads Management</h1>
-              <p className="mobile-subtitle text-gray-400">Manage and track all your potential clients</p>
+              <p className="mobile-subtitle text-muted-foreground">Manage and track all your potential clients</p>
             </div>
             <Button 
               className="mobile-button bg-primary-600 hover:bg-primary-700 w-full sm:w-auto sm:self-start"
@@ -220,13 +220,13 @@ export default function Leads() {
           </div>
 
           {/* Filters and Search */}
-          <Card className="bg-gray-800 border-gray-700 mb-6">
+          <Card className="bg-card border-border mb-6">
             <CardContent className="p-6">
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
                 <div className="flex-1 max-w-md">
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Search className="w-4 h-4 text-gray-400" />
+                      <Search className="w-4 h-4 text-muted-foreground" />
                     </div>
                     <Input
                       type="text"
@@ -245,7 +245,7 @@ export default function Leads() {
                 
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-2">
-                    <Filter className="w-4 h-4 text-gray-500" />
+                    <Filter className="w-4 h-4 text-muted-foreground" />
                     <Select value={statusFilter} onValueChange={setStatusFilter}>
                       <SelectTrigger className="w-40">
                         <SelectValue placeholder="Filter by status" />
@@ -268,7 +268,7 @@ export default function Leads() {
                   </Badge>
                   
                   {/* View Toggle */}
-                  <div className="flex bg-gray-700 rounded-lg p-1">
+                  <div className="flex bg-card rounded-lg p-1">
                     <Button
                       variant={viewMode === "table" ? "default" : "ghost"}
                       size="sm"
@@ -299,7 +299,7 @@ export default function Leads() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-semibold text-white">Leads Pipeline</h2>
-                  <p className="text-sm text-gray-400">Drag and drop leads to change their status</p>
+                  <p className="text-sm text-muted-foreground">Drag and drop leads to change their status</p>
                 </div>
               </div>
               
@@ -316,7 +316,7 @@ export default function Leads() {
               </div>
             </div>
           ) : (
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardHeader>
                 <CardTitle className="text-lg text-white">All Leads</CardTitle>
                 <CardDescription>Complete list of all leads in your pipeline</CardDescription>
@@ -328,8 +328,8 @@ export default function Leads() {
                 </div>
               ) : filteredLeads.length === 0 ? (
                 <div className="text-center py-12">
-                  <User className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-400">No leads found</p>
+                  <User className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground">No leads found</p>
                   <Button 
                     variant="outline" 
                     className="mt-4"
@@ -347,7 +347,7 @@ export default function Leads() {
                       {paginatedLeads.map((lead) => (
                         <Card 
                           key={lead.id} 
-                          className="bg-gray-800 border-gray-700 cursor-pointer hover:shadow-md transition-all duration-200 active:scale-[0.98]"
+                          className="bg-card border-border cursor-pointer hover:shadow-md transition-all duration-200 active:scale-[0.98]"
                           onClick={() => navigate(`/leads/${lead.id}`)}
                         >
                           <CardContent className="mobile-card">
@@ -390,7 +390,7 @@ export default function Leads() {
                             </div>
                             
                             <div className="space-y-2">
-                              <div className="flex items-center space-x-4 text-sm text-gray-400">
+                              <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                                 <div className="flex items-center space-x-1 flex-1 min-w-0">
                                   <Mail className="w-3 h-3 flex-shrink-0" />
                                   <span className="truncate">{lead.email}</span>
@@ -404,7 +404,7 @@ export default function Leads() {
                               </div>
                               
                               {lead.budget && (
-                                <div className="flex items-center space-x-1 text-sm text-gray-300">
+                                <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                                   <DollarSign className="w-3 h-3" />
                                   <span>
                                     ${lead.budget?.toLocaleString()}
@@ -414,7 +414,7 @@ export default function Leads() {
                               )}
                               
                               {lead.preferredLocations && lead.preferredLocations.length > 0 && (
-                                <div className="flex items-center space-x-1 text-sm text-gray-400">
+                                <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                                   <MapPin className="w-3 h-3 flex-shrink-0" />
                                   <span className="truncate">
                                     {Array.isArray(lead.preferredLocations) 
@@ -451,7 +451,7 @@ export default function Leads() {
                       {paginatedLeads.map((lead) => (
                         <TableRow 
                           key={lead.id} 
-                          className="hover:bg-gray-700 cursor-pointer transition-colors"
+                          className="hover:bg-card cursor-pointer transition-colors"
                           onClick={() => navigate(`/leads/${lead.id}`)}
                         >
                           <TableCell>
@@ -466,7 +466,7 @@ export default function Leads() {
                                 <p className="font-medium text-white">
                                   {lead.firstName} {lead.lastName}
                                 </p>
-                                <p className="text-sm text-gray-400">
+                                <p className="text-sm text-muted-foreground">
                                   {lead.source}
                                 </p>
                               </div>
@@ -475,23 +475,23 @@ export default function Leads() {
                           <TableCell>
                             <div className="space-y-1">
                               <div className="flex items-center space-x-2">
-                                <Mail className="w-3 h-3 text-gray-400" />
-                                <span className="text-sm text-gray-400">{lead.email}</span>
+                                <Mail className="w-3 h-3 text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground">{lead.email}</span>
                               </div>
                               <div className="flex items-center space-x-2">
-                                <Phone className="w-3 h-3 text-gray-400" />
-                                <span className="text-sm text-gray-400">{lead.phone}</span>
+                                <Phone className="w-3 h-3 text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground">{lead.phone}</span>
                               </div>
                             </div>
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center space-x-1">
-                              <DollarSign className="w-3 h-3 text-gray-400" />
+                              <DollarSign className="w-3 h-3 text-muted-foreground" />
                               <span className="text-sm font-medium text-white">
                                 {lead.budget ? `$${lead.budget.toLocaleString()}` : 'N/A'}
                               </span>
                               {lead.budgetMax && lead.budgetMax !== lead.budget && (
-                                <span className="text-xs text-gray-500">
+                                <span className="text-xs text-muted-foreground">
                                   - ${lead.budgetMax.toLocaleString()}
                                 </span>
                               )}
@@ -511,7 +511,7 @@ export default function Leads() {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <span className="text-sm text-gray-400">
+                            <span className="text-sm text-muted-foreground">
                               {lead.timeline?.replace('_', ' ') || 'Not specified'}
                             </span>
                           </TableCell>
@@ -554,9 +554,9 @@ export default function Leads() {
               
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="mt-6 pt-4 border-t border-gray-700">
+                <div className="mt-6 pt-4 border-t border-border">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-muted-foreground">
                       Showing {startIndex + 1}-{Math.min(startIndex + leadsPerPage, filteredLeads.length)} of {filteredLeads.length} leads
                     </p>
                     <Pagination 

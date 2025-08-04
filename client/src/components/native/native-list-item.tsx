@@ -37,7 +37,7 @@ export default function NativeListItem({
       case "danger":
         return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100";
       default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100";
+        return "bg-card text-muted-foreground dark:bg-card dark:text-muted-foreground";
     }
   };
 
@@ -59,12 +59,12 @@ export default function NativeListItem({
         <div className="flex items-center justify-between">
           <h3 className="font-medium text-white truncate">{title}</h3>
           {rightText && (
-            <span className="text-sm text-gray-400 ml-2">{rightText}</span>
+            <span className="text-sm text-muted-foreground ml-2">{rightText}</span>
           )}
         </div>
         
         {subtitle && (
-          <p className="text-sm text-gray-400 truncate">{subtitle}</p>
+          <p className="text-sm text-muted-foreground truncate">{subtitle}</p>
         )}
         
         {badge && (
@@ -77,7 +77,7 @@ export default function NativeListItem({
       </div>
       
       {showChevron && (
-        <ChevronRight className="w-5 h-5 text-gray-400 ml-3" />
+        <ChevronRight className="w-5 h-5 text-muted-foreground ml-3" />
       )}
     </div>
   );

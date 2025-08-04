@@ -101,10 +101,10 @@ export default function Properties() {
   }, [error, toast]);
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-card flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-400">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     </div>;
   }
@@ -119,7 +119,7 @@ export default function Properties() {
   }, {} as Record<string, Property[]>);
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-card flex flex-col">
       <ResponsiveHeader />
       
       <main className="flex-1 overflow-hidden p-4 lg:p-6 pb-20 lg:pb-6">
@@ -127,7 +127,7 @@ export default function Properties() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
               <div>
                 <h1 className="text-2xl font-bold text-white">Property Management</h1>
-                <p className="text-gray-400">Manage property listings and match with leads</p>
+                <p className="text-muted-foreground">Manage property listings and match with leads</p>
               </div>
               <Dialog open={isAddPropertyOpen} onOpenChange={setIsAddPropertyOpen}>
                 <DialogTrigger asChild>
@@ -148,16 +148,16 @@ export default function Properties() {
             {/* Filters */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
                   placeholder="Search properties..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-10 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600"
+                  className="pl-10 bg-white dark:bg-card border-border dark:border-border"
                 />
               </div>
               <Select value={typeFilter} onValueChange={setTypeFilter}>
-                <SelectTrigger className="w-48 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600">
+                <SelectTrigger className="w-48 bg-white dark:bg-card border-border dark:border-border">
                   <SelectValue placeholder="All Types" />
                 </SelectTrigger>
                 <SelectContent>

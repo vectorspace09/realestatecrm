@@ -42,7 +42,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
 
   return (
     <>
-      <header className="bg-gray-800 shadow-sm border-b border-gray-700 sticky top-0 z-40">
+      <header className="bg-card shadow-sm border-b border-border sticky top-0 z-40">
         <div className="flex items-center justify-between h-16 px-4 lg:px-6">
 
           {/* Mobile menu button & Search */}
@@ -59,7 +59,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             {/* AI Search Bar */}
             <div className="relative flex-1 max-w-md">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="w-4 h-4 text-gray-400" />
+                <Search className="w-4 h-4 text-muted-foreground" />
               </div>
               <Input
                 type="text"
@@ -67,7 +67,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                className="block w-full pl-10 pr-12 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm placeholder-gray-500 bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                className="block w-full pl-10 pr-12 py-2 border border-border dark:border-border rounded-lg text-sm placeholder-gray-500 bg-white dark:bg-card dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
               />
               <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
                 <Badge className="bg-gradient-to-r from-primary-500 to-purple-600 text-white text-xs font-medium cursor-pointer"
@@ -85,7 +85,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               variant="ghost"
               size="sm"
               onClick={toggleTheme}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              className="text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground dark:hover:text-muted-foreground"
             >
               {theme === "dark" ? (
                 <Sun className="w-4 h-4" />
@@ -95,7 +95,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             </Button>
 
             {/* Notifications */}
-            <NotificationBell className="relative text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" />
+            <NotificationBell className="relative text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground dark:hover:text-muted-foreground" />
 
             {/* Quick actions - Desktop only */}
             <div className="hidden md:flex items-center space-x-2">

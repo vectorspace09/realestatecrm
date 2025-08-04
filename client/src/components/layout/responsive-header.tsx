@@ -106,39 +106,39 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
         <Button
           variant="ghost"
           size="sm"
-          className="text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all duration-200 active:scale-95"
+          className="text-muted-foreground hover:text-white hover:bg-card/50 transition-all duration-200 active:scale-95"
         >
           <Menu className="w-5 h-5" />
         </Button>
       </SheetTrigger>
       <SheetContent 
         side="left" 
-        className="w-80 bg-gray-900 border-gray-700 p-0"
+        className="w-80 bg-card border-border p-0"
       >
         <div className="flex flex-col h-full">
           {/* Mobile Menu Header */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-700">
+          <div className="flex items-center justify-between p-6 border-b border-border">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <Building className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h1 className="text-lg font-bold text-white">PRA Developers</h1>
-                <p className="text-xs text-gray-400">Real Estate CRM</p>
+                <p className="text-xs text-muted-foreground">Real Estate CRM</p>
               </div>
             </div>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-gray-400 hover:text-white"
+              className="text-muted-foreground hover:text-white"
             >
               <X className="w-5 h-5" />
             </Button>
           </div>
 
           {/* User Info */}
-          <div className="p-6 border-b border-gray-700">
+          <div className="p-6 border-b border-border">
             <div className="flex items-center space-x-3">
               <Avatar className="w-12 h-12">
                 <AvatarImage src={user?.profileImageUrl} />
@@ -150,7 +150,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                 <p className="font-medium text-white">
                   {user?.firstName} {user?.lastName}
                 </p>
-                <p className="text-sm text-gray-400">{user?.email}</p>
+                <p className="text-sm text-muted-foreground">{user?.email}</p>
               </div>
             </div>
           </div>
@@ -172,7 +172,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                       flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group
                       ${active 
                         ? 'bg-gradient-to-r from-primary-500/20 to-purple-600/20 text-primary-400 border border-primary-500/30' 
-                        : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
+                        : 'text-muted-foreground hover:text-white hover:bg-card/50'
                       }
                     `}>
                       <Icon className={`w-5 h-5 transition-transform duration-200 ${active ? 'scale-110' : 'group-hover:scale-105'}`} />
@@ -188,9 +188,9 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
           </div>
 
           {/* Footer Actions */}
-          <div className="p-4 border-t border-gray-700 space-y-2">
+          <div className="p-4 border-t border-border space-y-2">
             <Link href="/settings" onClick={handleMenuItemClick}>
-              <div className="flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 transition-all duration-200">
+              <div className="flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-white hover:bg-card/50 transition-all duration-200">
                 <Settings className="w-5 h-5" />
                 <span>Settings</span>
               </div>
@@ -213,8 +213,8 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
     <header className={`
       sticky top-0 z-50 transition-all duration-300 backdrop-blur-md
       ${isScrolled 
-        ? 'bg-gray-900/95 shadow-lg shadow-gray-900/20 border-b border-gray-700/50' 
-        : 'bg-gray-900/90 border-b border-gray-700/30'
+        ? 'bg-card/95 shadow-lg shadow-gray-900/20 border-b border-border/50' 
+        : 'bg-card/90 border-b border-border/30'
       }
     `}>
       <div className="container mx-auto px-4 lg:px-6">
@@ -235,7 +235,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                   <h1 className="text-lg font-bold text-white group-hover:text-primary-400 transition-colors">
                     PRA Developers
                   </h1>
-                  <p className="text-xs text-gray-400 -mt-1">Real Estate CRM</p>
+                  <p className="text-xs text-muted-foreground -mt-1">Real Estate CRM</p>
                 </div>
               </div>
             </Link>
@@ -256,7 +256,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                           px-3 py-1.5 text-sm font-medium transition-all duration-200 hover:scale-105
                           ${active 
                             ? 'bg-gradient-to-r from-primary-500 to-purple-600 text-white shadow-lg shadow-primary-500/20' 
-                            : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
+                            : 'text-muted-foreground hover:text-white hover:bg-card/50'
                           }
                         `}
                       >
@@ -273,13 +273,13 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-gray-300 hover:text-white hover:bg-gray-700/50 px-3 py-1.5"
+                      className="text-muted-foreground hover:text-white hover:bg-card/50 px-3 py-1.5"
                     >
                       <Menu className="w-4 h-4 mr-1.5" />
                       More
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="bg-gray-800 border-gray-700" align="start">
+                  <DropdownMenuContent className="bg-card border-border" align="start">
                     {navigationItems.slice(6).map((item) => {
                       const Icon = item.icon;
                       const active = isActive(item.href);
@@ -288,7 +288,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                         <DropdownMenuItem key={item.href} asChild>
                           <Link href={item.href}>
                             <div className={`flex items-center space-x-2 w-full ${
-                              active ? 'text-primary-400' : 'text-gray-300 hover:text-white'
+                              active ? 'text-primary-400' : 'text-muted-foreground hover:text-white'
                             }`}>
                               <Icon className="w-4 h-4" />
                               <span>{item.label}</span>
@@ -308,7 +308,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
             <div className="flex-1 max-w-md mx-8">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="w-4 h-4 text-gray-400" />
+                  <Search className="w-4 h-4 text-muted-foreground" />
                 </div>
                 <Input
                   type="text"
@@ -316,7 +316,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="w-full pl-10 pr-16 py-2 bg-gray-800/50 border-gray-600 text-white placeholder-gray-400 focus:bg-gray-800 focus:border-primary-500 transition-all duration-200"
+                  className="w-full pl-10 pr-16 py-2 bg-card/50 border-border text-white placeholder-gray-400 focus:bg-card focus:border-primary-500 transition-all duration-200"
                 />
                 <button
                   onClick={handleSearch}
@@ -356,7 +356,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
               variant="ghost"
               size="sm"
               onClick={toggleTheme}
-              className="text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all duration-200 active:scale-95"
+              className="text-muted-foreground hover:text-white hover:bg-card/50 transition-all duration-200 active:scale-95"
             >
               {theme === "dark" ? (
                 <Sun className="w-4 h-4" />
@@ -371,7 +371,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
             {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-9 w-9 rounded-full hover:bg-gray-700/50 transition-all duration-200">
+                <Button variant="ghost" className="relative h-9 w-9 rounded-full hover:bg-card/50 transition-all duration-200">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={user?.profileImageUrl} alt={user?.firstName} />
                     <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-white text-sm font-medium">
@@ -381,7 +381,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
-                className="w-64 bg-gray-800 border-gray-700" 
+                className="w-64 bg-card border-border" 
                 align="end" 
                 forceMount
               >
@@ -393,24 +393,24 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                         : "User"
                       }
                     </p>
-                    <p className="text-xs leading-none text-gray-400">
+                    <p className="text-xs leading-none text-muted-foreground">
                       {user?.email}
                     </p>
                   </div>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-gray-700" />
-                <DropdownMenuItem className="text-gray-300 hover:text-white hover:bg-gray-700">
+                <DropdownMenuSeparator className="bg-card" />
+                <DropdownMenuItem className="text-muted-foreground hover:text-white hover:bg-card">
                   <User className="mr-2 h-4 w-4" />
                   <span>Profile</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
-                  className="text-gray-300 hover:text-white hover:bg-gray-700"
+                  className="text-muted-foreground hover:text-white hover:bg-card"
                   onClick={() => window.location.href = '/settings'}
                 >
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Settings</span>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-gray-700" />
+                <DropdownMenuSeparator className="bg-card" />
                 <DropdownMenuItem 
                   onClick={handleLogout}
                   className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
@@ -428,7 +428,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
           <div className="pb-3">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="w-4 h-4 text-gray-400" />
+                <Search className="w-4 h-4 text-muted-foreground" />
               </div>
               <Input
                 type="text"
@@ -436,7 +436,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                className="w-full pl-10 pr-16 py-2.5 bg-gray-800/50 border-gray-600 text-white placeholder-gray-400 focus:bg-gray-800 focus:border-primary-500 transition-all duration-200 rounded-xl"
+                className="w-full pl-10 pr-16 py-2.5 bg-card/50 border-border text-white placeholder-gray-400 focus:bg-card focus:border-primary-500 transition-all duration-200 rounded-xl"
               />
               <button
                 onClick={handleSearch}

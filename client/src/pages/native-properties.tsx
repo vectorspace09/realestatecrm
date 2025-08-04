@@ -143,7 +143,7 @@ export default function NativeProperties() {
         <div className="app-content flex items-center justify-center">
           <div className="text-center">
             <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading...</p>
+            <p className="text-muted-foreground">Loading...</p>
           </div>
         </div>
       </div>
@@ -151,7 +151,7 @@ export default function NativeProperties() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-card flex flex-col">
       <NativeHeader 
         title="Properties"
         rightButton={
@@ -182,7 +182,7 @@ export default function NativeProperties() {
               
               <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-2">
-                  <Filter className="w-4 h-4 text-gray-400" />
+                  <Filter className="w-4 h-4 text-muted-foreground" />
                   <Select value={typeFilter} onValueChange={setTypeFilter}>
                     <SelectTrigger className="w-32 h-10">
                       <SelectValue />
@@ -217,13 +217,13 @@ export default function NativeProperties() {
           {propertiesLoading ? (
             <div className="flex flex-col items-center justify-center py-16">
               <LoadingSpinner size="lg" />
-              <p className="text-gray-500 dark:text-gray-400 mt-3 text-sm">Loading properties...</p>
+              <p className="text-muted-foreground dark:text-muted-foreground mt-3 text-sm">Loading properties...</p>
             </div>
           ) : filteredProperties.length === 0 ? (
             <NativeCard>
               <div className="text-center py-8">
-                <Building className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-400 mb-4">No properties found</p>
+                <Building className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground mb-4">No properties found</p>
               </div>
             </NativeCard>
           ) : (
@@ -241,7 +241,7 @@ export default function NativeProperties() {
                     <div className="space-y-4">
                       {/* Property Image */}
                       {property.images && property.images.length > 0 && (
-                        <div className="relative w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-xl overflow-hidden">
+                        <div className="relative w-full h-48 bg-card dark:bg-card rounded-xl overflow-hidden">
                           <img
                             src={property.images[0]}
                             alt={property.title}
@@ -268,7 +268,7 @@ export default function NativeProperties() {
                       <div className="space-y-3">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 dark:text-white text-lg leading-tight">
+                            <h3 className="font-semibold text-muted-foreground dark:text-white text-lg leading-tight">
                               {property.title}
                             </h3>
                             <div className="flex items-center space-x-2 mt-1">
@@ -285,13 +285,13 @@ export default function NativeProperties() {
                                   size="sm"
                                 />
                               )}
-                              <span className="text-xs text-gray-500 dark:text-gray-400 capitalize bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
+                              <span className="text-xs text-muted-foreground dark:text-muted-foreground capitalize bg-card dark:bg-card px-2 py-1 rounded-full">
                                 {property.type}
                               </span>
                             </div>
                           </div>
                           <button
-                            className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95"
+                            className="p-2 rounded-lg text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground hover:bg-card dark:hover:bg-card transition-all duration-200 active:scale-95"
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/properties/${property.id}`);
@@ -310,7 +310,7 @@ export default function NativeProperties() {
                         </div>
                         
                         {/* Property Details */}
-                        <div className="flex items-center space-x-4 text-sm text-gray-300">
+                        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                           {property.bedrooms && (
                             <div className="flex items-center space-x-1">
                               <Bed className="w-4 h-4" />
@@ -333,7 +333,7 @@ export default function NativeProperties() {
                         
                         {/* Location */}
                         {property.address && (
-                          <div className="flex items-center space-x-1 text-sm text-gray-400">
+                          <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                             <MapPin className="w-4 h-4 flex-shrink-0" />
                             <span className="truncate">{property.address}</span>
                           </div>

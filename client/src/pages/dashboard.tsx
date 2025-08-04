@@ -620,7 +620,7 @@ export default function Dashboard() {
                         className={`cursor-pointer transition-all duration-200 hover:scale-105 ${
                           lead.score >= 90 ? "bg-emerald-100 text-emerald-800  " :
                           lead.score >= 70 ? "bg-amber-100 text-amber-800  " :
-                          "bg-gray-100 text-gray-800   dark:hover:bg-card"
+                          "bg-card text-muted-foreground   dark:hover:bg-card"
                         }`}
                         onClick={() => navigate(`/leads/${lead.id}`)}
                       >

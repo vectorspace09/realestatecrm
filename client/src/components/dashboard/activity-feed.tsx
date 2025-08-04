@@ -80,7 +80,7 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
   ];
 
   return (
-    <Card className="bg-gray-800 border-gray-700">
+    <Card className="bg-card border-border">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -101,7 +101,7 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
             return (
               <div
                 key={activity.id || index}
-                className="flex items-start space-x-3 p-4 hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                className="flex items-start space-x-3 p-4 hover:bg-card transition-colors border-b border-border dark:border-border last:border-b-0"
               >
                 <Avatar className="w-8 h-8 flex-shrink-0">
                   <AvatarFallback className={colorClass}>
@@ -112,10 +112,10 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
                   <p className="text-sm font-medium text-white">
                     {activity.title}
                   </p>
-                  <p className="text-sm text-gray-400 mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     {activity.description}
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {formatDistanceToNow(new Date(activity.createdAt), { addSuffix: true })}
                   </p>
                 </div>
@@ -126,11 +126,11 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
         
         {displayActivities.length === 0 && (
           <div className="text-center py-12">
-            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <AlertTriangle className="w-8 h-8 text-gray-400" />
+            <div className="w-16 h-16 bg-card dark:bg-card rounded-lg flex items-center justify-center mx-auto mb-4">
+              <AlertTriangle className="w-8 h-8 text-muted-foreground" />
             </div>
             <h3 className="text-lg font-medium text-white mb-2">No recent activity</h3>
-            <p className="text-gray-400">Activity will appear here as you use the system</p>
+            <p className="text-muted-foreground">Activity will appear here as you use the system</p>
           </div>
         )}
       </CardContent>

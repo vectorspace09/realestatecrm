@@ -29,16 +29,16 @@ export default function Integrations() {
   }, [isAuthenticated, isLoading, toast]);
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-card flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-400">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     </div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-card flex flex-col">
       <ResponsiveHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6 space-y-6">
@@ -46,7 +46,7 @@ export default function Integrations() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-white">Integrations</h1>
-              <p className="text-gray-400">Connect your favorite tools and services</p>
+              <p className="text-muted-foreground">Connect your favorite tools and services</p>
             </div>
             <Button className="bg-primary-600 hover:bg-primary-700">
               <Plug className="w-4 h-4 mr-2" />
@@ -56,11 +56,11 @@ export default function Integrations() {
 
           {/* Active Integrations */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Active Integrations</p>
+                    <p className="text-sm font-medium text-muted-foreground">Active Integrations</p>
                     <p className="text-3xl font-bold text-white">6</p>
                   </div>
                   <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center">
@@ -70,11 +70,11 @@ export default function Integrations() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Available Integrations</p>
+                    <p className="text-sm font-medium text-muted-foreground">Available Integrations</p>
                     <p className="text-3xl font-bold text-white">24</p>
                   </div>
                   <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
@@ -84,11 +84,11 @@ export default function Integrations() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Data Synced Today</p>
+                    <p className="text-sm font-medium text-muted-foreground">Data Synced Today</p>
                     <p className="text-3xl font-bold text-white">1.2k</p>
                   </div>
                   <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
@@ -100,21 +100,21 @@ export default function Integrations() {
           </div>
 
           {/* Popular Integrations */}
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-lg text-white">Popular Integrations</CardTitle>
               <CardDescription>Most commonly used integrations for real estate professionals</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border dark:border-border rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center">
                       <Mail className="w-6 h-6 text-red-600 dark:text-red-400" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Gmail</h4>
-                      <p className="text-sm text-gray-400">Email marketing and communication</p>
+                      <p className="text-sm text-muted-foreground">Email marketing and communication</p>
                       <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100 mt-1">
                         <CheckCircle className="w-3 h-3 mr-1" />
                         Connected
@@ -124,14 +124,14 @@ export default function Integrations() {
                   <Switch checked={true} />
                 </div>
 
-                <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border dark:border-border rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
                       <Calendar className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Google Calendar</h4>
-                      <p className="text-sm text-gray-400">Schedule showings and appointments</p>
+                      <p className="text-sm text-muted-foreground">Schedule showings and appointments</p>
                       <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100 mt-1">
                         <CheckCircle className="w-3 h-3 mr-1" />
                         Connected
@@ -141,14 +141,14 @@ export default function Integrations() {
                   <Switch checked={true} />
                 </div>
 
-                <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border dark:border-border rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
                       <Database className="w-6 h-6 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">MLS Database</h4>
-                      <p className="text-sm text-gray-400">Property listings and market data</p>
+                      <p className="text-sm text-muted-foreground">Property listings and market data</p>
                       <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100 mt-1">
                         <CheckCircle className="w-3 h-3 mr-1" />
                         Connected
@@ -158,14 +158,14 @@ export default function Integrations() {
                   <Switch checked={true} />
                 </div>
 
-                <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border dark:border-border rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
                       <Cloud className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">DocuSign</h4>
-                      <p className="text-sm text-gray-400">Digital document signing</p>
+                      <p className="text-sm text-muted-foreground">Digital document signing</p>
                       <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100 mt-1">
                         <CheckCircle className="w-3 h-3 mr-1" />
                         Connected
@@ -179,86 +179,86 @@ export default function Integrations() {
           </Card>
 
           {/* Available Integrations */}
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-lg text-white">Available Integrations</CardTitle>
               <CardDescription>Connect new tools to enhance your workflow</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border dark:border-border rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
                       <Globe className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Zillow</h4>
-                      <p className="text-sm text-gray-400">Property data and leads</p>
+                      <p className="text-sm text-muted-foreground">Property data and leads</p>
                     </div>
                   </div>
                   <Button variant="outline" size="sm">Connect</Button>
                 </div>
 
-                <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border dark:border-border rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
                       <Mail className="w-6 h-6 text-orange-600 dark:text-orange-400" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Mailchimp</h4>
-                      <p className="text-sm text-gray-400">Email marketing campaigns</p>
+                      <p className="text-sm text-muted-foreground">Email marketing campaigns</p>
                     </div>
                   </div>
                   <Button variant="outline" size="sm">Connect</Button>
                 </div>
 
-                <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border dark:border-border rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center">
                       <Bot className="w-6 h-6 text-pink-600 dark:text-pink-400" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Slack</h4>
-                      <p className="text-sm text-gray-400">Team communication</p>
+                      <p className="text-sm text-muted-foreground">Team communication</p>
                     </div>
                   </div>
                   <Button variant="outline" size="sm">Connect</Button>
                 </div>
 
-                <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border dark:border-border rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
                       <Database className="w-6 h-6 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Zapier</h4>
-                      <p className="text-sm text-gray-400">Workflow automation</p>
+                      <p className="text-sm text-muted-foreground">Workflow automation</p>
                     </div>
                   </div>
                   <Button variant="outline" size="sm">Connect</Button>
                 </div>
 
-                <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border dark:border-border rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center">
                       <Cloud className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Dropbox</h4>
-                      <p className="text-sm text-gray-400">File storage and sharing</p>
+                      <p className="text-sm text-muted-foreground">File storage and sharing</p>
                     </div>
                   </div>
                   <Button variant="outline" size="sm">Connect</Button>
                 </div>
 
-                <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border dark:border-border rounded-lg">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center">
                       <Bot className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Facebook Ads</h4>
-                      <p className="text-sm text-gray-400">Social media advertising</p>
+                      <p className="text-sm text-muted-foreground">Social media advertising</p>
                     </div>
                   </div>
                   <Button variant="outline" size="sm">Connect</Button>
@@ -275,7 +275,7 @@ export default function Integrations() {
                   <Mail className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-semibold text-white mb-2">Communication</h3>
-                <p className="text-sm text-gray-400 mb-4">Email, SMS, and messaging tools</p>
+                <p className="text-sm text-muted-foreground mb-4">Email, SMS, and messaging tools</p>
                 <Badge variant="secondary">12 available</Badge>
               </CardContent>
             </Card>
@@ -286,7 +286,7 @@ export default function Integrations() {
                   <Database className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-semibold text-white mb-2">Data Sources</h3>
-                <p className="text-sm text-gray-400 mb-4">MLS, property databases, and market data</p>
+                <p className="text-sm text-muted-foreground mb-4">MLS, property databases, and market data</p>
                 <Badge variant="secondary">8 available</Badge>
               </CardContent>
             </Card>
@@ -297,7 +297,7 @@ export default function Integrations() {
                   <Bot className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-semibold text-white mb-2">Automation</h3>
-                <p className="text-sm text-gray-400 mb-4">Workflow and task automation</p>
+                <p className="text-sm text-muted-foreground mb-4">Workflow and task automation</p>
                 <Badge variant="secondary">6 available</Badge>
               </CardContent>
             </Card>
@@ -308,7 +308,7 @@ export default function Integrations() {
                   <Cloud className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-semibold text-white mb-2">Productivity</h3>
-                <p className="text-sm text-gray-400 mb-4">Document management and collaboration</p>
+                <p className="text-sm text-muted-foreground mb-4">Document management and collaboration</p>
                 <Badge variant="secondary">9 available</Badge>
               </CardContent>
             </Card>

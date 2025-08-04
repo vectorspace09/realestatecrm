@@ -77,7 +77,7 @@ export function NotificationBell({ className = "" }: NotificationBellProps) {
       case 'property_viewed':
         return 'bg-purple-500';
       default:
-        return 'bg-gray-500';
+        return 'bg-card';
     }
   };
 
@@ -87,7 +87,7 @@ export function NotificationBell({ className = "" }: NotificationBellProps) {
         <Button
           variant="ghost"
           size="sm"
-          className={`relative text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all duration-200 active:scale-95 ${className}`}
+          className={`relative text-muted-foreground hover:text-white hover:bg-card/50 transition-all duration-200 active:scale-95 ${className}`}
         >
           <Bell className="w-4 h-4" />
           {unreadCount > 0 && (
@@ -102,7 +102,7 @@ export function NotificationBell({ className = "" }: NotificationBellProps) {
       </DropdownMenuTrigger>
       
       <DropdownMenuContent 
-        className="w-80 bg-gray-800 border-gray-700" 
+        className="w-80 bg-card border-border" 
         align="end"
         sideOffset={5}
       >
@@ -121,16 +121,16 @@ export function NotificationBell({ className = "" }: NotificationBellProps) {
           )}
         </DropdownMenuLabel>
         
-        <DropdownMenuSeparator className="bg-gray-700" />
+        <DropdownMenuSeparator className="bg-card" />
         
         <ScrollArea className="max-h-64">
           {isLoading ? (
-            <div className="p-4 text-center text-gray-400">
+            <div className="p-4 text-center text-muted-foreground">
               <div className="animate-spin w-5 h-5 border-2 border-primary-500 border-t-transparent rounded-full mx-auto"></div>
               <p className="mt-2 text-sm">Loading notifications...</p>
             </div>
           ) : notifications.length === 0 ? (
-            <div className="p-4 text-center text-gray-400">
+            <div className="p-4 text-center text-muted-foreground">
               <Bell className="w-8 h-8 mx-auto mb-2 opacity-50" />
               <p className="text-sm">No notifications yet</p>
             </div>
@@ -140,8 +140,8 @@ export function NotificationBell({ className = "" }: NotificationBellProps) {
                 <DropdownMenuItem
                   key={notification.id}
                   className={`
-                    cursor-pointer p-4 flex-col items-start space-y-2 hover:bg-gray-700 transition-colors
-                    ${!notification.isRead ? 'bg-gray-700/50' : ''}
+                    cursor-pointer p-4 flex-col items-start space-y-2 hover:bg-card transition-colors
+                    ${!notification.isRead ? 'bg-card/50' : ''}
                   `}
                   onClick={() => handleNotificationClick(notification)}
                 >
@@ -154,16 +154,16 @@ export function NotificationBell({ className = "" }: NotificationBellProps) {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <h4 className={`text-sm font-medium truncate ${
-                          notification.isRead ? 'text-gray-300' : 'text-white'
+                          notification.isRead ? 'text-muted-foreground' : 'text-white'
                         }`}>
                           {notification.title}
                         </h4>
-                        <span className="text-xs text-gray-500 ml-2 flex-shrink-0">
+                        <span className="text-xs text-muted-foreground ml-2 flex-shrink-0">
                           {formatDistanceToNow(new Date(notification.createdAt || new Date()), { addSuffix: true })}
                         </span>
                       </div>
                       
-                      <p className="text-sm text-gray-400 mt-1 line-clamp-2">
+                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
                         {notification.message}
                       </p>
                       
@@ -180,8 +180,8 @@ export function NotificationBell({ className = "" }: NotificationBellProps) {
         
         {notifications.length > 0 && (
           <>
-            <DropdownMenuSeparator className="bg-gray-700" />
-            <DropdownMenuItem className="text-primary-400 hover:text-primary-300 hover:bg-gray-700 justify-center cursor-pointer">
+            <DropdownMenuSeparator className="bg-card" />
+            <DropdownMenuItem className="text-primary-400 hover:text-primary-300 hover:bg-card justify-center cursor-pointer">
               View All Notifications
             </DropdownMenuItem>
           </>

@@ -340,20 +340,20 @@ export default function LeadDetail() {
   };
 
   if (isLoading || !isAuthenticated || leadLoading) {
-    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-card flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-400">Loading lead details...</p>
+        <p className="text-muted-foreground">Loading lead details...</p>
       </div>
     </div>;
   }
 
   if (!lead) {
-    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-card flex items-center justify-center">
       <div className="text-center">
-        <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+        <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
         <h1 className="text-xl font-semibold text-white mb-2">Lead Not Found</h1>
-        <p className="text-gray-400 mb-4">The lead you're looking for doesn't exist.</p>
+        <p className="text-muted-foreground mb-4">The lead you're looking for doesn't exist.</p>
         <Button onClick={() => window.history.back()}>Go Back</Button>
       </div>
     </div>;
@@ -735,8 +735,8 @@ export default function LeadDetail() {
                     <div className="space-y-3">
                       {[...Array(3)].map((_, i) => (
                         <div key={i} className="animate-pulse">
-                          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-                          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                          <div className="h-4 bg-card dark:bg-card rounded mb-2"></div>
+                          <div className="h-3 bg-card dark:bg-card rounded w-3/4"></div>
                         </div>
                       ))}
                     </div>
@@ -752,7 +752,7 @@ export default function LeadDetail() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-muted-foreground">
                       No recommendations available. Check back after more interactions.
                     </p>
                   )}
@@ -813,12 +813,12 @@ export default function LeadDetail() {
                                   <h4 className="text-sm font-medium text-white">
                                     {activity.title}
                                   </h4>
-                                  <time className="text-xs text-gray-400">
+                                  <time className="text-xs text-muted-foreground">
                                     {new Date(activity.createdAt).toLocaleDateString()} {new Date(activity.createdAt).toLocaleTimeString()}
                                   </time>
                                 </div>
                                 {activity.description && (
-                                  <p className="text-sm text-gray-400 mt-1 whitespace-pre-wrap">
+                                  <p className="text-sm text-muted-foreground mt-1 whitespace-pre-wrap">
                                     {activity.description}
                                   </p>
                                 )}
@@ -828,9 +828,9 @@ export default function LeadDetail() {
                         </div>
                       ) : (
                         <div className="text-center py-8">
-                          <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                          <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                           <h3 className="text-lg font-medium text-white mb-2">No Activities Yet</h3>
-                          <p className="text-gray-400 mb-4">
+                          <p className="text-muted-foreground mb-4">
                             Start by recording an action or sending a message to this lead.
                           </p>
                           <Button onClick={() => setIsActionDialogOpen(true)}>
@@ -858,18 +858,18 @@ export default function LeadDetail() {
                       {(tasks as Task[]).length > 0 ? (
                         <div className="space-y-4">
                           {(tasks as Task[]).map((task: Task) => (
-                            <div key={task.id} className="flex items-start space-x-3 p-3 border border-gray-700 rounded-lg">
+                            <div key={task.id} className="flex items-start space-x-3 p-3 border border-border rounded-lg">
                               <div className={`w-4 h-4 rounded-full mt-1 ${
                                 task.status === "completed" ? "bg-green-500" : 
                                 task.priority === "high" ? "bg-red-500" :
-                                task.priority === "medium" ? "bg-yellow-500" : "bg-gray-400"
+                                task.priority === "medium" ? "bg-yellow-500" : "bg-card"
                               }`} />
                               <div className="flex-1">
                                 <h4 className="font-medium text-white">{task.title}</h4>
                                 {task.description && (
-                                  <p className="text-sm text-gray-400 mt-1">{task.description}</p>
+                                  <p className="text-sm text-muted-foreground mt-1">{task.description}</p>
                                 )}
-                                <div className="flex items-center space-x-3 mt-2 text-xs text-gray-500">
+                                <div className="flex items-center space-x-3 mt-2 text-xs text-muted-foreground">
                                   <span>Priority: {task.priority}</span>
                                   <span>Status: {task.status}</span>
                                   {task.dueDate && (
@@ -882,9 +882,9 @@ export default function LeadDetail() {
                         </div>
                       ) : (
                         <div className="text-center py-8">
-                          <CheckCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                          <CheckCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                           <h3 className="text-lg font-medium text-white mb-2">No Tasks</h3>
-                          <p className="text-gray-400">
+                          <p className="text-muted-foreground">
                             No tasks have been created for this lead yet.
                           </p>
                         </div>
@@ -902,7 +902,7 @@ export default function LeadDetail() {
                 <CardTitle>Notes</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{(lead as any)?.notes}</p>
+                <p className="text-muted-foreground dark:text-muted-foreground whitespace-pre-wrap">{(lead as any)?.notes}</p>
               </CardContent>
             </Card>
           )}

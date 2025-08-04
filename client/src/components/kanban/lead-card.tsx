@@ -40,7 +40,7 @@ export default function LeadCard({ lead }: LeadCardProps) {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600 hover:shadow-md transition-all">
+    <div className="bg-gray-50 dark:bg-card rounded-lg p-4 border border-border dark:border-border hover:shadow-md transition-all">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center space-x-3">
           <Avatar className="w-10 h-10">
@@ -52,7 +52,7 @@ export default function LeadCard({ lead }: LeadCardProps) {
             <h4 className="font-medium text-white">
               {lead.firstName} {lead.lastName}
             </h4>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-muted-foreground">
               {lead.email}
             </p>
           </div>
@@ -63,26 +63,26 @@ export default function LeadCard({ lead }: LeadCardProps) {
       </div>
       
       <div className="space-y-2 text-sm">
-        <div className="flex items-center text-gray-400">
+        <div className="flex items-center text-muted-foreground">
           <DollarSign className="w-4 h-4 mr-2" />
           {formatBudget(lead.budget, lead.budgetMax)}
         </div>
         
         {lead.preferredLocations && lead.preferredLocations.length > 0 && (
-          <div className="flex items-center text-gray-400">
+          <div className="flex items-center text-muted-foreground">
             <MapPin className="w-4 h-4 mr-2" />
             {lead.preferredLocations.slice(0, 2).join(", ")}
             {lead.preferredLocations.length > 2 && " +more"}
           </div>
         )}
         
-        <div className="flex items-center text-gray-400">
+        <div className="flex items-center text-muted-foreground">
           <Clock className="w-4 h-4 mr-2" />
           Added {formatDistanceToNow(new Date(lead.createdAt), { addSuffix: true })}
         </div>
       </div>
       
-      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600 flex items-center justify-between">
+      <div className="mt-3 pt-3 border-t border-border dark:border-border flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Button
             variant="ghost"
@@ -101,7 +101,7 @@ export default function LeadCard({ lead }: LeadCardProps) {
             WhatsApp
           </Button>
         </div>
-        <div className="text-xs text-gray-400">
+        <div className="text-xs text-muted-foreground">
           Score: {lead.score || 0}/100
         </div>
       </div>

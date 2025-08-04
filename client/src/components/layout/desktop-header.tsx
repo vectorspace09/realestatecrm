@@ -67,7 +67,7 @@ export default function DesktopHeader() {
           className={`px-3 py-1.5 text-sm transition-all ${
             active 
               ? "bg-blue-600 text-white hover:bg-blue-700 border-blue-600" 
-              : "bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500"
+              : "bg-card text-muted-foreground dark:text-muted-foreground border-border dark:border-border hover:bg-card hover:border-border dark:hover:border-border"
           }`}
         >
           <Icon className="w-3.5 h-3.5 mr-1.5" />
@@ -78,13 +78,13 @@ export default function DesktopHeader() {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-900 border-b border-gray-700 px-6 py-3">
+    <header className="bg-white dark:bg-card border-b border-border px-6 py-3">
       <div className="flex items-start justify-between">
         {/* Brand */}
         <div className="flex items-center">
           <div>
             <h1 className="text-xl font-bold text-white">PRA Developers</h1>
-            <p className="text-sm text-gray-400">Real Estate CRM</p>
+            <p className="text-sm text-muted-foreground">Real Estate CRM</p>
           </div>
         </div>
 
@@ -113,14 +113,14 @@ export default function DesktopHeader() {
             variant="ghost"
             size="icon"
             onClick={toggleTheme}
-            className="text-gray-400"
+            className="text-muted-foreground"
           >
             {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </Button>
 
           {/* Settings */}
           <Link href="/settings">
-            <Button variant="ghost" size="icon" className="text-gray-400">
+            <Button variant="ghost" size="icon" className="text-muted-foreground">
               <Settings className="w-4 h-4" />
             </Button>
           </Link>
@@ -131,7 +131,7 @@ export default function DesktopHeader() {
               <p className="text-sm font-medium text-white">
                 {user?.firstName} {user?.lastName}
               </p>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-muted-foreground">
                 {user?.email}
               </p>
             </div>
@@ -147,7 +147,7 @@ export default function DesktopHeader() {
               variant="ghost"
               size="icon"
               onClick={handleLogout}
-              className="text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+              className="text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
             >
               <LogOut className="w-4 h-4" />
             </Button>

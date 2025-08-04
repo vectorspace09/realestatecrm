@@ -135,7 +135,7 @@ export default function NativeDeals() {
         <div className="app-content flex items-center justify-center">
           <div className="text-center">
             <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading...</p>
+            <p className="text-muted-foreground">Loading...</p>
           </div>
         </div>
       </div>
@@ -180,7 +180,7 @@ export default function NativeDeals() {
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <Filter className="w-4 h-4 text-gray-400" />
+                  <Filter className="w-4 h-4 text-muted-foreground" />
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="w-32 h-10">
                       <SelectValue />
@@ -210,8 +210,8 @@ export default function NativeDeals() {
           ) : filteredDeals.length === 0 ? (
             <NativeCard>
               <div className="text-center py-8">
-                <HandCoins className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-400 mb-4">No deals found</p>
+                <HandCoins className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground mb-4">No deals found</p>
               </div>
             </NativeCard>
           ) : (
@@ -240,14 +240,14 @@ export default function NativeDeals() {
                             <h3 className="font-semibold text-white text-base">
                               {deal.lead?.firstName} {deal.lead?.lastName}
                             </h3>
-                            <p className="text-sm text-gray-400 truncate">
+                            <p className="text-sm text-muted-foreground truncate">
                               {deal.property?.title}
                             </p>
                             <div className="flex items-center space-x-2 mt-1">
                               <Badge className={`text-xs px-2 py-1 ${
                                 statusBadge.variant === 'success' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100' :
                                 statusBadge.variant === 'warning' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100' :
-                                'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100'
+                                'bg-card text-muted-foreground dark:bg-card dark:text-muted-foreground'
                               }`}>
                                 {statusBadge.label}
                               </Badge>
@@ -267,13 +267,13 @@ export default function NativeDeals() {
                             </span>
                           </NativeProgressRing>
                           <button
-                            className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
+                            className="p-2 hover:bg-card/50 rounded-lg transition-colors"
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/deals/${deal.id}`);
                             }}
                           >
-                            <Eye className="w-4 h-4 text-gray-400" />
+                            <Eye className="w-4 h-4 text-muted-foreground" />
                           </button>
                         </div>
                       </div>
@@ -285,7 +285,7 @@ export default function NativeDeals() {
                           {formatPrice(deal.value)}
                         </span>
                         {deal.commission && (
-                          <span className="text-sm text-gray-400 ml-2">
+                          <span className="text-sm text-muted-foreground ml-2">
                             Commission: {formatPrice(deal.commission)}
                           </span>
                         )}
@@ -295,9 +295,9 @@ export default function NativeDeals() {
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         {deal.expectedCloseDate && (
                           <div className="flex items-center space-x-2">
-                            <Calendar className="w-4 h-4 text-gray-400" />
+                            <Calendar className="w-4 h-4 text-muted-foreground" />
                             <div>
-                              <p className="text-gray-400">Expected Close</p>
+                              <p className="text-muted-foreground">Expected Close</p>
                               <p className="text-white">
                                 {new Date(deal.expectedCloseDate).toLocaleDateString()}
                               </p>
@@ -306,9 +306,9 @@ export default function NativeDeals() {
                         )}
                         
                         <div className="flex items-center space-x-2">
-                          <Target className="w-4 h-4 text-gray-400" />
+                          <Target className="w-4 h-4 text-muted-foreground" />
                           <div>
-                            <p className="text-gray-400">Stage</p>
+                            <p className="text-muted-foreground">Stage</p>
                             <p className="text-white capitalize">
                               {deal.status.replace('_', ' ')}
                             </p>

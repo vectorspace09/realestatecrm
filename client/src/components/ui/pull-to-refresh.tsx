@@ -86,7 +86,7 @@ export default function PullToRefresh({
                 transform: `scale(${Math.min(pullDistance / 60, 1)}) rotate(${pullDistance * 2}deg)`
               }}
             />
-            <span className="text-xs text-gray-600 dark:text-gray-400 font-medium">
+            <span className="text-xs text-muted-foreground dark:text-muted-foreground font-medium">
               {isRefreshing ? 'Refreshing...' : pullDistance > 60 ? 'Release to refresh' : 'Pull to refresh'}
             </span>
           </div>

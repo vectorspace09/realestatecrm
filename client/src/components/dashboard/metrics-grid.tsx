@@ -17,15 +17,15 @@ export default function MetricsGrid({ metrics, isLoading }: MetricsGridProps) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[...Array(4)].map((_, i) => (
-          <Card key={i} className="bg-gray-800 border-gray-700">
+          <Card key={i} className="bg-card border-border">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-2">
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                  <div className="h-8 w-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                  <div className="h-3 w-24 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="h-4 bg-card dark:bg-card rounded animate-pulse"></div>
+                  <div className="h-8 w-16 bg-card dark:bg-card rounded animate-pulse"></div>
+                  <div className="h-3 w-24 bg-card dark:bg-card rounded animate-pulse"></div>
                 </div>
-                <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+                <div className="w-12 h-12 bg-card dark:bg-card rounded-lg animate-pulse"></div>
               </div>
             </CardContent>
           </Card>
@@ -76,11 +76,11 @@ export default function MetricsGrid({ metrics, isLoading }: MetricsGridProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {metricsData.map((metric, index) => (
-        <Card key={index} className="bg-gray-800 border-gray-700 hover:shadow-md transition-shadow">
+        <Card key={index} className="bg-card border-border hover:shadow-md transition-shadow">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <p className="text-sm font-medium text-muted-foreground dark:text-muted-foreground">
                   {metric.title}
                 </p>
                 <p className="text-3xl font-bold text-white">

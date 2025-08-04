@@ -52,7 +52,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, clas
       {getVisiblePages().map((page, index) => (
         <div key={index}>
           {page === '...' ? (
-            <span className="px-2 text-gray-500">...</span>
+            <span className="px-2 text-muted-foreground">...</span>
           ) : (
             <Button
               variant={currentPage === page ? "default" : "outline"}

@@ -19,9 +19,9 @@ export default function EnhancedCard({
   size = "md"
 }: EnhancedCardProps) {
   const variants = {
-    default: "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm",
-    elevated: "bg-white dark:bg-gray-800 shadow-lg border-0",
-    outlined: "bg-transparent border-2 border-gray-200 dark:border-gray-700 shadow-none"
+    default: "bg-white dark:bg-card border border-border dark:border-border shadow-sm",
+    elevated: "bg-white dark:bg-card shadow-lg border-0",
+    outlined: "bg-transparent border-2 border-border dark:border-border shadow-none"
   };
 
   const sizes = {

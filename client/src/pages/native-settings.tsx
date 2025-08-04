@@ -186,11 +186,11 @@ export default function NativeSettings() {
 
   if (isLoading || !isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <div className="min-h-screen bg-gray-50 dark:bg-card flex flex-col">
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <LoadingSpinner size="lg" />
-            <p className="text-gray-500 dark:text-gray-400 mt-3 text-sm">Loading settings...</p>
+            <p className="text-muted-foreground dark:text-muted-foreground mt-3 text-sm">Loading settings...</p>
           </div>
         </div>
       </div>
@@ -208,12 +208,12 @@ export default function NativeSettings() {
   // Main menu view
   if (!activeSection) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <div className="min-h-screen bg-gray-50 dark:bg-card flex flex-col">
         <NativeHeader 
           title="Settings"
           rightButton={
             <button 
-              className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 active:scale-95"
+              className="p-2 rounded-lg text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground hover:bg-card dark:hover:bg-card transition-all duration-200 active:scale-95"
               onClick={() => window.location.href = "/api/logout"}
             >
               <LogOut className="w-5 h-5" />
@@ -237,10 +237,10 @@ export default function NativeSettings() {
                 </button>
               </div>
               <div className="flex-1">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-lg font-semibold text-muted-foreground dark:text-white">
                   {(user as any)?.firstName} {(user as any)?.lastName}
                 </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{(user as any)?.email}</p>
+                <p className="text-sm text-muted-foreground dark:text-muted-foreground">{(user as any)?.email}</p>
                 <p className="text-xs text-primary-600 dark:text-primary-400 mt-1">
                   Real Estate Professional
                 </p>
@@ -265,11 +265,11 @@ export default function NativeSettings() {
                         <Icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-gray-900 dark:text-white">{section.name}</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">{section.description}</p>
+                        <h3 className="font-medium text-muted-foreground dark:text-white">{section.name}</h3>
+                        <p className="text-sm text-muted-foreground dark:text-muted-foreground">{section.description}</p>
                       </div>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-gray-400" />
+                    <ChevronRight className="w-5 h-5 text-muted-foreground" />
                   </div>
                 </NativeCard>
               );
@@ -278,7 +278,7 @@ export default function NativeSettings() {
 
           {/* Quick Actions */}
           <div className="mt-8 space-y-3">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Quick Actions</h3>
+            <h3 className="text-lg font-semibold text-muted-foreground dark:text-white">Quick Actions</h3>
             
             <NativeCard withPressEffect>
               <div className="flex items-center justify-between">
@@ -287,11 +287,11 @@ export default function NativeSettings() {
                     <Download className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white">Export Data</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Download your data</p>
+                    <h3 className="font-medium text-muted-foreground dark:text-white">Export Data</h3>
+                    <p className="text-sm text-muted-foreground dark:text-muted-foreground">Download your data</p>
                   </div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-400" />
+                <ChevronRight className="w-5 h-5 text-muted-foreground" />
               </div>
             </NativeCard>
 
@@ -302,11 +302,11 @@ export default function NativeSettings() {
                     <Upload className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white">Import Data</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Upload your data</p>
+                    <h3 className="font-medium text-muted-foreground dark:text-white">Import Data</h3>
+                    <p className="text-sm text-muted-foreground dark:text-muted-foreground">Upload your data</p>
                   </div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-400" />
+                <ChevronRight className="w-5 h-5 text-muted-foreground" />
               </div>
             </NativeCard>
 
@@ -317,11 +317,11 @@ export default function NativeSettings() {
                     <Key className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white">API Keys</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Manage integrations</p>
+                    <h3 className="font-medium text-muted-foreground dark:text-white">API Keys</h3>
+                    <p className="text-sm text-muted-foreground dark:text-muted-foreground">Manage integrations</p>
                   </div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-400" />
+                <ChevronRight className="w-5 h-5 text-muted-foreground" />
               </div>
             </NativeCard>
           </div>
@@ -335,7 +335,7 @@ export default function NativeSettings() {
   // Profile section
   if (activeSection === "profile") {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <div className="min-h-screen bg-gray-50 dark:bg-card flex flex-col">
         <NativeHeader 
           title="Profile Settings"
           showBackButton
@@ -366,14 +366,14 @@ export default function NativeSettings() {
                   <Camera className="w-4 h-4" />
                 </button>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-gray-900 dark:text-white">Profile Photo</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">JPG, PNG or GIF. Max size 2MB.</p>
+              <h3 className="mt-4 text-lg font-semibold text-muted-foreground dark:text-white">Profile Photo</h3>
+              <p className="text-sm text-muted-foreground dark:text-muted-foreground">JPG, PNG or GIF. Max size 2MB.</p>
             </div>
           </NativeCard>
 
           {/* Personal Information */}
           <NativeCard>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Personal Information</h3>
+            <h3 className="text-lg font-semibold text-muted-foreground dark:text-white mb-4">Personal Information</h3>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -435,7 +435,7 @@ export default function NativeSettings() {
 
           {/* Professional Information */}
           <NativeCard>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Professional Information</h3>
+            <h3 className="text-lg font-semibold text-muted-foreground dark:text-white mb-4">Professional Information</h3>
             <div className="space-y-4">
               <div>
                 <Label htmlFor="license">Real Estate License #</Label>
@@ -502,7 +502,7 @@ export default function NativeSettings() {
 
   if (activeSection === "notifications") {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      <div className="min-h-screen bg-gray-50 dark:bg-card flex flex-col">
         <NativeHeader 
           title="Notifications"
           showBackButton
@@ -520,12 +520,12 @@ export default function NativeSettings() {
         
         <div className="flex-1 p-4 pb-20 space-y-4">
           <NativeCard>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">App Notifications</h3>
+            <h3 className="text-lg font-semibold text-muted-foreground dark:text-white mb-4">App Notifications</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">New Lead Notifications</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Get notified when new leads are added</p>
+                  <h4 className="font-medium text-muted-foreground dark:text-white">New Lead Notifications</h4>
+                  <p className="text-sm text-muted-foreground dark:text-muted-foreground">Get notified when new leads are added</p>
                 </div>
                 <Switch 
                   checked={notificationSettings.newLeads}
@@ -537,8 +537,8 @@ export default function NativeSettings() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">Task Reminders</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Receive reminders for upcoming tasks</p>
+                  <h4 className="font-medium text-muted-foreground dark:text-white">Task Reminders</h4>
+                  <p className="text-sm text-muted-foreground dark:text-muted-foreground">Receive reminders for upcoming tasks</p>
                 </div>
                 <Switch 
                   checked={notificationSettings.taskReminders}
@@ -550,8 +550,8 @@ export default function NativeSettings() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">Deal Updates</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Updates on deal status changes</p>
+                  <h4 className="font-medium text-muted-foreground dark:text-white">Deal Updates</h4>
+                  <p className="text-sm text-muted-foreground dark:text-muted-foreground">Updates on deal status changes</p>
                 </div>
                 <Switch 
                   checked={notificationSettings.dealUpdates}
@@ -562,12 +562,12 @@ export default function NativeSettings() {
           </NativeCard>
 
           <NativeCard>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Communication Preferences</h3>
+            <h3 className="text-lg font-semibold text-muted-foreground dark:text-white mb-4">Communication Preferences</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">Email Notifications</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Receive notifications via email</p>
+                  <h4 className="font-medium text-muted-foreground dark:text-white">Email Notifications</h4>
+                  <p className="text-sm text-muted-foreground dark:text-muted-foreground">Receive notifications via email</p>
                 </div>
                 <Switch 
                   checked={notificationSettings.emailNotifications}
@@ -579,8 +579,8 @@ export default function NativeSettings() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white">SMS Notifications</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Receive notifications via SMS</p>
+                  <h4 className="font-medium text-muted-foreground dark:text-white">SMS Notifications</h4>
+                  <p className="text-sm text-muted-foreground dark:text-muted-foreground">Receive notifications via SMS</p>
                 </div>
                 <Switch 
                   checked={notificationSettings.smsNotifications}
@@ -598,14 +598,14 @@ export default function NativeSettings() {
 
   // Default fallback
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-card flex flex-col">
       <NativeHeader 
         title="Settings"
         showBackButton
         onBackClick={() => setActiveSection(null)}
       />
       <div className="flex-1 flex items-center justify-center p-4">
-        <p className="text-gray-500 dark:text-gray-400">Section under development</p>
+        <p className="text-muted-foreground dark:text-muted-foreground">Section under development</p>
       </div>
       <NativeBottomTabs />
     </div>

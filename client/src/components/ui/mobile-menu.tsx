@@ -94,16 +94,16 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md h-full w-full max-w-full p-0 bg-gray-900 border-gray-700">
+      <DialogContent className="sm:max-w-md h-full w-full max-w-full p-0 bg-card border-border">
         <div className="flex flex-col h-full">
-          <DialogHeader className="p-6 pb-4 border-b border-gray-700">
+          <DialogHeader className="p-6 pb-4 border-b border-border">
             <div className="flex items-center justify-between">
               <DialogTitle className="text-xl font-bold text-white">Menu</DialogTitle>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
-                className="text-gray-400 hover:text-white h-8 w-8 p-0"
+                className="text-muted-foreground hover:text-white h-8 w-8 p-0"
               >
                 <X className="w-5 h-5" />
               </Button>
@@ -112,7 +112,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {/* User Profile */}
-            <div className="flex items-center space-x-4 p-4 bg-gray-800 rounded-lg">
+            <div className="flex items-center space-x-4 p-4 bg-card rounded-lg">
               <Avatar className="w-12 h-12">
                 <AvatarImage src={user?.profileImageUrl} />
                 <AvatarFallback className="bg-gradient-to-br from-primary-500 to-purple-600 text-white">
@@ -123,7 +123,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 <p className="font-medium text-white truncate">
                   {user?.firstName} {user?.lastName}
                 </p>
-                <p className="text-sm text-gray-400 truncate">{user?.email}</p>
+                <p className="text-sm text-muted-foreground truncate">{user?.email}</p>
                 <div className="flex items-center mt-2">
                   <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100 text-xs">
                     <Zap className="w-3 h-3 mr-1" />
@@ -135,11 +135,11 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
             {/* Search */}
             <div className="space-y-3">
-              <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
                 Quick Search
               </h3>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   placeholder="Search leads, properties, deals..."
                   value={searchQuery}
@@ -149,7 +149,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       handleSearch();
                     }
                   }}
-                  className="pl-10 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                  className="pl-10 bg-card border-border text-white placeholder-gray-400"
                 />
               </div>
               {searchQuery && (
@@ -165,7 +165,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
             {/* Quick Actions */}
             <div className="space-y-3">
-              <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
                 Quick Actions
               </h3>
               <div className="grid grid-cols-2 gap-2">
@@ -197,7 +197,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                           console.log('Open help');
                         }
                       }}
-                      className="flex items-center space-x-2 p-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors text-sm"
+                      className="flex items-center space-x-2 p-3 text-muted-foreground hover:bg-card hover:text-white rounded-lg transition-colors text-sm"
                     >
                       <Icon className="w-4 h-4 flex-shrink-0" />
                       <span className="truncate">{action.label}</span>
@@ -209,7 +209,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
             {/* Primary Navigation */}
             <div>
-              <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
+              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
                 Main
               </h3>
               <div className="space-y-1">
@@ -222,7 +222,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       <div className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
                         active 
                           ? "bg-primary-600 text-white" 
-                          : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                          : "text-muted-foreground hover:bg-card hover:text-white"
                       }`}>
                         <Icon className="w-5 h-5 flex-shrink-0" />
                         <span className="font-medium">{item.label}</span>
@@ -235,7 +235,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
             {/* Secondary Navigation */}
             <div>
-              <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
+              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
                 Tools & Settings
               </h3>
               <div className="space-y-1">
@@ -248,7 +248,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       <div className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
                         active 
                           ? "bg-primary-600 text-white" 
-                          : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                          : "text-muted-foreground hover:bg-card hover:text-white"
                       }`}>
                         <Icon className="w-5 h-5 flex-shrink-0" />
                         <span className="font-medium">{item.label}</span>
@@ -261,14 +261,14 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
             {/* Theme Toggle & More Settings */}
             <div>
-              <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
+              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
                 Preferences
               </h3>
               <div className="space-y-1">
                 <Button
                   variant="ghost"
                   onClick={toggleTheme}
-                  className="w-full justify-start text-gray-300 hover:bg-gray-800 hover:text-white"
+                  className="w-full justify-start text-muted-foreground hover:bg-card hover:text-white"
                 >
                   {theme === "dark" ? (
                     <>
@@ -287,7 +287,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     // Handle notifications
                     console.log('Open notifications panel');
                   }}
-                  className="w-full flex items-center justify-start p-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors"
+                  className="w-full flex items-center justify-start p-3 text-muted-foreground hover:bg-card hover:text-white rounded-lg transition-colors"
                 >
                   <Bell className="w-5 h-5 mr-3" />
                   <span>Notifications</span>
@@ -300,7 +300,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     // Handle help
                     console.log('Open help center');
                   }}
-                  className="w-full flex items-center justify-start p-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-colors"
+                  className="w-full flex items-center justify-start p-3 text-muted-foreground hover:bg-card hover:text-white rounded-lg transition-colors"
                 >
                   <HelpCircle className="w-5 h-5 mr-3" />
                   <span>Help & Support</span>
@@ -310,7 +310,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           </div>
 
           {/* Logout Button */}
-          <div className="p-6 border-t border-gray-700">
+          <div className="p-6 border-t border-border">
             <Button
               variant="ghost"
               onClick={handleLogout}
@@ -333,7 +333,7 @@ export function MobileMenuTrigger() {
     <>
       <button
         onClick={() => setIsMenuOpen(true)}
-        className="flex flex-col items-center justify-center py-1 px-1 rounded-lg transition-all duration-200 active:scale-95 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+        className="flex flex-col items-center justify-center py-1 px-1 rounded-lg transition-all duration-200 active:scale-95 text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground"
       >
         <Menu className="w-6 h-6" />
       </button>

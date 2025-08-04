@@ -189,10 +189,10 @@ export default function Deals() {
   }, [error, toast]);
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-card flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-400">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     </div>;
   }
@@ -206,14 +206,14 @@ export default function Deals() {
   const averageDealValue = deals.length > 0 ? totalDealValue / deals.length : 0;
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-card flex flex-col">
       <ResponsiveHeader />
       
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-2xl font-bold text-white">Deals & Transactions</h1>
-              <p className="text-gray-400">Track your active deals and commission pipeline</p>
+              <p className="text-muted-foreground">Track your active deals and commission pipeline</p>
             </div>
             <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
               <DialogTrigger asChild>
@@ -383,11 +383,11 @@ export default function Deals() {
 
           {/* Deal Overview Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Active Deals</p>
+                    <p className="text-sm font-medium text-muted-foreground">Active Deals</p>
                     <p className="text-3xl font-bold text-white">{deals.length}</p>
                   </div>
                   <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
@@ -397,11 +397,11 @@ export default function Deals() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Total Pipeline Value</p>
+                    <p className="text-sm font-medium text-muted-foreground">Total Pipeline Value</p>
                     <p className="text-3xl font-bold text-white">
                       ${totalDealValue.toLocaleString()}
                     </p>
@@ -413,11 +413,11 @@ export default function Deals() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Average Deal Size</p>
+                    <p className="text-sm font-medium text-muted-foreground">Average Deal Size</p>
                     <p className="text-3xl font-bold text-white">
                       ${averageDealValue.toLocaleString()}
                     </p>
@@ -429,11 +429,11 @@ export default function Deals() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Est. Commission</p>
+                    <p className="text-sm font-medium text-muted-foreground">Est. Commission</p>
                     <p className="text-3xl font-bold text-white">
                       ${Math.round(totalDealValue * 0.03).toLocaleString()}
                     </p>
@@ -449,11 +449,11 @@ export default function Deals() {
           {/* Deal Pipeline by Stage */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             {DEAL_STAGES.map((stage) => (
-              <Card key={stage.id} className="bg-gray-800 border-gray-700">
+              <Card key={stage.id} className="bg-card border-border">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg text-white">{stage.label}</CardTitle>
-                    <Badge variant="secondary" className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                    <Badge variant="secondary" className="bg-card dark:bg-card text-muted-foreground dark:text-muted-foreground">
                       {activeDealsByStage[stage.id]?.length || 0}
                     </Badge>
                   </div>
@@ -462,19 +462,19 @@ export default function Deals() {
                 <CardContent className="space-y-4">
                   {activeDealsByStage[stage.id]?.length > 0 ? (
                     activeDealsByStage[stage.id].map((deal: Deal) => (
-                      <div key={deal.id} className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:shadow-md transition-shadow">
+                      <div key={deal.id} className="p-4 border border-border dark:border-border rounded-lg hover:shadow-md transition-shadow">
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex-1 min-w-0">
                             <p className="font-medium text-white truncate">
                               Deal #{deal.id.slice(-6)}
                             </p>
-                            <p className="text-sm text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                               ${Number(deal.dealValue).toLocaleString()}
                             </p>
                           </div>
                         </div>
                         
-                        <div className="space-y-2 text-sm text-gray-400">
+                        <div className="space-y-2 text-sm text-muted-foreground">
                           <div className="flex items-center">
                             <User className="w-4 h-4 mr-2" />
                             Lead ID: {deal.leadId.slice(-6)}
@@ -494,7 +494,7 @@ export default function Deals() {
                         <Separator className="my-3" />
                         
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs text-muted-foreground">
                             Created: {new Date(deal.createdAt).toLocaleDateString()}
                           </span>
                           <Button size="sm" variant="outline" className="text-xs">
@@ -505,10 +505,10 @@ export default function Deals() {
                     ))
                   ) : (
                     <div className="text-center py-8">
-                      <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
-                        <FileText className="w-6 h-6 text-gray-400" />
+                      <div className="w-12 h-12 bg-card dark:bg-card rounded-lg flex items-center justify-center mx-auto mb-3">
+                        <FileText className="w-6 h-6 text-muted-foreground" />
                       </div>
-                      <p className="text-sm text-gray-400">No deals in this stage</p>
+                      <p className="text-sm text-muted-foreground">No deals in this stage</p>
                     </div>
                   )}
                 </CardContent>
@@ -517,7 +517,7 @@ export default function Deals() {
           </div>
 
           {/* Recent Deals Table */}
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-lg text-white">Recent Deals</CardTitle>
               <CardDescription>Latest deal activity and updates</CardDescription>
@@ -527,7 +527,7 @@ export default function Deals() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-gray-700">
+                      <tr className="border-b border-border">
                         <th className="text-left py-3 px-4 font-medium text-white">Deal ID</th>
                         <th className="text-left py-3 px-4 font-medium text-white">Value</th>
                         <th className="text-left py-3 px-4 font-medium text-white">Status</th>
@@ -539,7 +539,7 @@ export default function Deals() {
                       {deals.slice(0, 10).map((deal: Deal) => {
                         const stageInfo = getDealStageInfo(deal.status);
                         return (
-                          <tr key={deal.id} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-700">
+                          <tr key={deal.id} className="border-b border-border dark:border-border hover:bg-card">
                             <td className="py-3 px-4 text-white">#{deal.id.slice(-8)}</td>
                             <td className="py-3 px-4 text-white">${Number(deal.dealValue).toLocaleString()}</td>
                             <td className="py-3 px-4">
@@ -547,13 +547,13 @@ export default function Deals() {
                                 {deal.status}
                               </Badge>
                             </td>
-                            <td className="py-3 px-4 text-gray-400">
+                            <td className="py-3 px-4 text-muted-foreground">
                               {deal.expectedCloseDate ? new Date(deal.expectedCloseDate).toLocaleDateString() : "TBD"}
                             </td>
                             <td className="py-3 px-4">
                               <div className="flex items-center space-x-2">
                                 <Progress value={stageInfo.progress} className="h-2 flex-1" />
-                                <span className="text-sm text-gray-400">{stageInfo.progress}%</span>
+                                <span className="text-sm text-muted-foreground">{stageInfo.progress}%</span>
                               </div>
                             </td>
                           </tr>
@@ -564,11 +564,11 @@ export default function Deals() {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <TrendingUp className="w-8 h-8 text-gray-400" />
+                  <div className="w-16 h-16 bg-card dark:bg-card rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <TrendingUp className="w-8 h-8 text-muted-foreground" />
                   </div>
                   <h3 className="text-lg font-medium text-white mb-2">No deals yet</h3>
-                  <p className="text-gray-400">Start by creating your first deal from a qualified lead</p>
+                  <p className="text-muted-foreground">Start by creating your first deal from a qualified lead</p>
                 </div>
               )}
             </CardContent>

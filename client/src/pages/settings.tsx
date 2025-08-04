@@ -40,10 +40,10 @@ export default function Settings() {
   };
 
   if (isLoading || !isAuthenticated) {
-    return <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    return <div className="min-h-screen bg-card flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-400">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     </div>;
   }
@@ -57,7 +57,7 @@ export default function Settings() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-card flex flex-col">
       <ResponsiveHeader />
       
       <main className="flex-1 overflow-y-auto mobile-padding pb-20 lg:pb-6">
@@ -66,7 +66,7 @@ export default function Settings() {
             <div className="flex flex-col space-y-4 mb-6 sm:mb-8">
               <div className="text-center sm:text-left">
                 <h1 className="mobile-title text-white">Settings</h1>
-                <p className="mobile-subtitle text-gray-400">Manage your account settings and preferences</p>
+                <p className="mobile-subtitle text-muted-foreground">Manage your account settings and preferences</p>
               </div>
               <Button className="mobile-button bg-primary-600 hover:bg-primary-700 w-full sm:w-auto sm:self-start">
                 <Save className="w-4 h-4 mr-2" />
@@ -77,7 +77,7 @@ export default function Settings() {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8">
               {/* Sidebar Navigation - Mobile Optimized */}
               <div className="lg:col-span-1">
-                <Card className="bg-gray-800 border-gray-700">
+                <Card className="bg-card border-border">
                   <CardContent className="p-0">
                     {/* Mobile: Horizontal scroll tabs */}
                     <nav className="lg:space-y-1 flex lg:flex-col overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
@@ -90,7 +90,7 @@ export default function Settings() {
                             className={`w-full flex-shrink-0 lg:flex-shrink flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors min-h-[48px] ${
                               activeTab === tab.id
                                 ? "bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 lg:border-r-2 border-primary-600"
-                                : "text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-700"
+                                : "text-muted-foreground hover:text-muted-foreground dark:hover:text-white hover:bg-card"
                             }`}
                           >
                             <Icon className="w-4 h-4 mr-3 flex-shrink-0" />
@@ -107,7 +107,7 @@ export default function Settings() {
               <div className="lg:col-span-3">
                 {activeTab === "profile" && (
                   <div className="space-y-6">
-                    <Card className="bg-gray-800 border-gray-700">
+                    <Card className="bg-card border-border">
                       <CardHeader>
                         <CardTitle className="text-lg text-white">Profile Information</CardTitle>
                         <CardDescription>Update your personal information and profile details</CardDescription>
@@ -122,7 +122,7 @@ export default function Settings() {
                           </Avatar>
                           <div>
                             <Button variant="outline">Change Photo</Button>
-                            <p className="text-xs text-gray-500 mt-1">JPG, PNG or GIF. Max size 2MB.</p>
+                            <p className="text-xs text-muted-foreground mt-1">JPG, PNG or GIF. Max size 2MB.</p>
                           </div>
                         </div>
 
@@ -158,7 +158,7 @@ export default function Settings() {
                       </CardContent>
                     </Card>
 
-                    <Card className="bg-gray-800 border-gray-700">
+                    <Card className="bg-card border-border">
                       <CardHeader>
                         <CardTitle className="text-lg text-white">Professional Information</CardTitle>
                         <CardDescription>Your real estate professional details</CardDescription>
@@ -200,7 +200,7 @@ export default function Settings() {
                 )}
 
                 {activeTab === "notifications" && (
-                  <Card className="bg-gray-800 border-gray-700">
+                  <Card className="bg-card border-border">
                     <CardHeader>
                       <CardTitle className="text-lg text-white">Notification Preferences</CardTitle>
                       <CardDescription>Choose how you want to be notified about important updates</CardDescription>
@@ -210,7 +210,7 @@ export default function Settings() {
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="font-medium text-white">New Lead Notifications</h4>
-                            <p className="text-sm text-gray-400">Get notified when new leads are added</p>
+                            <p className="text-sm text-muted-foreground">Get notified when new leads are added</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -220,7 +220,7 @@ export default function Settings() {
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="font-medium text-white">Task Reminders</h4>
-                            <p className="text-sm text-gray-400">Receive reminders for upcoming tasks</p>
+                            <p className="text-sm text-muted-foreground">Receive reminders for upcoming tasks</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -230,7 +230,7 @@ export default function Settings() {
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="font-medium text-white">Deal Updates</h4>
-                            <p className="text-sm text-gray-400">Updates on deal status changes</p>
+                            <p className="text-sm text-muted-foreground">Updates on deal status changes</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -240,7 +240,7 @@ export default function Settings() {
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="font-medium text-white">AI Insights</h4>
-                            <p className="text-sm text-gray-400">AI-generated insights and recommendations</p>
+                            <p className="text-sm text-muted-foreground">AI-generated insights and recommendations</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -250,7 +250,7 @@ export default function Settings() {
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="font-medium text-white">Weekly Reports</h4>
-                            <p className="text-sm text-gray-400">Weekly performance and activity summary</p>
+                            <p className="text-sm text-muted-foreground">Weekly performance and activity summary</p>
                           </div>
                           <Switch />
                         </div>
@@ -261,7 +261,7 @@ export default function Settings() {
 
                 {activeTab === "security" && (
                   <div className="space-y-6">
-                    <Card className="bg-gray-800 border-gray-700">
+                    <Card className="bg-card border-border">
                       <CardHeader>
                         <CardTitle className="text-lg text-white">Security Settings</CardTitle>
                         <CardDescription>Manage your account security and privacy</CardDescription>
@@ -273,7 +273,7 @@ export default function Settings() {
                             <div className="flex items-center justify-between">
                               <div>
                                 <p className="font-medium text-white">Two-Factor Authentication</p>
-                                <p className="text-sm text-gray-400">Add an extra layer of security</p>
+                                <p className="text-sm text-muted-foreground">Add an extra layer of security</p>
                               </div>
                               <Button variant="outline">Enable</Button>
                             </div>
@@ -285,10 +285,10 @@ export default function Settings() {
                         <div>
                           <h4 className="font-medium text-white mb-4">Active Sessions</h4>
                           <div className="space-y-3">
-                            <div className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-600 rounded-lg">
+                            <div className="flex items-center justify-between p-3 border border-border dark:border-border rounded-lg">
                               <div>
                                 <p className="font-medium text-white">Current Session</p>
-                                <p className="text-sm text-gray-400">Chrome on Windows • New York, NY</p>
+                                <p className="text-sm text-muted-foreground">Chrome on Windows • New York, NY</p>
                               </div>
                               <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
                                 Active
@@ -302,7 +302,7 @@ export default function Settings() {
                 )}
 
                 {activeTab === "appearance" && (
-                  <Card className="bg-gray-800 border-gray-700">
+                  <Card className="bg-card border-border">
                     <CardHeader>
                       <CardTitle className="text-lg text-white">Appearance Settings</CardTitle>
                       <CardDescription>Customize how the application looks and feels</CardDescription>
@@ -310,17 +310,17 @@ export default function Settings() {
                     <CardContent className="space-y-6">
                       <div>
                         <Label className="text-base font-medium text-white">Theme</Label>
-                        <p className="text-sm text-gray-400 mb-4">Choose your preferred color scheme</p>
+                        <p className="text-sm text-muted-foreground mb-4">Choose your preferred color scheme</p>
                         <div className="grid grid-cols-3 gap-4">
                           <div className="p-4 border-2 border-primary-600 rounded-lg cursor-pointer">
                             <div className="w-full h-20 bg-white rounded border mb-2"></div>
                             <p className="text-sm font-medium text-center">Light</p>
                           </div>
-                          <div className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer">
-                            <div className="w-full h-20 bg-gray-900 rounded mb-2"></div>
+                          <div className="p-4 border border-border dark:border-border rounded-lg cursor-pointer">
+                            <div className="w-full h-20 bg-card rounded mb-2"></div>
                             <p className="text-sm font-medium text-center">Dark</p>
                           </div>
-                          <div className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer">
+                          <div className="p-4 border border-border dark:border-border rounded-lg cursor-pointer">
                             <div className="w-full h-20 bg-gradient-to-br from-white to-gray-900 rounded mb-2"></div>
                             <p className="text-sm font-medium text-center">System</p>
                           </div>
@@ -331,7 +331,7 @@ export default function Settings() {
 
                       <div>
                         <Label className="text-base font-medium text-white">Display Density</Label>
-                        <p className="text-sm text-gray-400 mb-4">Choose how compact you want the interface</p>
+                        <p className="text-sm text-muted-foreground mb-4">Choose how compact you want the interface</p>
                         <Select defaultValue="comfortable">
                           <SelectTrigger className="w-full">
                             <SelectValue />
@@ -349,7 +349,7 @@ export default function Settings() {
 
                 {activeTab === "preferences" && (
                   <div className="space-y-6">
-                    <Card className="bg-gray-800 border-gray-700">
+                    <Card className="bg-card border-border">
                       <CardHeader>
                         <CardTitle className="text-lg text-white">General Preferences</CardTitle>
                         <CardDescription>Configure your general application preferences</CardDescription>
@@ -417,7 +417,7 @@ export default function Settings() {
                       </CardContent>
                     </Card>
 
-                    <Card className="bg-gray-800 border-gray-700">
+                    <Card className="bg-card border-border">
                       <CardHeader>
                         <CardTitle className="text-lg text-white">Data & Privacy</CardTitle>
                         <CardDescription>Manage your data and privacy settings</CardDescription>
@@ -426,7 +426,7 @@ export default function Settings() {
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="font-medium text-white">Analytics & Performance</h4>
-                            <p className="text-sm text-gray-400">Help improve the app by sharing usage data</p>
+                            <p className="text-sm text-muted-foreground">Help improve the app by sharing usage data</p>
                           </div>
                           <Switch defaultChecked />
                         </div>
@@ -436,7 +436,7 @@ export default function Settings() {
                         <div className="flex items-center justify-between">
                           <div>
                             <h4 className="font-medium text-white">Marketing Communications</h4>
-                            <p className="text-sm text-gray-400">Receive updates about new features and tips</p>
+                            <p className="text-sm text-muted-foreground">Receive updates about new features and tips</p>
                           </div>
                           <Switch />
                         </div>
