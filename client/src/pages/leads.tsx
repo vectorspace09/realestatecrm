@@ -249,6 +249,14 @@ export default function Leads() {
                 </div>
                 
                 <div className="flex items-center space-x-4">
+                  {/* Add Lead Button */}
+                  <Button
+                    onClick={() => setShowAddForm(true)}
+                    className="bg-primary-600 hover:bg-primary-700 text-white"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Lead
+                  </Button>
                   <div className="flex items-center space-x-2">
                     <Filter className="w-4 h-4 text-muted-foreground" />
                     <Select value={statusFilter} onValueChange={setStatusFilter}>
