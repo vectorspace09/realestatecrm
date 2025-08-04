@@ -853,16 +853,6 @@ export default function LeadDetail() {
                               </div>
                             </div>
                           ))}
-                          <div className="pt-4 border-t border-border">
-                            <Button
-                              onClick={() => setIsActionDialogOpen(true)}
-                              variant="outline"
-                              className="w-full"
-                            >
-                              <Plus className="w-4 h-4 mr-2" />
-                              Add Another Note
-                            </Button>
-                          </div>
                         </div>
                       ) : (
                         <div className="text-center py-8">
