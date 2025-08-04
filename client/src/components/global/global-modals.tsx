@@ -9,7 +9,7 @@ import TaskForm from '@/components/forms/task-form';
 
 interface GlobalModalsProps {
   isOpen: boolean;
-  type: 'lead' | 'property' | 'task' | null;
+  type: 'lead' | 'property' | 'task' | 'deal' | null;
   onClose: () => void;
 }
 
@@ -25,7 +25,8 @@ export function GlobalModals({ isOpen, type, onClose }: GlobalModalsProps) {
   const titles = {
     lead: 'Add New Lead',
     property: 'Add New Property',
-    task: 'Add New Task'
+    task: 'Add New Task',
+    deal: 'Add New Deal'
   };
 
   const renderForm = () => {
@@ -36,6 +37,18 @@ export function GlobalModals({ isOpen, type, onClose }: GlobalModalsProps) {
         return <PropertyForm onSuccess={onClose} />;
       case 'task':
         return <TaskForm onSuccess={onClose} />;
+      case 'deal':
+        // Redirect to deals page with create parameter to automatically open dialog
+        setTimeout(() => {
+          window.location.href = '/deals?action=create';
+          onClose();
+        }, 100);
+        return (
+          <div className="p-4 text-center">
+            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Opening deal creation...</p>
+          </div>
+        );
       default:
         return null;
     }
@@ -65,13 +78,13 @@ export function GlobalModals({ isOpen, type, onClose }: GlobalModalsProps) {
 export function useGlobalModals() {
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
-    type: 'lead' | 'property' | 'task' | null;
+    type: 'lead' | 'property' | 'task' | 'deal' | null;
   }>({
     isOpen: false,
     type: null
   });
 
-  const openModal = (type: 'lead' | 'property' | 'task') => {
+  const openModal = (type: 'lead' | 'property' | 'task' | 'deal') => {
     setModalState({ isOpen: true, type });
   };
 
@@ -131,6 +144,18 @@ export function GlobalFAB() {
                   setShowMenu(false);
                 }}
                 className="bg-purple-600 hover:bg-purple-700 text-white shadow-lg rounded-full w-12 h-12 p-0"
+              >
+                <Plus className="w-5 h-5" />
+              </Button>
+            </div>
+            <div className="flex items-center space-x-3">
+              <span className="text-sm text-white bg-amber-600 px-3 py-1 rounded-full shadow-lg">Add Deal</span>
+              <Button
+                onClick={() => {
+                  openModal('deal');
+                  setShowMenu(false);
+                }}
+                className="bg-amber-600 hover:bg-amber-700 text-white shadow-lg rounded-full w-12 h-12 p-0"
               >
                 <Plus className="w-5 h-5" />
               </Button>

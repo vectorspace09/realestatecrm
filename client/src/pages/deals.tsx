@@ -46,6 +46,21 @@ export default function Deals() {
   const queryClient = useQueryClient();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
+  // Listen for FAB trigger to open deal dialog
+  useEffect(() => {
+    const handleOpenDialog = () => setIsCreateDialogOpen(true);
+    window.addEventListener('openDealDialog', handleOpenDialog);
+    return () => window.removeEventListener('openDealDialog', handleOpenDialog);
+  }, []);
+
+  // Check if we should open the dialog based on URL parameters
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('action') === 'create' || window.location.pathname === '/deals/new') {
+      setIsCreateDialogOpen(true);
+    }
+  }, []);
+
   const { data: deals = [], isLoading: dealsLoading, error } = useQuery({
     queryKey: ["/api/deals"],
     staleTime: 2 * 60 * 1000, // 2 minutes
@@ -219,12 +234,6 @@ export default function Deals() {
               <p className="text-muted-foreground">Track your active deals and commission pipeline</p>
             </div>
             <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="bg-primary-600 hover:bg-primary-700">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Deal
-                </Button>
-              </DialogTrigger>
               <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
                   <DialogTitle>Create New Deal</DialogTitle>

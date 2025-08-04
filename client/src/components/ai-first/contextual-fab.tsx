@@ -99,7 +99,11 @@ export default function ContextualFAB({ className = "" }: ContextualFABProps) {
           id: 'new-deal',
           label: 'New Deal',
           icon: DollarSign,
-          action: () => navigate('/deals/new'),
+          action: () => {
+            // Trigger the deal creation dialog
+            const event = new CustomEvent('openDealDialog');
+            window.dispatchEvent(event);
+          },
           primary: true
         },
         {
