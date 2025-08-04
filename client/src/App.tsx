@@ -23,6 +23,7 @@ const Deals = lazy(() => import("@/pages/deals"));
 const NativeDeals = lazy(() => import("@/pages/native-deals"));
 const Tasks = lazy(() => import("@/pages/tasks"));
 const AI = lazy(() => import("@/pages/ai"));
+const AIRedesigned = lazy(() => import("@/pages/ai-redesigned"));
 const WorkflowBuilder = lazy(() => import("@/pages/workflows"));
 const Analytics = lazy(() => import("@/pages/analytics"));
 const Communications = lazy(() => import("@/pages/communications"));
@@ -64,6 +65,7 @@ function Router() {
           <Route path="/tasks" component={Tasks} />
           <Route path="/tasks/new" component={Tasks} />
           <Route path="/ai" component={AI} />
+        <Route path="/ai-redesigned" component={AIRedesigned} />
           <Route path="/workflows" component={WorkflowBuilder} />
           <Route path="/analytics" component={Analytics} />
           <Route path="/communications" component={Communications} />
