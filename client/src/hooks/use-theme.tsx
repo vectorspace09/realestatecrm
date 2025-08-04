@@ -5,11 +5,11 @@ type ThemeProviderProps = {
 };
 
 type ThemeProviderState = {
-  theme: "dark";
+  theme: "light";
 };
 
 const initialState: ThemeProviderState = {
-  theme: "dark",
+  theme: "light",
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
@@ -20,12 +20,12 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove("light", "system");
-    root.classList.add("dark");
+    root.classList.remove("dark", "system");
+    root.classList.add("light");
   }, []);
 
   const value = {
-    theme: "dark" as const,
+    theme: "light" as const,
   };
 
   return (
