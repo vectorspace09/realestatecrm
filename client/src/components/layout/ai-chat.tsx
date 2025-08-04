@@ -54,7 +54,7 @@ export default function AIChat() {
         method: "POST",
         body: { message: userMessage, context },
       });
-      return response.json();
+      return response;
     },
     onSuccess: (data: any) => {
       const aiResponse = {
