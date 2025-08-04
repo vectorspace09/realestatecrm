@@ -239,8 +239,8 @@ export default function Deals() {
       <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-6 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-white">Deals & Transactions</h1>
-              <p className="text-muted-foreground">Track your active deals and commission pipeline</p>
+              <h1 className="text-2xl font-bold text-white">Deal Pipeline</h1>
+              <p className="text-muted-foreground">Drag deals between stages to update their status</p>
             </div>
             <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
               <DialogContent className="sm:max-w-[600px]">
@@ -412,71 +412,6 @@ export default function Deals() {
             </Dialog>
           </div>
 
-          {/* Deal Overview Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <Card className="bg-card border-border">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Active Deals</p>
-                    <p className="text-3xl font-bold text-white">{deals.length}</p>
-                  </div>
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                    <TrendingUp className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card border-border">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Total Pipeline Value</p>
-                    <p className="text-3xl font-bold text-white">
-                      ${totalDealValue.toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center">
-                    <DollarSign className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card border-border">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Average Deal Size</p>
-                    <p className="text-3xl font-bold text-white">
-                      ${averageDealValue.toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                    <FileText className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card border-border">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Est. Commission</p>
-                    <p className="text-3xl font-bold text-white">
-                      ${Math.round(totalDealValue * 0.03).toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center">
-                    <Calendar className="w-6 h-6 text-amber-600 dark:text-amber-400" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
           {/* Deal Pipeline by Stage - Drag & Drop Kanban */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             {DEAL_STAGES.map((stage) => {
@@ -566,6 +501,71 @@ export default function Deals() {
                 </Card>
               );
             })}
+          </div>
+
+          {/* Deal Overview Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <Card className="bg-card border-border">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Active Deals</p>
+                    <p className="text-3xl font-bold text-white">{deals.length}</p>
+                  </div>
+                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                    <TrendingUp className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card border-border">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Total Pipeline Value</p>
+                    <p className="text-3xl font-bold text-white">
+                      ${totalDealValue.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center">
+                    <DollarSign className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card border-border">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Average Deal Size</p>
+                    <p className="text-3xl font-bold text-white">
+                      ${averageDealValue.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                    <FileText className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card border-border">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Est. Commission</p>
+                    <p className="text-3xl font-bold text-white">
+                      ${Math.round(totalDealValue * 0.03).toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center">
+                    <Calendar className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Recent Deals Table */}
