@@ -147,10 +147,13 @@ export default function Deals() {
   const form = useForm<DealFormData>({
     resolver: zodResolver(insertDealSchema.omit({ id: true, createdAt: true, updatedAt: true })),
     defaultValues: {
+      leadId: "",
+      propertyId: "",
+      dealValue: "0",
       status: "offer",
-      dealValue: 0,
-      offerAmount: 0,
-      commission: 0,
+      offerAmount: "0",
+      commission: "0",
+      notes: "",
     },
   });
 
@@ -295,7 +298,7 @@ export default function Deals() {
                                 type="number"
                                 placeholder="Enter deal value"
                                 {...field}
-                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                onChange={(e) => field.onChange(e.target.value)}
                               />
                             </FormControl>
                             <FormMessage />
@@ -313,8 +316,11 @@ export default function Deals() {
                               <Input
                                 type="number"
                                 placeholder="Initial offer amount"
-                                {...field}
-                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                value={field.value || ""}
+                                onChange={(e) => field.onChange(e.target.value)}
+                                onBlur={field.onBlur}
+                                name={field.name}
+                                ref={field.ref}
                               />
                             </FormControl>
                             <FormMessage />
@@ -333,8 +339,11 @@ export default function Deals() {
                             <Input
                               type="number"
                               placeholder="Expected commission"
-                              {...field}
-                              onChange={(e) => field.onChange(Number(e.target.value))}
+                              value={field.value || ""}
+                              onChange={(e) => field.onChange(e.target.value)}
+                              onBlur={field.onBlur}
+                              name={field.name}
+                              ref={field.ref}
                             />
                           </FormControl>
                           <FormMessage />
@@ -351,7 +360,11 @@ export default function Deals() {
                           <FormControl>
                             <Textarea
                               placeholder="Additional notes about this deal..."
-                              {...field}
+                              value={field.value || ""}
+                              onChange={field.onChange}
+                              onBlur={field.onBlur}
+                              name={field.name}
+                              ref={field.ref}
                             />
                           </FormControl>
                           <FormMessage />
@@ -486,7 +499,7 @@ export default function Deals() {
                           {deal.expectedCloseDate && (
                             <div className="flex items-center">
                               <Calendar className="w-4 h-4 mr-2" />
-                              Close: {new Date(deal.expectedCloseDate).toLocaleDateString()}
+                              Close: {deal.expectedCloseDate ? new Date(deal.expectedCloseDate).toLocaleDateString() : "TBD"}
                             </div>
                           )}
                         </div>
@@ -495,7 +508,7 @@ export default function Deals() {
                         
                         <div className="flex items-center justify-between">
                           <span className="text-xs text-muted-foreground">
-                            Created: {new Date(deal.createdAt).toLocaleDateString()}
+                            Created: {deal.createdAt ? new Date(deal.createdAt).toLocaleDateString() : "Unknown"}
                           </span>
                           <Button size="sm" variant="outline" className="text-xs">
                             View Details
