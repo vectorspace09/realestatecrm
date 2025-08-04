@@ -88,6 +88,12 @@ export default function LeadCard({ lead }: LeadCardProps) {
             variant="ghost"
             size="sm"
             className="text-primary-600 hover:text-primary-700 text-xs p-1 h-auto"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (lead.phone) {
+                window.open(`tel:${lead.phone}`, '_self');
+              }
+            }}
           >
             <Phone className="w-3 h-3 mr-1" />
             Call
@@ -96,6 +102,12 @@ export default function LeadCard({ lead }: LeadCardProps) {
             variant="ghost"
             size="sm"
             className="text-emerald-600 hover:text-emerald-700 text-xs p-1 h-auto"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (lead.phone) {
+                window.open(`https://wa.me/${lead.phone.replace(/\D/g, '')}`, '_blank');
+              }
+            }}
           >
             <MessageSquare className="w-3 h-3 mr-1" />
             WhatsApp

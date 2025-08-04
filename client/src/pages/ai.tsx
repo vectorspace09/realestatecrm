@@ -122,8 +122,8 @@ export default function AIAssistantPage() {
   const getInsightCards = (): InsightCard[] => {
     const hotLeads = Array.isArray(leads) ? leads.filter((lead: any) => lead.score > 80)?.length : 0;
     const matchedProperties = Array.isArray(properties) ? properties.filter((prop: any) => prop.status === 'available')?.length : 0;
-    const conversionRate = analytics?.conversionRate || 0;
-    const recentChange = analytics?.conversionRateChange || 0;
+    const conversionRate = (analytics as any)?.conversionRate || 0;
+    const recentChange = (analytics as any)?.conversionRateChange || 0;
     
     return [
       {

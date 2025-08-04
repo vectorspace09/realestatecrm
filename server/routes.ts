@@ -896,7 +896,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get AI insights
   app.get("/api/ai/insights", isAuthenticated, async (req, res) => {
     try {
-      const userId = req.user?.claims?.sub;
+      const userId = (req.user as any)?.claims?.sub;
       const analytics = await storage.getDetailedAnalytics(userId);
       
       const insights = [
@@ -918,7 +918,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/ai/query", isAuthenticated, async (req, res) => {
     try {
       const { query } = req.body;
-      const userId = req.user?.claims?.sub;
+      const userId = (req.user as any)?.claims?.sub;
       
       // Get leads and properties for analysis
       const leads = await storage.getLeads();
@@ -1006,7 +1006,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/objects/:objectPath(*)", isAuthenticated, async (req, res) => {
-    const userId = req.user?.claims?.sub;
+    const userId = (req.user as any)?.claims?.sub;
     const objectStorageService = new ObjectStorageService();
     try {
       const objectFile = await objectStorageService.getObjectEntityFile(req.path);
@@ -1043,7 +1043,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(400).json({ error: "imageURL is required" });
     }
 
-    const userId = req.user?.claims?.sub;
+    const userId = (req.user as any)?.claims?.sub;
 
     try {
       const objectStorageService = new ObjectStorageService();

@@ -47,11 +47,10 @@ export default function TaskForm({ onSuccess, initialData }: TaskFormProps) {
 
   const addTaskMutation = useMutation({
     mutationFn: async (taskData: any) => {
-      const response = await apiRequest("/api/tasks", {
+      return await apiRequest("/api/tasks", {
         method: "POST",
         body: taskData
       });
-      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/tasks"] });
@@ -164,7 +163,7 @@ export default function TaskForm({ onSuccess, initialData }: TaskFormProps) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">No lead</SelectItem>
-              {leads?.map((lead) => (
+              {(leads as any[])?.map((lead: any) => (
                 <SelectItem key={lead.id} value={lead.id}>
                   {lead.firstName} {lead.lastName}
                 </SelectItem>
@@ -181,7 +180,7 @@ export default function TaskForm({ onSuccess, initialData }: TaskFormProps) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">No property</SelectItem>
-              {properties?.map((property) => (
+              {(properties as any[])?.map((property: any) => (
                 <SelectItem key={property.id} value={property.id}>
                   {property.title}
                 </SelectItem>
@@ -198,7 +197,7 @@ export default function TaskForm({ onSuccess, initialData }: TaskFormProps) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">No deal</SelectItem>
-              {deals?.map((deal) => (
+              {(deals as any[])?.map((deal: any) => (
                 <SelectItem key={deal.id} value={deal.id}>
                   Deal ${deal.dealValue?.toLocaleString()} ({deal.status})
                 </SelectItem>

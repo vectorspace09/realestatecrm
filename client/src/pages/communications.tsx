@@ -207,7 +207,7 @@ export default function Communications() {
                                 <SelectValue placeholder="Choose a lead" />
                               </SelectTrigger>
                               <SelectContent className="bg-background border-border">
-                                {leads.map((lead: any) => (
+                                {(leads as any[])?.map((lead: any) => (
                                   <SelectItem key={lead.id} value={lead.id}>
                                     {lead.firstName} {lead.lastName}
                                   </SelectItem>
@@ -275,7 +275,7 @@ export default function Communications() {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Total Messages</p>
                     <p className="text-3xl font-bold text-white">
-                      {statsLoading ? '...' : stats.totalMessages}
+                      {statsLoading ? '...' : (stats as any)?.totalMessages}
                     </p>
                   </div>
                   <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
@@ -291,7 +291,7 @@ export default function Communications() {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Emails Sent</p>
                     <p className="text-3xl font-bold text-white">
-                      {statsLoading ? '...' : stats.totalEmails}
+                      {statsLoading ? '...' : (stats as any)?.totalEmails}
                     </p>
                   </div>
                   <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center">
@@ -307,7 +307,7 @@ export default function Communications() {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Calls Made</p>
                     <p className="text-3xl font-bold text-white">
-                      {statsLoading ? '...' : stats.totalCalls}
+                      {statsLoading ? '...' : (stats as any)?.totalCalls}
                     </p>
                   </div>
                   <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
@@ -323,7 +323,7 @@ export default function Communications() {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Response Rate</p>
                     <p className="text-3xl font-bold text-white">
-                      {statsLoading ? '...' : `${stats.responseRate}%`}
+                      {statsLoading ? '...' : `${(stats as any)?.responseRate}%`}
                     </p>
                   </div>
                   <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center">
@@ -347,7 +347,7 @@ export default function Communications() {
                     <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                     <p className="text-muted-foreground">Loading communications...</p>
                   </div>
-                ) : communications.length === 0 ? (
+                ) : (communications as any[])?.length === 0 ? (
                   <div className="text-center py-8">
                     <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                     <p className="text-muted-foreground">No communications yet</p>
@@ -355,9 +355,9 @@ export default function Communications() {
                   </div>
                 ) : (
                   <div className="space-y-4 max-h-96 overflow-y-auto">
-                    {communications.slice(0, 10).map((comm: any) => {
+                    {(communications as any[])?.slice(0, 10).map((comm: any) => {
                       // Find the lead for this communication
-                      const lead = leads.find((l: any) => l.id === comm.leadId);
+                      const lead = (leads as any[])?.find((l: any) => l.id === comm.leadId);
                       const leadName = lead ? `${lead.firstName} ${lead.lastName}` : 'Unknown Lead';
                       
                       return (
@@ -413,14 +413,14 @@ export default function Communications() {
                 <CardDescription>Fast communication with your leads</CardDescription>
               </CardHeader>
               <CardContent>
-                {leads.length === 0 ? (
+                {(leads as any[])?.length === 0 ? (
                   <div className="text-center py-8">
                     <p className="text-muted-foreground">No leads available</p>
                     <p className="text-sm text-muted-foreground">Add some leads first to start communicating</p>
                   </div>
                 ) : (
                   <div className="space-y-4 max-h-96 overflow-y-auto">
-                    {leads.slice(0, 5).map((lead: any) => (
+                    {(leads as any[])?.slice(0, 5).map((lead: any) => (
                       <div key={lead.id} className="flex items-center justify-between p-3 bg-background rounded-lg">
                         <div className="flex-1">
                           <p className="font-medium text-white">{lead.firstName} {lead.lastName}</p>

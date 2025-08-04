@@ -187,7 +187,7 @@ export default function Analytics() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {analytics.leadsBySource.map((source, index) => {
+                  {(analytics.leadsBySource || []).map((source: any, index: number) => {
                     const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-purple-500', 'bg-amber-500', 'bg-red-500'];
                     const percentage = analytics.totalLeads > 0 ? Math.round((source.count / analytics.totalLeads) * 100) : 0;
 
@@ -218,7 +218,7 @@ export default function Analytics() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {analytics.topPerformingProperties.slice(0, 3).map((property, index) => (
+                  {(analytics.topPerformingProperties || []).slice(0, 3).map((property: any, index: number) => (
                     <div key={property.id} className="flex items-center justify-between">
                       <div>
                         <p className="font-medium text-white">{property.title}</p>

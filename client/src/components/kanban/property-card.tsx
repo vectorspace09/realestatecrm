@@ -81,8 +81,8 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           <h4 className="font-semibold text-white truncate flex-1">
             {property.title}
           </h4>
-          <Badge className={cn("text-xs font-medium ml-2", getStatusColor(property.status))}>
-            {getStatusLabel(property.status)}
+          <Badge className={cn("text-xs font-medium ml-2", getStatusColor(property.status || "available"))}>
+            {getStatusLabel(property.status || "available")}
           </Badge>
         </div>
         
