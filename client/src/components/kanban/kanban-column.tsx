@@ -52,7 +52,7 @@ export default function KanbanColumn({
   return (
     <div
       className={cn(
-        "flex-shrink-0 w-80 bg-card rounded-xl border border-border transition-colors",
+        "flex-shrink-0 w-80 bg-card rounded-xl border border-border transition-colors flex flex-col h-full",
         isDraggedOver && "border-primary-400 bg-primary-50 dark:bg-primary-900/20"
       )}
       onDragOver={onDragOver}
@@ -77,7 +77,7 @@ export default function KanbanColumn({
       </div>
 
       {/* Column Content */}
-      <div className="p-4 space-y-3 min-h-96 overflow-y-auto">
+      <div className="p-4 space-y-3 flex-1 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 280px)' }}>
         {items.length > 0 ? (
           items.map((item) => {
             const isDragged = draggedItemId === item.id;
