@@ -158,7 +158,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
               {navigationItems.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(item.href);
-                
+
                 return (
                   <Link
                     key={item.href}
@@ -192,7 +192,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                 <span>Settings</span>
               </div>
             </Link>
-            
+
             <button
               onClick={handleLogout}
               className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-900/20 transition-all duration-200"
@@ -216,7 +216,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
     `}>
       <div className="container mx-auto px-4 lg:px-6">
         <div className="flex items-center justify-between h-16">
-          
+
           {/* Logo/Brand - Moved to extreme left */}
           <Link href="/">
             <div className="flex items-center space-x-3 cursor-pointer group">
@@ -240,30 +240,40 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
             {/* Desktop Navigation */}
             {!isMobile && (
               <nav className="hidden md:flex items-center space-x-1 ml-8">
-                {navigationItems.slice(0, 6).map((item) => {
-                  const Icon = item.icon;
-                  const active = isActive(item.href);
-                  
-                  return (
-                    <Link key={item.href} href={item.href}>
-                      <Button
-                        variant={active ? "default" : "ghost"}
-                        size="sm"
-                        className={`
-                          px-3 py-1.5 text-sm font-medium transition-all duration-200 hover:scale-105
-                          ${active 
-                            ? 'bg-gradient-to-r from-primary-500 to-purple-600 text-white shadow-lg shadow-primary-500/20' 
-                            : 'text-muted-foreground hover:text-white hover:bg-card/50'
-                          }
-                        `}
-                      >
-                        <Icon className="w-4 h-4 mr-1.5" />
-                        {item.label}
-                      </Button>
-                    </Link>
-                  );
-                })}
-                
+                {/* Desktop Navigation - Hidden on mobile */}
+        <div className="hidden lg:flex items-center space-x-4">
+          {navigationItems.slice(0, 5).map((item) => (
+            <Link key={item.href} href={item.href}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`text-sm font-medium transition-all duration-200 hover:bg-secondary/80 active:scale-95 ${
+                  location === item.href 
+                    ? "text-primary bg-primary/10 hover:bg-primary/20" 
+                    : "text-muted-foreground hover:text-white"
+                }`}
+              >
+                <item.icon className="w-4 h-4 mr-1" />
+                {item.label}
+              </Button>
+            </Link>
+          ))}
+        </div>
+
+        {/* Center - Compact Search Bar (Desktop Only) */}
+        <div className="hidden xl:flex flex-1 max-w-md mx-6">
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search..."
+              className="w-full pl-10 pr-4 py-2 bg-card/50 border-border focus:bg-card transition-colors text-sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
                 {/* More dropdown for remaining items */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -280,7 +290,7 @@ export default function ResponsiveHeader({ onMenuClick, showMobileNav = true }: 
                     {navigationItems.slice(6).map((item) => {
                       const Icon = item.icon;
                       const active = isActive(item.href);
-                      
+
                       return (
                         <DropdownMenuItem key={item.href} asChild>
                           <Link href={item.href}>

@@ -212,54 +212,54 @@ export default function Dashboard() {
         <CommandBar />
       </div>
 
-      <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-6 pb-20 lg:pb-6">
-        {/* Welcome Header - Mobile Optimized */}
-          <div className="flex flex-col space-y-4">
+      <main className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-8 pb-20 lg:pb-6">
+        {/* Welcome Header - Fixed Layout */}
+          <div className="space-y-6">
             <div className="text-center sm:text-left">
-              <h1 className="ai-title-h1 text-foreground">
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
                 Welcome back, {(user as any)?.firstName || 'Agent'}!
               </h1>
-              <p className="ai-body text-muted-foreground mt-1">
+              <p className="text-sm sm:text-base text-muted-foreground">
                 Here's what's happening with your real estate business today.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3">
-              <Badge variant="secondary" className="bg-success/10 text-success border-success/20 w-full sm:w-auto justify-center">
-                <Zap className="w-3 h-3 mr-1" />
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <Badge variant="secondary" className="bg-success/10 text-success border-success/20 text-center py-2">
+                <Zap className="w-4 h-4 mr-2" />
                 AI Insights Ready
               </Badge>
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground py-2 px-4">
                 <Target className="w-4 h-4 mr-2" />
                 View Goals
               </Button>
             </div>
           </div>
 
-          {/* AI-Powered Priority Insights - Mobile Optimized */}
+          {/* AI-Powered Priority Insights - Fixed Layout */}
           <Card className="bg-gradient-to-r from-primary to-primary/80 border-0 text-primary-foreground">
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
-                <div className="text-center sm:text-left">
-                  <h2 className="ai-title-h2 font-bold">AI Priority Dashboard</h2>
-                  <p className="ai-body text-primary-foreground/80">Your top 3 action items for maximum impact</p>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-bold mb-1">AI Priority Dashboard</h2>
+                  <p className="text-primary-foreground/80 text-sm">Your top 3 action items for maximum impact</p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto sm:mx-0">
-                  <Zap className="w-5 h-5 sm:w-6 sm:h-6" />
+                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Zap className="w-6 h-6" />
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 {/* High Priority Task */}
-                <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-destructive rounded-full flex items-center justify-center">
-                      <AlertCircle className="w-4 h-4 text-foreground" />
+                <div className="bg-white/10 rounded-lg p-4 backdrop-blur min-h-[80px] flex items-center">
+                  <div className="flex items-center space-x-3 w-full">
+                    <div className="w-10 h-10 bg-destructive rounded-full flex items-center justify-center flex-shrink-0">
+                      <AlertCircle className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <p className="font-medium">Urgent Task</p>
-                      <p className="text-sm text-primary-foreground/80">
-                        {overdueTask ? `${overdueTask.title.substring(0, 30)}...` : 
-                         highPriorityTasks[0] ? `${highPriorityTasks[0].title.substring(0, 30)}...` :
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-white mb-1">Urgent Task</p>
+                      <p className="text-sm text-primary-foreground/80 truncate">
+                        {overdueTask ? overdueTask.title : 
+                         highPriorityTasks[0] ? highPriorityTasks[0].title :
                          'No urgent tasks'}
                       </p>
                     </div>
@@ -267,14 +267,14 @@ export default function Dashboard() {
                 </div>
                 
                 {/* Hot Lead */}
-                <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center">
-                      <Star className="w-4 h-4 text-foreground" />
+                <div className="bg-white/10 rounded-lg p-4 backdrop-blur min-h-[80px] flex items-center">
+                  <div className="flex items-center space-x-3 w-full">
+                    <div className="w-10 h-10 bg-warning rounded-full flex items-center justify-center flex-shrink-0">
+                      <Star className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <p className="font-medium">Hot Lead</p>
-                      <p className="text-sm text-primary-foreground/80">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-white mb-1">Hot Lead</p>
+                      <p className="text-sm text-primary-foreground/80 truncate">
                         {recentLeads?.find((lead: any) => lead.score >= 90) 
                           ? `${recentLeads.find((lead: any) => lead.score >= 90)?.firstName} ${recentLeads.find((lead: any) => lead.score >= 90)?.lastName}` 
                           : 'No hot leads today'}
@@ -284,14 +284,14 @@ export default function Dashboard() {
                 </div>
                 
                 {/* Deal Progress */}
-                <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-success rounded-full flex items-center justify-center">
-                      <TrendingUp className="w-4 h-4 text-foreground" />
+                <div className="bg-white/10 rounded-lg p-4 backdrop-blur min-h-[80px] flex items-center">
+                  <div className="flex items-center space-x-3 w-full">
+                    <div className="w-10 h-10 bg-success rounded-full flex items-center justify-center flex-shrink-0">
+                      <TrendingUp className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <p className="font-medium">Deal Progress</p>
-                      <p className="text-sm text-primary-foreground/80">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-white mb-1">Deal Progress</p>
+                      <p className="text-sm text-primary-foreground/80 truncate">
                         {recentDeals?.filter((deal: any) => deal.status === 'under_contract').length || 0} deals closing soon
                       </p>
                     </div>
@@ -301,8 +301,8 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Key Metrics Grid - Mobile Optimized */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          {/* Key Metrics Grid - Fixed Layout */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="bg-card border-border">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
@@ -445,19 +445,19 @@ export default function Dashboard() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-2 flex-shrink-0">
                       <Button
                         size="sm"
-                        className="bg-red-600 hover:bg-red-700 text-foreground shadow-lg hover:shadow-red-500/25 transition-all duration-200"
+                        className="bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-red-500/25 transition-all duration-200 whitespace-nowrap"
                         onClick={() => handlePriorityAction('call_high_score_lead')}
                       >
-                        <Phone className="w-4 h-4 mr-2" />
-                        Call Now
+                        <Phone className="w-4 h-4 mr-1" />
+                        Call
                       </Button>
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-border text-muted-foreground hover:bg-secondary"
+                        className="border-border text-muted-foreground hover:bg-secondary p-2"
                         onClick={() => navigate('/leads/emily-davis')}
                       >
                         <Eye className="w-4 h-4" />
@@ -827,32 +827,40 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/leads?action=add')}>
-                  <div className="flex flex-col items-start">
-                    <span className="font-medium">Add New Lead</span>
-                    <span className="text-xs text-muted-foreground mt-1">Capture potential client</span>
-                  </div>
+                <Button 
+                  variant="outline" 
+                  className="h-20 p-4 flex flex-col items-start justify-center text-left" 
+                  onClick={() => navigate('/leads?action=add')}
+                >
+                  <span className="font-medium text-sm">Add New Lead</span>
+                  <span className="text-xs text-muted-foreground mt-1">Capture potential client</span>
                 </Button>
                 
-                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/properties?action=add')}>
-                  <div className="flex flex-col items-start">
-                    <span className="font-medium">List Property</span>
-                    <span className="text-xs text-muted-foreground mt-1">Add new listing</span>
-                  </div>
+                <Button 
+                  variant="outline" 
+                  className="h-20 p-4 flex flex-col items-start justify-center text-left" 
+                  onClick={() => navigate('/properties?action=add')}
+                >
+                  <span className="font-medium text-sm">List Property</span>
+                  <span className="text-xs text-muted-foreground mt-1">Add new listing</span>
                 </Button>
                 
-                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/tasks?action=add')}>
-                  <div className="flex flex-col items-start">
-                    <span className="font-medium">Schedule Task</span>
-                    <span className="text-xs text-muted-foreground mt-1">Plan your activities</span>
-                  </div>
+                <Button 
+                  variant="outline" 
+                  className="h-20 p-4 flex flex-col items-start justify-center text-left" 
+                  onClick={() => navigate('/tasks?action=add')}
+                >
+                  <span className="font-medium text-sm">Schedule Task</span>
+                  <span className="text-xs text-muted-foreground mt-1">Plan your activities</span>
                 </Button>
                 
-                <Button variant="outline" className="justify-start h-auto p-4" onClick={() => navigate('/ai')}>
-                  <div className="flex flex-col items-start">
-                    <span className="font-medium">AI Analysis</span>
-                    <span className="text-xs text-muted-foreground mt-1">Get insights & recommendations</span>
-                  </div>
+                <Button 
+                  variant="outline" 
+                  className="h-20 p-4 flex flex-col items-start justify-center text-left" 
+                  onClick={() => navigate('/ai')}
+                >
+                  <span className="font-medium text-sm">AI Analysis</span>
+                  <span className="text-xs text-muted-foreground mt-1">Get insights & recommendations</span>
                 </Button>
               </div>
             </CardContent>
