@@ -798,14 +798,25 @@ export default function LeadDetail() {
                             Complete history of interactions with this lead
                           </CardDescription>
                         </div>
-                        <Button
-                          onClick={generateNextAction}
-                          disabled={isGeneratingNextAction}
-                          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
-                        >
-                          <Bot className="w-4 h-4 mr-2" />
-                          {isGeneratingNextAction ? "Generating..." : "Generate Next Action"}
-                        </Button>
+                        <div className="flex space-x-2">
+                          <Button
+                            onClick={() => setIsActionDialogOpen(true)}
+                            variant="outline"
+                            size="sm"
+                          >
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add Note
+                          </Button>
+                          <Button
+                            onClick={generateNextAction}
+                            disabled={isGeneratingNextAction}
+                            size="sm"
+                            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
+                          >
+                            <Bot className="w-4 h-4 mr-2" />
+                            {isGeneratingNextAction ? "Generating..." : "Generate Next Action"}
+                          </Button>
+                        </div>
                       </div>
                     </CardHeader>
                     <CardContent>
@@ -842,6 +853,16 @@ export default function LeadDetail() {
                               </div>
                             </div>
                           ))}
+                          <div className="pt-4 border-t border-border">
+                            <Button
+                              onClick={() => setIsActionDialogOpen(true)}
+                              variant="outline"
+                              className="w-full"
+                            >
+                              <Plus className="w-4 h-4 mr-2" />
+                              Add Another Note
+                            </Button>
+                          </div>
                         </div>
                       ) : (
                         <div className="text-center py-8">
